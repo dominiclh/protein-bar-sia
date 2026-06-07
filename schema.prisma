@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ProteinBar {
+  id           String   @id @default(cuid())
+  brand        String
+  flavor       String
+  market       String
+  retailer     String
+  affiliateUrl String
+  priceBar     Float
+  priceBox     Float
+  qtyBox       Int
+  protein      Float
+  calories     Int
+  weight       Float
+  ppg          Float
+  rating       Float
+  reviewCount  Int      @default(0)
+  delivery     String
+  status       String   @default("available")
+  halal        Boolean  @default(false)
+  vegan        Boolean  @default(false)
+  keto         Boolean  @default(false)
+  glutenFree   Boolean  @default(false)
+  lowSugar     Boolean  @default(false)
+  bestseller   Boolean  @default(false)
+  lastUpdated  DateTime @default(now()) @updatedAt
+  createdAt    DateTime @default(now())
+
+  watchlistItems Watchlist[]
+
+  @@index([brand, market])
+  @@index([status])
+}
+
+model Watchlist {
+  id        String     @id @default(cuid())
+  barId     String
+  email     String
+  bar       ProteinBar @relation(fields: [barId], references: [id])
+  createdAt DateTime   @default(now())
+  notified  Boolean    @default(false)
+
+  @@unique([barId, email])
+  @@index([email])
+}

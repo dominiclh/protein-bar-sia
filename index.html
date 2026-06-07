@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proteinbarsia — Premium Protein Bars</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --blanco: #f4f3e6;
+      --verde: #0a4635;
+      --rojo: #e54d3a;
+      --azul: #28306c;
+      --amarillo: #ffc62d;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *::-webkit-scrollbar { display: none; }
+
+    body {
+      font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+      background: var(--blanco);
+      color: var(--verde);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 44px;
+      height: 76px;
+      background: var(--verde);
+      border-bottom: none;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .logo-wrap img {
+      height: 50px;
+      width: auto;
+      border-radius: 6px;
+    }
+
+    .logo-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.68);
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+
+    .nav-links a:hover { color: #fff; }
+
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--amarillo);
+      outline-offset: 3px;
+      border-radius: 3px;
+    }
+
+
+    /* ── PAGE WRAPPER ────────────────────────────────────── */
+    .page {
+      padding: 20px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* ── HERO ROW ────────────────────────────────────────── */
+    .hero-row {
+      display: grid;
+      grid-template-columns: 1fr 332px;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    /* ── HERO CAROUSEL ───────────────────────────────────── */
+    .hero-carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      min-height: 440px;
+    }
+
+    .hero-slides-track {
+      display: flex;
+      width: 400%;
+      min-height: 440px;
+      height: 100%;
+      transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: transform;
+    }
+
+    .hero-slide {
+      width: calc(100% / 4);
+      flex-shrink: 0;
+      min-height: 440px;
+      position: relative;
+      padding: 50px 44px 72px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Slide 1 — amarillo */
+    .hero-slide-yellow { background: var(--amarillo); }
+    .hero-slide-yellow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 50%, rgba(255,255,255,0.22) 0%, transparent 65%),
+                  radial-gradient(circle at 15% 80%, rgba(255,200,0,0.3) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Slide 2 — verde */
+    .hero-slide-dark { background: var(--verde); }
+    .hero-slide-dark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 75% 40%, rgba(255,198,45,0.10) 0%, transparent 60%),
+                  radial-gradient(circle at 10% 90%, rgba(255,255,255,0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Slide 3 — rojo */
+    .hero-slide-green { background: var(--rojo); }
+    .hero-slide-green::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 50%, rgba(255,255,255,0.18) 0%, transparent 65%),
+                  radial-gradient(circle at 10% 90%, rgba(0,0,0,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Verde slide overrides */
+    .hero-slide-dark .hero-headline { color: var(--amarillo); }
+    .hero-slide-dark .hero-sub { color: rgba(255,255,255,0.58); }
+    .hero-slide-dark .hero-cta {
+      background: var(--amarillo);
+      color: var(--verde);
+      box-shadow: 0 4px 20px rgba(255,198,45,0.30);
+    }
+    .hero-slide-dark .hero-cta:hover { background: #e8b320; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,198,45,0.35); }
+    .hero-slide-dark .rating-num { color: #fff; }
+    .hero-slide-dark .rating-label { color: rgba(255,255,255,0.42); }
+
+    /* Rojo slide overrides */
+    .hero-slide-green .hero-headline { color: #fff; }
+    .hero-slide-green .hero-sub { color: rgba(255,255,255,0.82); }
+    .hero-slide-green .hero-cta {
+      background: #fff;
+      color: var(--rojo);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .hero-slide-green .hero-cta:hover { background: #f0ece0; transform: translateY(-2px); }
+
+    /* Carousel nav dots */
+    .carousel-dots {
+      position: absolute;
+      bottom: 24px;
+      left: 44px;
+      display: flex;
+      gap: 7px;
+      z-index: 10;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.20);
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      transition: background 0.25s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    .carousel-dot.active { background: var(--verde); transform: scale(1.35); }
+    .carousel-dot:hover { opacity: 0.75; }
+    .carousel-dot:focus-visible { outline: 2px solid var(--amarillo); outline-offset: 2px; }
+
+    #heroCarousel[data-slide="1"] .carousel-dot { background: rgba(255,255,255,0.35); }
+    #heroCarousel[data-slide="1"] .carousel-dot.active { background: var(--amarillo); transform: scale(1.35); }
+
+    #heroCarousel[data-slide="2"] .carousel-dot { background: rgba(255,255,255,0.40); }
+    #heroCarousel[data-slide="2"] .carousel-dot.active { background: #fff; transform: scale(1.35); }
+
+    /* Slide 4 — azul */
+    .hero-slide-navy { background: var(--azul); }
+    .hero-slide-navy::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 75% 40%, rgba(255,198,45,0.10) 0%, transparent 60%),
+                  radial-gradient(circle at 10% 90%, rgba(68,100,204,0.14) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-slide-navy .hero-headline { color: var(--amarillo); font-size: clamp(48px, 5.6vw, 82px); }
+    .hero-slide-navy .hero-sub { color: rgba(255,255,255,0.60); }
+    .hero-slide-navy .hero-cta {
+      background: var(--amarillo);
+      color: var(--azul);
+      box-shadow: 0 4px 20px rgba(255,198,45,0.30);
+    }
+    .hero-slide-navy .hero-cta:hover { background: #e8b320; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,198,45,0.35); }
+
+    #heroCarousel[data-slide="3"] .carousel-dot { background: rgba(255,255,255,0.35); }
+    #heroCarousel[data-slide="3"] .carousel-dot.active { background: var(--amarillo); transform: scale(1.35); }
+
+    /* ── SHARED HERO INNER ELEMENTS ──────────────────────── */
+    .hero-text {
+      position: relative;
+      z-index: 2;
+      max-width: 42%;
+    }
+
+    .hero-headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(64px, 7.4vw, 112px);
+      line-height: 0.86;
+      letter-spacing: 0.02em;
+      color: var(--verde);
+      margin-bottom: 22px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      font-size: 13.5px;
+      font-style: italic;
+      color: rgba(10,70,53,0.55);
+      line-height: 1.55;
+      max-width: 200px;
+      margin-bottom: 22px;
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .stars { display: flex; gap: 2px; }
+
+    .star {
+      width: 14px;
+      height: 14px;
+      fill: var(--verde);
+    }
+
+    .rating-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--verde);
+    }
+
+    .rating-label {
+      font-size: 13px;
+      color: rgba(10,70,53,0.48);
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      background: var(--verde);
+      color: var(--amarillo);
+      text-decoration: none;
+      border-radius: 3px;
+      padding: 13px 28px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 20px rgba(10,70,53,0.22);
+      transition: background 0.18s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+    }
+
+    .hero-cta:hover {
+      background: #083828;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(10,70,53,0.28);
+    }
+
+    .hero-cta:active { transform: translateY(0) scale(0.97); }
+    .hero-cta:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 3px; }
+
+    /* ── CIRCULAR PRODUCT IMAGE ──────────────────────────── */
+    .hero-product {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-44%, -50%);
+      z-index: 4;
+    }
+
+    .product-ring {
+      width: 308px;
+      height: 308px;
+      border-radius: 50%;
+      padding: 9px;
+      background: #fff;
+      box-shadow:
+        0 0 0 1px rgba(10,70,53,0.06),
+        0 8px 24px rgba(10,70,53,0.10),
+        0 24px 56px rgba(10,70,53,0.10);
+    }
+
+    .product-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #e8d5b0;
+    }
+
+    .product-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .price-tag {
+      position: absolute;
+      top: 22px;
+      right: -4px;
+      background: var(--verde);
+      color: var(--amarillo);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      padding: 8px 18px;
+      border-radius: 3px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+    }
+
+    .product-badges {
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .badge {
+      background: #fff;
+      border-radius: 3px;
+      padding: 5px 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--verde);
+      box-shadow: 0 2px 10px rgba(10,70,53,0.10);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Small portrait in hero top-right */
+    .hero-portrait {
+      position: absolute;
+      top: 28px;
+      right: 28px;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,0.55);
+      z-index: 3;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .hero-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Mini picks list (slide 3) */
+    .picks-mini-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 18px;
+    }
+
+    .pick-mini-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.22);
+      border-radius: 4px;
+      padding: 8px 12px;
+      backdrop-filter: blur(4px);
+    }
+
+    .pick-mini-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      width: 18px;
+      flex-shrink: 0;
+    }
+
+    .pick-mini-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fff;
+      flex: 1;
+    }
+
+    .pick-mini-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ── RIGHT SIDE CARDS ────────────────────────────────── */
+    .side-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* GAINS card */
+    .gains-card {
+      background: var(--verde);
+      border-radius: 10px;
+      padding: 28px 24px 24px;
+      position: relative;
+      overflow: hidden;
+      flex: 1.3;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 200px;
+    }
+
+    .gains-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 30%, rgba(255,255,255,0.10) 0%, transparent 60%),
+                  radial-gradient(circle at 10% 100%, rgba(0,0,0,0.08) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .gains-card-inner { position: relative; z-index: 2; }
+
+    .gains-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 36px;
+      letter-spacing: 0.06em;
+      color: var(--amarillo);
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .gains-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.45;
+      margin-top: 8px;
+      max-width: 155px;
+    }
+
+    .gains-img {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid rgba(255,255,255,0.22);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      z-index: 3;
+    }
+
+    .gains-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .explore-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--amarillo);
+      color: var(--verde);
+      border: none;
+      border-radius: 3px;
+      padding: 9px 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 14px;
+      width: fit-content;
+      transition: background 0.18s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .explore-btn:hover { background: #e8b320; transform: translateY(-1px); }
+    .explore-btn:active { transform: translateY(0) scale(0.97); }
+    .explore-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+    /* EVERYDAY / DAILY FUEL card */
+    .daily-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 20px;
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      box-shadow:
+        0 1px 2px rgba(10,70,53,0.04),
+        0 4px 16px rgba(10,70,53,0.07);
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+    }
+
+    .daily-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(10,70,53,0.06), 0 12px 32px rgba(10,70,53,0.11);
+    }
+
+    .daily-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .daily-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .daily-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: var(--verde);
+      text-transform: uppercase;
+    }
+
+    .daily-sub {
+      font-size: 12px;
+      color: rgba(10,70,53,0.45);
+      line-height: 1.4;
+      margin-top: 3px;
+    }
+
+    .daily-price {
+      background: var(--amarillo);
+      color: var(--verde);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      padding: 9px 16px;
+      border-radius: 3px;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── TRACKERS & BRANDS SECTION ───────────────────────── */
+    .trackers-section {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow:
+        0 1px 2px rgba(10,70,53,0.04),
+        0 4px 16px rgba(10,70,53,0.06);
+    }
+
+    .trackers-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .tracker-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 20px;
+      border-right: 1px solid rgba(10,70,53,0.08);
+    }
+
+    .tracker-stat:last-child { border-right: none; }
+
+    .tracker-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 32px;
+      letter-spacing: 0.04em;
+      color: var(--verde);
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .tracker-label {
+      font-size: 12.5px;
+      color: rgba(10,70,53,0.42);
+      margin-top: 5px;
+    }
+
+    .trackers-brands-wrap {
+      padding: 40px 44px 48px;
+      background: var(--blanco);
+    }
+
+    .brands-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 30px;
+      letter-spacing: 0.06em;
+      color: var(--verde);
+      text-align: center;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+
+    .brands-grid {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px 28px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      box-shadow:
+        0 1px 2px rgba(10,70,53,0.04),
+        0 4px 16px rgba(10,70,53,0.07);
+      min-width: 140px;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s ease, border-color 0.18s ease;
+      text-decoration: none;
+      border: 1.5px solid rgba(10,70,53,0.06);
+    }
+
+    .brand-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(10,70,53,0.07), 0 12px 32px rgba(10,70,53,0.12);
+      border-color: var(--verde);
+    }
+
+    .brand-card:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 3px; border-radius: 8px; }
+
+    .brand-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 26px;
+    }
+
+    .brand-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--verde);
+    }
+
+    /* ── BOTTOM ROW: PICKS ───────────────────────────────── */
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    /* ── TOP-5 PICKS ─────────────────────────────────────── */
+    .picks-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 44px 44px 40px;
+      box-shadow:
+        0 1px 2px rgba(10,70,53,0.04),
+        0 4px 16px rgba(10,70,53,0.06);
+    }
+
+    .picks-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .picks-icon-box {
+      width: 54px;
+      height: 54px;
+      background: var(--amarillo);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .picks-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 56px;
+      letter-spacing: 0.03em;
+      color: var(--verde);
+      line-height: 0.88;
+      text-transform: uppercase;
+    }
+
+    .picks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 640px;
+    }
+
+    .pick-row {
+      display: grid;
+      grid-template-columns: 54px 1fr auto auto;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 16px;
+      border-radius: 6px;
+      background: var(--blanco);
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .pick-row:hover {
+      transform: translateX(4px);
+      box-shadow: 0 2px 12px rgba(10,70,53,0.08);
+      border-color: rgba(10,70,53,0.12);
+    }
+
+    .pick-thumb {
+      width: 54px;
+      height: 54px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .pick-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .pick-name {
+      font-weight: 700;
+      font-size: 14.5px;
+      color: var(--verde);
+    }
+
+    .pick-desc {
+      font-size: 12px;
+      color: rgba(10,70,53,0.40);
+      margin-top: 1px;
+    }
+
+    .pick-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--verde);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+
+    .pick-add {
+      width: 34px;
+      height: 34px;
+      background: var(--verde);
+      color: var(--amarillo);
+      border: none;
+      border-radius: 3px;
+      font-size: 21px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.18s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .pick-add:hover { background: var(--rojo); transform: scale(1.12); }
+    .pick-add:active { transform: scale(0.94); }
+    .pick-add:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 2px; }
+
+    /* ── SVG STAR helper ─────────────────────────────────── */
+    .star-svg {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="#" class="logo-wrap">
+      <img src="/brand_assets/proteinbarsia_logo.jpg" alt="Proteinbarsia logo" />
+      <span class="logo-name">Proteinbarsia</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="http://localhost:3001/comparison">Comparison</a></li>
+      <li><a href="/value-vs-content.html">Value vs Content</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE -->
+  <div class="page">
+
+    <!-- HERO ROW -->
+    <div class="hero-row">
+
+      <!-- Hero Carousel (4 slides) -->
+      <div class="hero-carousel" id="heroCarousel" data-slide="0">
+        <div class="hero-slides-track" id="heroTrack">
+
+          <!-- ─── Slide 1: Amarillo ──────────────────────── -->
+          <div class="hero-slide hero-slide-yellow">
+            <div class="hero-text">
+              <h1 class="hero-headline">PROOO<br>TEIN!</h1>
+              <p class="hero-sub">Premium protein fuel,<br>made just for you.</p>
+              <a href="#picks" class="hero-cta">SHOP NOW ↓</a>
+              <div class="rating-row">
+                <div class="stars">
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                </div>
+                <span class="rating-num">4.8</span>
+                <span class="rating-label">· Proteinbarsia</span>
+              </div>
+            </div>
+
+            <div class="hero-product">
+              <div class="product-ring">
+                <div class="product-circle">
+                  <img src="/musclecrisp.png" alt="Protein Bar" />
+                </div>
+              </div>
+              <div class="price-tag">$4.99</div>
+              <div class="product-badges">
+                <span class="badge">🏋️ 25g protein</span>
+                <span class="badge">🌿 vegan</span>
+                <span class="badge">⚡ keto</span>
+              </div>
+            </div>
+
+            <div class="hero-portrait">
+              <img src="https://placehold.co/68x68/27AE60/ffffff?text=💪" alt="Athlete" />
+            </div>
+          </div>
+
+          <!-- ─── Slide 2: Verde — Daily Fuel ───────────── -->
+          <div class="hero-slide hero-slide-dark">
+            <div class="hero-text">
+              <h1 class="hero-headline">DAILY<br>FUEL</h1>
+              <p class="hero-sub">Power through every day with bars built for real life.</p>
+              <a href="#picks" class="hero-cta">SHOP ALL ↓</a>
+              <div class="rating-row">
+                <div class="stars">
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                </div>
+                <span class="rating-num">4.8</span>
+                <span class="rating-label">· Proteinbarsia</span>
+              </div>
+            </div>
+
+            <div class="hero-product">
+              <div class="product-ring" style="background:#0a3028;box-shadow:0 0 0 1px rgba(255,198,45,0.15),0 8px 24px rgba(0,0,0,0.35),0 24px 56px rgba(0,0,0,0.28);">
+                <div class="product-circle" style="background:#0d3e2e;">
+                  <img src="/musclecrisp.png" alt="Daily Fuel Bar" />
+                </div>
+              </div>
+              <div class="price-tag">$5.50</div>
+              <div class="product-badges">
+                <span class="badge">🔥 20g protein</span>
+                <span class="badge">☕ caffeine</span>
+                <span class="badge">⚡ energy</span>
+              </div>
+            </div>
+
+            <div class="hero-portrait">
+              <img src="https://placehold.co/68x68/1a8c4e/ffffff?text=🏃" alt="Athlete" />
+            </div>
+          </div>
+
+          <!-- ─── Slide 3: Rojo — Top-5 Picks ──────────── -->
+          <div class="hero-slide hero-slide-green">
+            <div class="hero-text" style="max-width:46%;">
+              <h1 class="hero-headline">TOP-5<br>PICKS</h1>
+              <p class="hero-sub" style="color:rgba(255,255,255,0.82);">Our curated ranking of premium protein bars this month.</p>
+              <a href="#picks" class="hero-cta">SEE RANKINGS ↓</a>
+
+              <div class="picks-mini-list">
+                <div class="pick-mini-row">
+                  <span class="pick-mini-num">#1</span>
+                  <span class="pick-mini-name">Chocolate Crunch</span>
+                  <span class="pick-mini-price">$4.99</span>
+                </div>
+                <div class="pick-mini-row">
+                  <span class="pick-mini-num">#2</span>
+                  <span class="pick-mini-name">Vanilla Dream</span>
+                  <span class="pick-mini-price">$5.50</span>
+                </div>
+                <div class="pick-mini-row">
+                  <span class="pick-mini-num">#3</span>
+                  <span class="pick-mini-name">Peanut Butter Pro</span>
+                  <span class="pick-mini-price">$6.99</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-product">
+              <div class="product-ring" style="background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,0.04),0 8px 24px rgba(0,0,0,0.12),0 24px 56px rgba(0,0,0,0.10);">
+                <div class="product-circle" style="background:#fde8e5;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-size:80px;line-height:1;">🏆</span>
+                </div>
+              </div>
+              <div class="price-tag" style="background:#fff;color:#e54d3a;">Top Rated</div>
+              <div class="product-badges">
+                <span class="badge">🥇 #1 Rated</span>
+                <span class="badge">🔬 Lab Tested</span>
+              </div>
+            </div>
+
+            <div class="hero-portrait" style="border-color:rgba(255,255,255,0.55);">
+              <img src="https://placehold.co/68x68/ffc62d/0a4635?text=🏅" alt="Top Pick" />
+            </div>
+          </div>
+
+          <!-- ─── Slide 4: Azul — Value vs Content ─────── -->
+          <div class="hero-slide hero-slide-navy">
+            <div class="hero-text" style="max-width:44%;">
+              <div style="display:inline-block;background:rgba(255,198,45,0.18);border-radius:3px;padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#ffc62d;margin-bottom:14px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;">📊 INTERACTIVE CHART</div>
+              <h1 class="hero-headline">VALUE vs<br>CONTENT</h1>
+              <p class="hero-sub" style="color:rgba(255,255,255,0.60);">Plot every bar on two dimensions: price per gram of protein vs. protein density. Find your sweet spot.</p>
+              <a href="/value-vs-content.html" class="hero-cta">EXPLORE CHART →</a>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:18px;">
+                <span style="background:rgba(255,255,255,0.10);border-radius:3px;padding:5px 12px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.70);">25 bars tracked</span>
+                <span style="background:rgba(255,255,255,0.10);border-radius:3px;padding:5px 12px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.70);">5 brands</span>
+                <span style="background:rgba(255,255,255,0.10);border-radius:3px;padding:5px 12px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.70);">SGD pricing</span>
+              </div>
+            </div>
+
+            <div class="hero-product">
+              <div class="product-ring" style="background:#162040;box-shadow:0 0 0 1px rgba(255,198,45,0.18),0 8px 24px rgba(0,0,0,0.38),0 24px 56px rgba(0,0,0,0.28);">
+                <div class="product-circle" style="background:#1a2a5c;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-size:80px;line-height:1;">📊</span>
+                </div>
+              </div>
+              <div class="price-tag" style="background:#ffc62d;color:#28306c;">SG &amp; MY</div>
+              <div class="product-badges">
+                <span class="badge">→ $/g protein</span>
+                <span class="badge">↑ g/100 kcal</span>
+              </div>
+            </div>
+
+            <div class="hero-portrait" style="border-color:rgba(255,198,45,0.40);">
+              <img src="https://placehold.co/68x68/ffc62d/28306c?text=📊" alt="Chart" />
+            </div>
+          </div>
+
+        </div><!-- /hero-slides-track -->
+
+        <!-- Navigation dots -->
+        <div class="carousel-dots" id="carouselDots">
+          <button class="carousel-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
+          <button class="carousel-dot" onclick="goToSlide(1)" aria-label="Slide 2"></button>
+          <button class="carousel-dot" onclick="goToSlide(2)" aria-label="Slide 3"></button>
+          <button class="carousel-dot" onclick="goToSlide(3)" aria-label="Slide 4"></button>
+        </div>
+
+      </div><!-- /hero-carousel -->
+
+      <!-- Right side cards -->
+      <div class="side-cards">
+        <!-- GAINS card -->
+        <div class="gains-card">
+          <div class="gains-card-inner">
+            <div class="gains-label">GAINS</div>
+            <div class="gains-sub">Learn to fuel smart for peak performance</div>
+            <button class="explore-btn">EXPLORE →</button>
+          </div>
+          <div class="gains-img">
+            <img src="https://placehold.co/88x88/1a8c4e/ffffff?text=🏅" alt="Athlete" />
+          </div>
+        </div>
+
+        <!-- EVERYDAY card -->
+        <div class="daily-card">
+          <div class="daily-img">
+            <img src="/musclecrisp.png" alt="Protein Bar" />
+          </div>
+          <div>
+            <div class="daily-label">EVERYDAY</div>
+            <div class="daily-sub">Fresh daily, packed<br>with protein goodness</div>
+          </div>
+          <div class="daily-price">$6</div>
+        </div>
+      </div>
+    </div><!-- /hero-row -->
+
+    <!-- TRACKERS & BRANDS SECTION -->
+    <div class="trackers-section">
+      <div class="trackers-stats">
+        <div class="tracker-stat">
+          <div class="tracker-num">5</div>
+          <div class="tracker-label">Brands tracked</div>
+        </div>
+        <div class="tracker-stat">
+          <div class="tracker-num">51</div>
+          <div class="tracker-label">Listings indexed</div>
+        </div>
+        <div class="tracker-stat">
+          <div class="tracker-num">SG &amp; MY</div>
+          <div class="tracker-label">Markets covered</div>
+        </div>
+        <div class="tracker-stat">
+          <div class="tracker-num">4 hours</div>
+          <div class="tracker-label">Updated every</div>
+        </div>
+      </div>
+      <div class="trackers-brands-wrap">
+        <h2 class="brands-title">Brands we cover</h2>
+        <div class="brands-grid">
+          <div class="brand-card">
+            <div class="brand-avatar" style="background:#fde8e8;color:#e05c3a;">G</div>
+            <span class="brand-name">Grenade</span>
+          </div>
+          <div class="brand-card">
+            <div class="brand-avatar" style="background:#fde8d8;color:#d96b2a;">B</div>
+            <span class="brand-name">Barebells</span>
+          </div>
+          <div class="brand-card">
+            <div class="brand-avatar" style="background:#ddeeff;color:#4480cc;">Q</div>
+            <span class="brand-name">Quest</span>
+          </div>
+          <div class="brand-card">
+            <div class="brand-avatar" style="background:#ede8f8;color:#8b5cf6;">P</div>
+            <span class="brand-name">Pure Protein</span>
+          </div>
+          <div class="brand-card">
+            <div class="brand-avatar" style="background:#d4ede5;color:#0a4635;">M</div>
+            <span class="brand-name">MyProtein</span>
+          </div>
+        </div>
+      </div>
+    </div><!-- /trackers-section -->
+
+    <!-- TOP-5 PICKS -->
+    <div id="picks" class="picks-card">
+      <div class="picks-header">
+        <div class="picks-icon-box">🏆</div>
+        <h2 class="picks-title">TOP-5<br>PICKS</h2>
+      </div>
+      <div class="picks-list">
+
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <img src="/musclecrisp.png" alt="Chocolate Crunch" />
+          </div>
+          <div>
+            <div class="pick-name">Chocolate Crunch</div>
+            <div class="pick-desc">Rich dark chocolate with rice crispies · 25g protein</div>
+          </div>
+          <div class="pick-price">$4.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <button class="pick-add" aria-label="Add Chocolate Crunch">+</button>
+        </div>
+
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <img src="/musclecrisp.png" alt="Vanilla Dream" />
+          </div>
+          <div>
+            <div class="pick-name">Vanilla Dream</div>
+            <div class="pick-desc">Smooth vanilla with almond crunch · 22g protein</div>
+          </div>
+          <div class="pick-price">$5.50 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <button class="pick-add" aria-label="Add Vanilla Dream">+</button>
+        </div>
+
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <img src="/musclecrisp.png" alt="Peanut Butter Pro" />
+          </div>
+          <div>
+            <div class="pick-name">Peanut Butter Pro</div>
+            <div class="pick-desc">Creamy peanut butter with oat crunch · 28g protein</div>
+          </div>
+          <div class="pick-price">$6.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <button class="pick-add" aria-label="Add Peanut Butter Pro">+</button>
+        </div>
+
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <img src="/musclecrisp.png" alt="Berry Blast" />
+          </div>
+          <div>
+            <div class="pick-name">Berry Blast</div>
+            <div class="pick-desc">Wild berries with coconut coating · 20g protein</div>
+          </div>
+          <div class="pick-price">$5.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <button class="pick-add" aria-label="Add Berry Blast">+</button>
+        </div>
+
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <img src="/musclecrisp.png" alt="Caramel Surge" />
+          </div>
+          <div>
+            <div class="pick-name">Caramel Surge</div>
+            <div class="pick-desc">Salted caramel with whey protein · 24g protein</div>
+          </div>
+          <div class="pick-price">$4.49 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <button class="pick-add" aria-label="Add Caramel Surge">+</button>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 4;
+    let autoInterval;
+
+    function goToSlide(index) {
+      currentSlide = index;
+      const pct = (-index * 100 / totalSlides).toFixed(4);
+      document.getElementById('heroTrack').style.transform = `translateX(${pct}%)`;
+      document.getElementById('heroCarousel').setAttribute('data-slide', index);
+      document.querySelectorAll('.carousel-dot').forEach(function(dot, i) {
+        dot.classList.toggle('active', i === index);
+      });
+    }
+
+    function nextSlide() {
+      goToSlide((currentSlide + 1) % totalSlides);
+    }
+
+    function startAuto() {
+      autoInterval = setInterval(nextSlide, 5000);
+    }
+
+    function stopAuto() {
+      clearInterval(autoInterval);
+    }
+
+    var carousel = document.getElementById('heroCarousel');
+    carousel.addEventListener('mouseenter', stopAuto);
+    carousel.addEventListener('mouseleave', startAuto);
+
+    startAuto();
+  </script>
+
+</body>
+</html>

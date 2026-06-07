@@ -1,0 +1,11 @@
+temporary screenshots/
+node_modules/
+.next/
+*.env
+.env*
+.DS_Store
+*.tsbuildinfo
+next-env.d.ts
+/proteinbar/.next/
+/proteinbar/node_modules/
+www.paputmenorca.com_.png

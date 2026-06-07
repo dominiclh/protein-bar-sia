@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Value vs Content — Proteinbarsia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+      background: #f4f3e6;
+      color: #0a4635;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 44px;
+      height: 76px;
+      background: #0a4635;
+    }
+    .logo-wrap {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: #fff;
+    }
+    .logo-wrap img { height: 50px; width: auto; border-radius: 6px; }
+    .logo-name {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: 22px; letter-spacing: 0.06em; color: #fff; text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 14.5px; font-weight: 500; color: rgba(255,255,255,0.68);
+      text-decoration: none; transition: color 0.18s ease;
+    }
+    .nav-links a:hover { color: #fff; }
+    .nav-links a.active {
+      color: #fff; font-weight: 700;
+      border-bottom: 2px solid #ffc62d; padding-bottom: 2px;
+    }
+    .nav-links a:focus-visible { outline: 2px solid #ffc62d; outline-offset: 3px; border-radius: 4px; }
+
+    /* ── PAGE ────────────────────────────────────────────── */
+    .page {
+      padding: 20px 24px 48px;
+      display: flex; flex-direction: column; gap: 16px;
+      max-width: 1440px; margin: 0 auto;
+    }
+
+    /* ── VVC HERO ────────────────────────────────────────── */
+    .vvc-hero {
+      background: #ffc62d;
+      border-radius: 22px;
+      padding: 40px 48px 44px;
+      position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 24px;
+    }
+    .vvc-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 80% 50%, rgba(255,255,255,0.25) 0%, transparent 60%),
+                  radial-gradient(circle at 10% 80%, rgba(255,200,0,0.3) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .vvc-hero-text { position: relative; z-index: 2; }
+    .vvc-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(10,70,53,0.10); border-radius: 100px;
+      padding: 5px 14px; font-size: 12px; font-weight: 600;
+      color: rgba(10,70,53,0.65); margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .vvc-title {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: clamp(40px, 5vw, 72px); line-height: 0.9;
+      letter-spacing: -0.04em; color: #0a4635;
+      margin-bottom: 16px;
+    }
+    .vvc-desc {
+      font-size: 14px; color: rgba(0,0,0,0.55);
+      line-height: 1.6; max-width: 380px; margin-bottom: 20px;
+    }
+    .vvc-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+    .meta-chip {
+      background: rgba(10,70,53,0.10); border-radius: 100px;
+      padding: 5px 14px; font-size: 12px; font-weight: 600;
+      color: rgba(10,70,53,0.65);
+    }
+    .vvc-axes {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 12px;
+    }
+    .axis-pill {
+      background: #0a4635; color: #ffc62d;
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+      font-size: 13px; letter-spacing: 0.05em;
+      padding: 8px 20px; border-radius: 100px;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 16px rgba(10,70,53,0.22);
+    }
+    .axis-arrow { font-size: 16px; }
+
+    /* ── FILTERS CARD ────────────────────────────────────── */
+    .filters-card {
+      background: #fff;
+      border-radius: 22px;
+      padding: 24px 32px 28px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .filters-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .filters-title {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+      font-size: 15px; letter-spacing: -0.01em; color: #0a4635;
+    }
+    .filters-reset {
+      font-size: 12.5px; font-weight: 600; color: #aaa;
+      background: none; border: none; cursor: pointer;
+      transition: color 0.15s ease;
+    }
+    .filters-reset:hover { color: #E53E3E; }
+
+    .filters-row1 { margin-bottom: 16px; }
+    .filters-row2 {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .filter-group { display: flex; flex-direction: column; gap: 7px; }
+    .filter-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+      text-transform: uppercase; color: #aaa;
+    }
+
+    /* Brand chips */
+    .brand-chips-row { display: flex; gap: 7px; flex-wrap: wrap; }
+    .brand-chip {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 100px;
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      border: 1.5px solid transparent;
+      background: #f4f3e6; color: #888;
+      transition: background 0.15s ease, color 0.15s ease,
+                  border-color 0.15s ease, transform 0.12s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .brand-chip:hover { transform: translateY(-1px); }
+    .brand-chip:active { transform: scale(0.96); }
+    .brand-chip:focus-visible { outline: 2px solid #ffc62d; outline-offset: 2px; }
+    .brand-chip.active {
+      background: #0a4635; color: #fff; border-color: #0a4635;
+    }
+    .brand-chip.brand-active {
+      color: var(--chip-text);
+      background: var(--chip-bg);
+      border-color: var(--chip-text);
+    }
+    .chip-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: currentColor; flex-shrink: 0;
+    }
+
+    /* Filter selects */
+    .filter-select {
+      appearance: none; -webkit-appearance: none;
+      background: #f4f3e6 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 12px center;
+      border: 1.5px solid #eeede9;
+      border-radius: 10px;
+      padding: 9px 32px 9px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13.5px; font-weight: 500; color: #0a4635;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      width: 100%;
+    }
+    .filter-select:focus { outline: none; border-color: #ffc62d; box-shadow: 0 0 0 3px rgba(255,198,45,0.20); }
+    .filter-select:hover { border-color: #ccc; }
+
+    /* Active filter count badge */
+    .active-count {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #ffc62d; color: #0a4635;
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: 10px; margin-left: 6px;
+    }
+
+    /* ── CHART LAYOUT ────────────────────────────────────── */
+    .chart-layout {
+      display: grid;
+      grid-template-columns: 1fr 268px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .chart-card {
+      background: #fff;
+      border-radius: 22px;
+      padding: 28px 28px 24px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .chart-top-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .chart-count {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+      font-size: 14px; color: #0a4635;
+    }
+    .chart-count span { color: #aaa; font-weight: 500; font-family: 'DM Sans', sans-serif; font-size: 13px; }
+    .chart-legend {
+      display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 600; color: #555;
+    }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 50; flex-shrink: 0;
+    }
+    .chart-canvas-wrap {
+      position: relative;
+      height: 480px;
+    }
+    .chart-canvas-wrap canvas { width: 100% !important; height: 100% !important; }
+    .chart-empty {
+      position: absolute; inset: 0;
+      display: none; flex-direction: column; align-items: center; justify-content: center;
+      gap: 10px; color: #bbb;
+    }
+    .chart-empty.visible { display: flex; }
+    .chart-empty-icon { font-size: 40px; }
+    .chart-empty-text { font-size: 14px; font-weight: 600; }
+
+    /* axis labels (decorative, outside canvas) */
+    .axis-label-y {
+      position: absolute; left: -10px; top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: #bbb;
+      white-space: nowrap; pointer-events: none;
+    }
+    .axis-label-x {
+      text-align: center; margin-top: 4px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: #bbb;
+    }
+
+    /* ── STATS SIDEBAR ───────────────────────────────────── */
+    .stats-sidebar {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .stat-card-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+      text-transform: uppercase; color: #aaa; margin-bottom: 10px;
+    }
+    .stat-card-value {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 900;
+      font-size: 28px; letter-spacing: -0.03em; color: #0a4635;
+      line-height: 1;
+    }
+    .stat-card-sub {
+      font-size: 12px; color: #aaa; margin-top: 4px; line-height: 1.4;
+    }
+    .stat-card-highlight {
+      background: #ffc62d;
+    }
+    .stat-card-highlight .stat-card-label { color: rgba(10,70,53,0.55); }
+    .stat-card-highlight .stat-card-value { color: #0a4635; }
+    .stat-card-highlight .stat-card-sub { color: rgba(10,70,53,0.55); }
+
+    .bar-highlight {
+      display: flex; flex-direction: column; gap: 3px;
+      padding: 10px 12px;
+      background: #f4f3e6; border-radius: 10px;
+      margin-top: 8px;
+    }
+    .bar-highlight-brand {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .bar-highlight-flavor {
+      font-size: 12.5px; font-weight: 500; color: #555;
+    }
+    .bar-highlight-val {
+      font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
+      font-size: 14px; color: #0a4635; margin-top: 2px;
+    }
+
+    .quadrant-key {
+      background: #fff;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .quadrant-key-title {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+      text-transform: uppercase; color: #aaa; margin-bottom: 12px;
+    }
+    .qk-row {
+      display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px;
+    }
+    .qk-row:last-child { margin-bottom: 0; }
+    .qk-swatch {
+      width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; margin-top: 2px;
+    }
+    .qk-text { font-size: 12px; color: #555; line-height: 1.4; }
+    .qk-text strong { color: #0a4635; font-weight: 700; display: block; margin-bottom: 1px; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="/" class="logo-wrap">
+      <img src="/brand_assets/proteinbarsia_logo.jpg" alt="Proteinbarsia logo" />
+      <span class="logo-name">Proteinbarsia</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="http://localhost:3001/comparison">Comparison</a></li>
+      <li><a href="/value-vs-content.html" class="active">Value vs Content</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE -->
+  <div class="page">
+
+    <!-- HERO -->
+    <div class="vvc-hero">
+      <div class="vvc-hero-text">
+        <div class="vvc-badge">📊 Interactive Chart</div>
+        <h1 class="vvc-title">VALUE vs<br>CONTENT</h1>
+        <p class="vvc-desc">Plot every bar on two dimensions: how much you pay per gram of protein vs. how protein-dense it is. Find your sweet spot.</p>
+        <div class="vvc-meta">
+          <span class="meta-chip">25 bars tracked</span>
+          <span class="meta-chip">5 brands</span>
+          <span class="meta-chip">SGD pricing</span>
+          <span class="meta-chip">SG &amp; MY</span>
+        </div>
+      </div>
+      <div class="vvc-axes">
+        <div class="axis-pill"><span class="axis-arrow">→</span> X: $ / g protein</div>
+        <div class="axis-pill"><span class="axis-arrow">↑</span> Y: g protein / 100 kcal</div>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters-card">
+      <div class="filters-header">
+        <span class="filters-title">Filters</span>
+        <button class="filters-reset" onclick="resetFilters()">Reset all</button>
+      </div>
+
+      <!-- Row 1: Brand chips -->
+      <div class="filter-group filters-row1">
+        <div class="filter-label">Brand</div>
+        <div class="brand-chips-row" id="brandChips">
+          <button class="brand-chip active" data-brand="all" onclick="toggleBrand('all')">All brands</button>
+          <button class="brand-chip" data-brand="Grenade"
+            style="--chip-text:#e05c3a;--chip-bg:#fde8e8"
+            onclick="toggleBrand('Grenade')">
+            <span class="chip-dot" style="color:#e05c3a"></span>Grenade
+          </button>
+          <button class="brand-chip" data-brand="Barebells"
+            style="--chip-text:#d96b2a;--chip-bg:#fde8d8"
+            onclick="toggleBrand('Barebells')">
+            <span class="chip-dot" style="color:#d96b2a"></span>Barebells
+          </button>
+          <button class="brand-chip" data-brand="Quest"
+            style="--chip-text:#4480cc;--chip-bg:#ddeeff"
+            onclick="toggleBrand('Quest')">
+            <span class="chip-dot" style="color:#4480cc"></span>Quest
+          </button>
+          <button class="brand-chip" data-brand="Pure Protein"
+            style="--chip-text:#8b5cf6;--chip-bg:#ede8f8"
+            onclick="toggleBrand('Pure Protein')">
+            <span class="chip-dot" style="color:#8b5cf6"></span>Pure Protein
+          </button>
+          <button class="brand-chip" data-brand="MyProtein"
+            style="--chip-text:#27ae60;--chip-bg:#e0f5e8"
+            onclick="toggleBrand('MyProtein')">
+            <span class="chip-dot" style="color:#27ae60"></span>MyProtein
+          </button>
+        </div>
+      </div>
+
+      <!-- Row 2: Dropdowns -->
+      <div class="filters-row2">
+        <div class="filter-group">
+          <div class="filter-label">Flavor</div>
+          <select class="filter-select" id="filterFlavor" onchange="applyFilters()">
+            <option value="">All Flavors</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">Protein / bar</div>
+          <select class="filter-select" id="filterProtein" onchange="applyFilters()">
+            <option value="0">Any amount</option>
+            <option value="20">≥ 20 g</option>
+            <option value="21">≥ 21 g</option>
+            <option value="22">≥ 22 g</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">Calories / bar</div>
+          <select class="filter-select" id="filterCalories" onchange="applyFilters()">
+            <option value="9999">Any amount</option>
+            <option value="190">≤ 190 kcal</option>
+            <option value="200">≤ 200 kcal</option>
+            <option value="210">≤ 210 kcal</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">Rating</div>
+          <select class="filter-select" id="filterRating" onchange="applyFilters()">
+            <option value="0">Any rating</option>
+            <option value="4.0">4.0 ★ +</option>
+            <option value="4.3">4.3 ★ +</option>
+            <option value="4.5">4.5 ★ +</option>
+            <option value="4.7">4.7 ★ +</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <div class="filter-label">$ / g protein</div>
+          <select class="filter-select" id="filterPpg" onchange="applyFilters()">
+            <option value="9">Any price</option>
+            <option value="0.12">≤ $0.12 / g</option>
+            <option value="0.15">≤ $0.15 / g</option>
+            <option value="0.17">≤ $0.17 / g</option>
+            <option value="0.20">≤ $0.20 / g</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHART + STATS -->
+    <div class="chart-layout">
+
+      <!-- Chart -->
+      <div class="chart-card">
+        <div class="chart-top-bar">
+          <div class="chart-count" id="chartCount">25 bars <span>shown</span></div>
+          <div class="chart-legend" id="chartLegend"></div>
+        </div>
+        <div class="chart-canvas-wrap" id="chartWrap">
+          <canvas id="scatter"></canvas>
+          <div class="chart-empty" id="chartEmpty">
+            <span class="chart-empty-icon">🔍</span>
+            <span class="chart-empty-text">No bars match your filters</span>
+          </div>
+        </div>
+        <div class="axis-label-x">$ / g protein (lower = better value →)</div>
+      </div>
+
+      <!-- Stats sidebar -->
+      <div class="stats-sidebar">
+
+        <div class="stat-card stat-card-highlight">
+          <div class="stat-card-label">Bars in view</div>
+          <div class="stat-card-value" id="statCount">25</div>
+          <div class="stat-card-sub">of 25 total tracked</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-label">Best $/g protein</div>
+          <div class="bar-highlight" id="statBestValue">—</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-label">Most protein-dense</div>
+          <div class="bar-highlight" id="statBestDensity">—</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-label">Avg $/g protein</div>
+          <div class="stat-card-value" id="statAvgPpg">—</div>
+          <div class="stat-card-sub" id="statAvgDensity">avg g / 100 kcal: —</div>
+        </div>
+
+        <div class="quadrant-key">
+          <div class="quadrant-key-title">Chart Quadrants</div>
+          <div class="qk-row">
+            <div class="qk-swatch" style="background:rgba(39,174,96,0.18)"></div>
+            <div class="qk-text"><strong>Top-Left — Best Value</strong>Cheap per gram + protein-dense. The sweet spot.</div>
+          </div>
+          <div class="qk-row">
+            <div class="qk-swatch" style="background:rgba(255,198,45,0.18)"></div>
+            <div class="qk-text"><strong>Top-Right — Premium Density</strong>High protein density but costs more per gram.</div>
+          </div>
+          <div class="qk-row">
+            <div class="qk-swatch" style="background:rgba(0,0,0,0.04)"></div>
+            <div class="qk-text"><strong>Bottom — Less Efficient</strong>Lower protein per calorie ratio.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <script>
+    /* ─── DATA ─────────────────────────────────────────────── */
+    const BRANDS = {
+      'Grenade':      { color: '#e05c3a', bg: '#fde8e8' },
+      'Barebells':    { color: '#d96b2a', bg: '#fde8d8' },
+      'Quest':        { color: '#4480cc', bg: '#ddeeff' },
+      'Pure Protein': { color: '#8b5cf6', bg: '#ede8f8' },
+      'MyProtein':    { color: '#27ae60', bg: '#e0f5e8' },
+    };
+
+    const ALL_BARS = [
+      // Grenade
+      { id:1,  brand:'Grenade',      flavor:'Chocolate Chip Cookie Dough',  protein:20, calories:208, priceBar:3.90, rating:4.7 },
+      { id:2,  brand:'Grenade',      flavor:'Dark Chocolate Raspberry',     protein:20, calories:213, priceBar:3.80, rating:4.5 },
+      { id:3,  brand:'Grenade',      flavor:'Peanut Nutter',                protein:22, calories:238, priceBar:3.90, rating:4.6 },
+      { id:4,  brand:'Grenade',      flavor:'Caramel Chaos',                protein:21, calories:218, priceBar:3.70, rating:4.4 },
+      { id:5,  brand:'Grenade',      flavor:'White Chocolate Cookie',       protein:20, calories:210, priceBar:3.90, rating:4.5 },
+      // Barebells
+      { id:6,  brand:'Barebells',    flavor:'Cookies & Cream',              protein:20, calories:199, priceBar:4.40, rating:4.8 },
+      { id:7,  brand:'Barebells',    flavor:'Salty Peanut',                 protein:20, calories:212, priceBar:4.20, rating:4.7 },
+      { id:8,  brand:'Barebells',    flavor:'Caramel Cashew',               protein:20, calories:196, priceBar:4.50, rating:4.6 },
+      { id:9,  brand:'Barebells',    flavor:'Strawberry White Chocolate',   protein:20, calories:202, priceBar:4.30, rating:4.5 },
+      { id:10, brand:'Barebells',    flavor:'Hazelnut & Nougat',            protein:20, calories:207, priceBar:4.40, rating:4.6 },
+      // Quest
+      { id:11, brand:'Quest',        flavor:'Chocolate Chip Cookie Dough',  protein:21, calories:190, priceBar:3.50, rating:4.6 },
+      { id:12, brand:'Quest',        flavor:'Cookies & Cream',              protein:21, calories:190, priceBar:3.40, rating:4.5 },
+      { id:13, brand:'Quest',        flavor:'Blueberry Muffin',             protein:21, calories:200, priceBar:3.20, rating:4.4 },
+      { id:14, brand:'Quest',        flavor:'Birthday Cake',                protein:21, calories:196, priceBar:3.50, rating:4.3 },
+      { id:15, brand:'Quest',        flavor:"S'mores",                      protein:21, calories:198, priceBar:3.30, rating:4.5 },
+      // Pure Protein
+      { id:16, brand:'Pure Protein', flavor:'Chocolate Peanut Butter',      protein:20, calories:180, priceBar:2.20, rating:4.2 },
+      { id:17, brand:'Pure Protein', flavor:'Vanilla Almond',               protein:20, calories:182, priceBar:2.00, rating:4.1 },
+      { id:18, brand:'Pure Protein', flavor:'Chocolate Deluxe',             protein:21, calories:188, priceBar:2.30, rating:4.0 },
+      { id:19, brand:'Pure Protein', flavor:'Strawberry Greek Yogurt',      protein:20, calories:185, priceBar:2.10, rating:4.1 },
+      { id:20, brand:'Pure Protein', flavor:'Lemon Cake',                   protein:20, calories:183, priceBar:2.40, rating:4.0 },
+      // MyProtein
+      { id:21, brand:'MyProtein',    flavor:'Birthday Cake',                protein:20, calories:205, priceBar:2.90, rating:4.4 },
+      { id:22, brand:'MyProtein',    flavor:'Chocolate Brownie',            protein:20, calories:198, priceBar:2.80, rating:4.5 },
+      { id:23, brand:'MyProtein',    flavor:'White Chocolate',              protein:20, calories:195, priceBar:2.70, rating:4.3 },
+      { id:24, brand:'MyProtein',    flavor:'Salted Caramel',               protein:20, calories:200, priceBar:3.00, rating:4.4 },
+      { id:25, brand:'MyProtein',    flavor:'Chocolate Mint',               protein:20, calories:196, priceBar:2.80, rating:4.3 },
+    ];
+
+    ALL_BARS.forEach(b => {
+      b.ppg             = parseFloat((b.priceBar / b.protein).toFixed(4));
+      b.proteinDensity  = parseFloat((b.protein  / b.calories * 100).toFixed(3));
+    });
+
+    /* ─── FILTER STATE ─────────────────────────────────────── */
+    let activeBrands = new Set(Object.keys(BRANDS));
+
+    function getFiltered() {
+      const flavor    = document.getElementById('filterFlavor').value;
+      const minProt   = parseFloat(document.getElementById('filterProtein').value)   || 0;
+      const maxCal    = parseFloat(document.getElementById('filterCalories').value)  || 9999;
+      const minRating = parseFloat(document.getElementById('filterRating').value)    || 0;
+      const maxPpg    = parseFloat(document.getElementById('filterPpg').value)       || 9;
+
+      return ALL_BARS.filter(b =>
+        activeBrands.has(b.brand) &&
+        (!flavor  || b.flavor  === flavor) &&
+        b.protein >= minProt &&
+        b.calories <= maxCal &&
+        b.rating  >= minRating &&
+        b.ppg     <= maxPpg
+      );
+    }
+
+    function toggleBrand(brand) {
+      const allChip = document.querySelector('[data-brand="all"]');
+      if (brand === 'all') {
+        activeBrands = new Set(Object.keys(BRANDS));
+        allChip.classList.add('active');
+        document.querySelectorAll('.brand-chip:not([data-brand="all"])').forEach(c => {
+          c.classList.remove('active', 'brand-active');
+        });
+      } else {
+        if (activeBrands.has(brand) && activeBrands.size === 1) return; // keep at least 1
+        if (activeBrands.size === Object.keys(BRANDS).length) {
+          // First individual click: deselect all others
+          activeBrands = new Set([brand]);
+        } else {
+          activeBrands.has(brand) ? activeBrands.delete(brand) : activeBrands.add(brand);
+        }
+        allChip.classList.remove('active');
+        document.querySelectorAll('.brand-chip:not([data-brand="all"])').forEach(c => {
+          const b = c.dataset.brand;
+          c.classList.toggle('brand-active', activeBrands.has(b));
+          c.classList.remove('active');
+        });
+        if (activeBrands.size === Object.keys(BRANDS).length) {
+          allChip.classList.add('active');
+          document.querySelectorAll('.brand-chip:not([data-brand="all"])').forEach(c => {
+            c.classList.remove('brand-active');
+          });
+        }
+      }
+      populateFlavorDropdown();
+      applyFilters();
+    }
+
+    function populateFlavorDropdown() {
+      const sel = document.getElementById('filterFlavor');
+      const current = sel.value;
+      const flavors = [...new Set(
+        ALL_BARS.filter(b => activeBrands.has(b.brand)).map(b => b.flavor)
+      )].sort();
+      sel.innerHTML = '<option value="">All Flavors</option>' +
+        flavors.map(f => `<option value="${f}"${f===current?' selected':''}>${f}</option>`).join('');
+    }
+
+    function resetFilters() {
+      activeBrands = new Set(Object.keys(BRANDS));
+      document.querySelector('[data-brand="all"]').classList.add('active');
+      document.querySelectorAll('.brand-chip:not([data-brand="all"])').forEach(c => {
+        c.classList.remove('active','brand-active');
+      });
+      ['filterFlavor','filterProtein','filterCalories','filterRating','filterPpg'].forEach(id => {
+        document.getElementById(id).selectedIndex = 0;
+      });
+      populateFlavorDropdown();
+      applyFilters();
+    }
+
+    /* ─── CHART.JS SETUP ───────────────────────────────────── */
+    const quadrantPlugin = {
+      id: 'quadrantBg',
+      beforeDraw(chart) {
+        const { ctx, chartArea, scales } = chart;
+        if (!chartArea) return;
+        const { left, top, right, bottom } = chartArea;
+
+        let allX = [], allY = [];
+        chart.data.datasets.forEach(ds => ds.data.forEach(pt => {
+          allX.push(pt.x); allY.push(pt.y);
+        }));
+        if (!allX.length) return;
+
+        allX.sort((a,b) => a-b); allY.sort((a,b) => a-b);
+        const medX = allX[Math.floor(allX.length / 2)];
+        const medY = allY[Math.floor(allY.length / 2)];
+        const midPxX = scales.x.getPixelForValue(medX);
+        const midPxY = scales.y.getPixelForValue(medY);
+
+        ctx.save();
+        // Top-left: best value (green tint)
+        ctx.fillStyle = 'rgba(39,174,96,0.07)';
+        ctx.fillRect(left, top, midPxX - left, midPxY - top);
+        // Top-right: premium density (yellow tint)
+        ctx.fillStyle = 'rgba(255,198,45,0.07)';
+        ctx.fillRect(midPxX, top, right - midPxX, midPxY - top);
+
+        // Median lines
+        ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(midPxX, top); ctx.lineTo(midPxX, bottom); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(left, midPxY); ctx.lineTo(right, midPxY); ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Quadrant labels
+        ctx.font = '600 10px "DM Sans", sans-serif';
+        ctx.fillStyle = 'rgba(39,174,96,0.55)';
+        ctx.fillText('BEST VALUE ↙', left + 8, top + 14);
+        ctx.fillStyle = 'rgba(200, 160, 0, 0.45)';
+        ctx.fillText('PREMIUM DENSITY', midPxX + 8, top + 14);
+        ctx.restore();
+      }
+    };
+
+    const ctx = document.getElementById('scatter').getContext('2d');
+    const scatterChart = new Chart(ctx, {
+      type: 'scatter',
+      plugins: [quadrantPlugin],
+      data: { datasets: [] },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 280, easing: 'easeOutQuart' },
+        layout: { padding: { left: 8, right: 8, top: 8, bottom: 8 } },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: '$ / g protein (SGD)',
+              font: { family: "'DM Sans', sans-serif", size: 12, weight: '600' },
+              color: '#aaa',
+              padding: { top: 8 },
+            },
+            ticks: {
+              font: { family: "'DM Sans', sans-serif", size: 11 },
+              color: '#aaa',
+              callback: v => '$' + v.toFixed(3),
+            },
+            grid: { color: '#f0efeb', lineWidth: 1 },
+            border: { display: false },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'g protein / 100 kcal',
+              font: { family: "'DM Sans', sans-serif", size: 12, weight: '600' },
+              color: '#aaa',
+              padding: { bottom: 8 },
+            },
+            ticks: {
+              font: { family: "'DM Sans', sans-serif", size: 11 },
+              color: '#aaa',
+              callback: v => v.toFixed(1),
+            },
+            grid: { color: '#f0efeb', lineWidth: 1 },
+            border: { display: false },
+          },
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#0a4635',
+            titleFont: { family: "'Barlow Condensed', sans-serif", size: 13, weight: '900' },
+            bodyFont:  { family: "'DM Sans', sans-serif", size: 12 },
+            padding: 14,
+            cornerRadius: 12,
+            displayColors: false,
+            callbacks: {
+              title: items => {
+                const b = items[0].raw._bar;
+                return `${b.brand} — ${b.flavor}`;
+              },
+              label: item => {
+                const b = item.raw._bar;
+                return [
+                  `💰  $${b.ppg.toFixed(3)} / g protein`,
+                  `🥗  ${b.proteinDensity.toFixed(1)} g / 100 kcal`,
+                  `🏋️  ${b.protein}g protein · ${b.calories} kcal`,
+                  `⭐  ${b.rating} rating`,
+                ];
+              },
+            },
+          },
+        },
+      },
+    });
+
+    /* ─── APPLY FILTERS & UPDATE CHART ────────────────────── */
+    function applyFilters() {
+      const filtered = getFiltered();
+      const empty = document.getElementById('chartEmpty');
+      empty.classList.toggle('visible', filtered.length === 0);
+
+      const datasets = Object.keys(BRANDS).map(brand => {
+        const bars = filtered.filter(b => b.brand === brand);
+        const c = BRANDS[brand].color;
+        return {
+          label: brand,
+          data: bars.map(b => ({ x: b.ppg, y: b.proteinDensity, _bar: b })),
+          backgroundColor: c + 'cc',
+          borderColor: c,
+          borderWidth: 1.5,
+          pointRadius: 9,
+          pointHoverRadius: 13,
+          pointHoverBorderWidth: 2,
+          pointHoverBackgroundColor: c,
+          pointHoverBorderColor: '#fff',
+        };
+      }).filter(ds => ds.data.length > 0);
+
+      scatterChart.data.datasets = datasets;
+      scatterChart.update();
+
+      updateStats(filtered);
+      updateLegend(filtered);
+    }
+
+    function updateStats(filtered) {
+      document.getElementById('chartCount').innerHTML =
+        `${filtered.length} bar${filtered.length !== 1 ? 's' : ''} <span>shown</span>`;
+      document.getElementById('statCount').textContent = filtered.length;
+
+      if (!filtered.length) {
+        document.getElementById('statBestValue').innerHTML   = '<span style="color:#ccc;font-size:13px">No data</span>';
+        document.getElementById('statBestDensity').innerHTML = '<span style="color:#ccc;font-size:13px">No data</span>';
+        document.getElementById('statAvgPpg').textContent    = '—';
+        document.getElementById('statAvgDensity').textContent = 'avg g / 100 kcal: —';
+        return;
+      }
+
+      const bestVal  = filtered.reduce((a,b) => b.ppg < a.ppg ? b : a);
+      const bestDens = filtered.reduce((a,b) => b.proteinDensity > a.proteinDensity ? b : a);
+      const avgPpg   = filtered.reduce((s,b) => s + b.ppg, 0) / filtered.length;
+      const avgDens  = filtered.reduce((s,b) => s + b.proteinDensity, 0) / filtered.length;
+
+      function highlightHtml(b, valLine) {
+        const c = BRANDS[b.brand].color;
+        return `<div style="color:${c};font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:2px">${b.brand}</div>
+                <div style="font-size:12.5px;color:#555;margin-bottom:3px">${b.flavor}</div>
+                <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:14px;color:#0a4635">${valLine}</div>`;
+      }
+
+      document.getElementById('statBestValue').innerHTML   = highlightHtml(bestVal,  `$${bestVal.ppg.toFixed(3)} / g protein`);
+      document.getElementById('statBestDensity').innerHTML = highlightHtml(bestDens, `${bestDens.proteinDensity.toFixed(1)} g / 100 kcal`);
+      document.getElementById('statAvgPpg').textContent    = `$${avgPpg.toFixed(3)}`;
+      document.getElementById('statAvgDensity').textContent = `avg g / 100 kcal: ${avgDens.toFixed(1)}`;
+    }
+
+    function updateLegend(filtered) {
+      const activeBrandNames = [...new Set(filtered.map(b => b.brand))];
+      const el = document.getElementById('chartLegend');
+      el.innerHTML = activeBrandNames.map(brand => {
+        const c = BRANDS[brand].color;
+        return `<div class="legend-item">
+          <div class="legend-dot" style="background:${c};border-radius:50%;width:10px;height:10px"></div>
+          ${brand}
+        </div>`;
+      }).join('');
+    }
+
+    /* ─── INIT ─────────────────────────────────────────────── */
+    populateFlavorDropdown();
+    applyFilters();
+  </script>
+
+</body>
+</html>
