@@ -1055,7 +1055,7 @@
                   <img src="/musclecrisp.png" alt="Protein Bar" />
                 </div>
               </div>
-              <div class="price-tag">$4.99</div>
+              <div class="price-tag">Fuel on the Go</div>
               <div class="product-badges">
                 <span class="badge">🏋️ 25g protein</span>
                 <span class="badge">🌿 vegan</span>
@@ -1090,7 +1090,7 @@
                   <img src="/circular_unwrapped.png" alt="Daily Fuel Bar" />
                 </div>
               </div>
-              <div class="price-tag">$5.50</div>
+              <div class="price-tag">Flavour Bombs</div>
               <div class="product-badges">
                 <span class="badge">🔥 20g protein</span>
                 <span class="badge">☕ caffeine</span>
@@ -1180,10 +1180,10 @@
 
         <!-- Navigation dots -->
         <div class="carousel-dots" id="carouselDots">
-          <button class="carousel-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
-          <button class="carousel-dot" onclick="goToSlide(1)" aria-label="Slide 2"></button>
-          <button class="carousel-dot" onclick="goToSlide(2)" aria-label="Slide 3"></button>
-          <button class="carousel-dot" onclick="goToSlide(3)" aria-label="Slide 4"></button>
+          <button class="carousel-dot active" onclick="selectSlide(0)" aria-label="Slide 1"></button>
+          <button class="carousel-dot" onclick="selectSlide(1)" aria-label="Slide 2"></button>
+          <button class="carousel-dot" onclick="selectSlide(2)" aria-label="Slide 3"></button>
+          <button class="carousel-dot" onclick="selectSlide(3)" aria-label="Slide 4"></button>
         </div>
 
       </div><!-- /hero-carousel -->
@@ -1325,7 +1325,7 @@
             <div class="pick-name">Carb Killa · Chocolate Chip Salted Caramel</div>
             <div class="pick-desc">Buttery caramel laced with sea-salt crystals, intensely addictive. <span class="pick-rating">★ 4.9</span></div>
           </div>
-          <div class="pick-price">$4.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <div class="pick-price">Fuel on the Go</div>
           <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Grenade Carb Killa on comparison">→</a>
         </div>
 
@@ -1354,7 +1354,7 @@
             <div class="pick-name">Protein Bar · Salted Peanut Caramel</div>
             <div class="pick-desc">Deep-roasted peanut wrapped in silky, salty caramel fudge. <span class="pick-rating">★ 4.8</span></div>
           </div>
-          <div class="pick-price">$5.50 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <div class="pick-price">Flavour Bombs</div>
           <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Barebells Salted Peanut Caramel on comparison">→</a>
         </div>
 
@@ -1455,46 +1455,55 @@
   <script>
     let currentSlide = 0;
     const totalSlides = 4;
-    let autoInterval;
+    let autoTimer;
 
-    function goToSlide(index) {
+    function goToSlide(index, instant) {
+      var track = document.getElementById('heroTrack');
       currentSlide = index;
-      const pct = (-index * 100 / totalSlides).toFixed(4);
-      document.getElementById('heroTrack').style.transform = `translateX(${pct}%)`;
+      var pct = (-index * 100 / totalSlides).toFixed(4);
+      if (instant) {
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(' + pct + '%)';
+        void track.offsetWidth;
+        track.style.transition = '';
+      } else {
+        track.style.transform = 'translateX(' + pct + '%)';
+      }
       document.getElementById('heroCarousel').setAttribute('data-slide', index);
       document.querySelectorAll('.carousel-dot').forEach(function(dot, i) {
         dot.classList.toggle('active', i === index);
       });
-      // Restart entrance animations for the incoming slide
       var slides = document.querySelectorAll('.hero-slide');
       slides.forEach(function(s) { s.classList.remove('hero-slide-active'); });
-      void slides[index].offsetWidth; // force reflow to restart animation
+      void slides[index].offsetWidth;
       slides[index].classList.add('hero-slide-active');
     }
 
+    function resetTimer() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(function() {
+        var next = (currentSlide + 1) % totalSlides;
+        goToSlide(next, next === 0);
+      }, 4000);
+    }
+
     function nextSlide() {
-      goToSlide((currentSlide + 1) % totalSlides);
-      stopAuto(); startAuto();
+      var next = (currentSlide + 1) % totalSlides;
+      goToSlide(next, next === 0);
+      resetTimer();
     }
 
     function prevSlide() {
       goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
-      stopAuto(); startAuto();
+      resetTimer();
     }
 
-    function startAuto() {
-      autoInterval = setInterval(nextSlide, 6000);
+    function selectSlide(index) {
+      goToSlide(index);
+      resetTimer();
     }
 
-    function stopAuto() {
-      clearInterval(autoInterval);
-    }
-
-    var carousel = document.getElementById('heroCarousel');
-    carousel.addEventListener('mouseenter', stopAuto);
-    carousel.addEventListener('mouseleave', startAuto);
-
-    startAuto();
+    resetTimer();
 
     // ── MOTION EXTRAS ──────────────────────────────────────
     (function () {
