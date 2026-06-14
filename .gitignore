@@ -9,3 +9,5 @@ next-env.d.ts
 /proteinbar/.next/
 /proteinbar/node_modules/
 www.paputmenorca.com_.png
+
+.vercel
