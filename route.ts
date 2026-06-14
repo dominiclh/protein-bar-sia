@@ -49,7 +49,7 @@ export async function POST_watchlist(req: NextRequest) {
 
 /**
  * src/app/api/refresh/route.ts
- * POST /api/refresh  — triggered by Vercel Cron every 4h
+ * POST /api/refresh  — triggered by Vercel Cron every 1h
  * Authorization: Bearer $CRON_SECRET
  */
 export async function POST_refresh(req: NextRequest) {
