@@ -200,6 +200,14 @@ export const BRAND_COLORS: Record<string, string> = {
   "MyProtein":    "#16A34A",
 };
 
+export const BRAND_LOGO_URLS: Record<string, string> = {
+  "Grenade":      "https://www.google.com/s2/favicons?domain=grenade.com&sz=128",
+  "Barebells":    "https://www.google.com/s2/favicons?domain=barebells.com&sz=128",
+  "Quest":        "https://www.google.com/s2/favicons?domain=questnutrition.com&sz=128",
+  "Pure Protein": "https://www.google.com/s2/favicons?domain=pureprotein.com&sz=128",
+  "MyProtein":    "https://www.google.com/s2/favicons?domain=myprotein.com&sz=128",
+};
+
 export const CURRENCY: Record<Market, string> = {
   SG: "SGD",
   MY: "MYR",

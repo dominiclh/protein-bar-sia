@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import {
   listings, BRANDS, BRAND_COLORS, FLAVORS_BY_BRAND, TOP_BESTSELLERS,
   CURRENCY_SYMBOL, type BarListing, type Market,
@@ -153,10 +154,19 @@ export default function ComparisonPage() {
         >
           <span className="mr-2" style={{ color: "#ffc62d" }}>★</span>Top 5 Bestsellers
         </h2>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <motion.div
+          className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5"
+          initial="hidden"
+          animate="visible"
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08 } } }}
+        >
           {TOP_BESTSELLERS.map((bar, idx) => (
-            <a
+            <motion.a
               key={bar.id}
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
+              }}
               href={bar.affiliateUrl}
               target="_blank"
               rel="noopener noreferrer sponsored"
@@ -212,9 +222,9 @@ export default function ComparisonPage() {
                 <span>{bar.protein}g protein · {bar.calories} kcal</span>
                 <span className="font-medium group-hover:underline" style={{ color: "#ffc62d" }}>Buy →</span>
               </div>
-            </a>
+            </motion.a>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* ── FILTERS ── */}

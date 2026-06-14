@@ -102,7 +102,7 @@
     /* ── HERO ROW ────────────────────────────────────────── */
     .hero-row {
       display: grid;
-      grid-template-columns: 1fr 332px;
+      grid-template-columns: 1fr;
       gap: 14px;
       align-items: stretch;
     }
@@ -120,7 +120,7 @@
       width: 400%;
       min-height: 440px;
       height: 100%;
-      transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+      transition: transform 1.65s cubic-bezier(0.25, 1, 0.5, 1);
       will-change: transform;
     }
 
@@ -129,7 +129,7 @@
       flex-shrink: 0;
       min-height: 440px;
       position: relative;
-      padding: 50px 44px 72px;
+      padding: 50px 44px 72px 80px;
       display: flex;
       align-items: center;
     }
@@ -189,11 +189,59 @@
     }
     .hero-slide-green .hero-cta:hover { background: #f0ece0; transform: translateY(-2px); }
 
+    /* Carousel Arrow Buttons */
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.40);
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    .carousel-arrow-prev { left: 16px; }
+    .carousel-arrow-next { right: 16px; }
+
+    .carousel-arrow:hover {
+      background: rgba(0,0,0,0.40);
+      border-color: rgba(255,255,255,0.80);
+      transform: translateY(-50%) scale(1.09);
+    }
+
+    .carousel-arrow:active { transform: translateY(-50%) scale(0.93); }
+
+    .carousel-arrow:focus-visible {
+      outline: 2px solid var(--amarillo);
+      outline-offset: 3px;
+    }
+
+    .carousel-arrow svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
     /* Carousel nav dots */
     .carousel-dots {
       position: absolute;
       bottom: 24px;
-      left: 44px;
+      left: 80px;
       display: flex;
       gap: 7px;
       z-index: 10;
@@ -823,10 +871,35 @@
       color: var(--verde);
     }
 
+    .pick-brand-tag {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 10.5px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      padding: 2px 7px;
+      margin-bottom: 3px;
+    }
+
     .pick-desc {
       font-size: 12px;
       color: rgba(10,70,53,0.40);
       margin-top: 1px;
+      font-style: italic;
+    }
+
+    .pick-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 12px;
+      color: var(--verde);
+      margin-left: 8px;
+      opacity: 0.6;
     }
 
     .pick-price {
@@ -845,13 +918,15 @@
       color: var(--amarillo);
       border: none;
       border-radius: 3px;
-      font-size: 21px;
+      font-size: 18px;
+      font-weight: 700;
       line-height: 1;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      text-decoration: none;
       transition: background 0.18s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
@@ -864,6 +939,70 @@
       display: inline-block;
       width: 14px;
       height: 14px;
+    }
+
+    /* ── MOTION ─────────────────────────────────────────── */
+    @media (prefers-reduced-motion: no-preference) {
+
+      /* Product ring gentle float */
+      @keyframes pb-float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-14px); }
+      }
+      .product-ring { animation: pb-float 4.2s ease-in-out infinite; }
+
+      /* Hero text staggered entrance */
+      @keyframes pb-fade-up {
+        from { opacity: 0; transform: translateY(22px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Price tag spring pop */
+      @keyframes pb-pop {
+        0%   { opacity: 0; transform: scale(0.60) rotate(-8deg); }
+        65%  { transform: scale(1.08) rotate(2deg); }
+        100% { opacity: 1; transform: scale(1) rotate(0deg); }
+      }
+
+      /* Badges soft slide up */
+      @keyframes pb-badge {
+        from { opacity: 0; transform: translateY(9px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Active-slide content animations — class managed by goToSlide() */
+      .hero-slide-active .hero-headline {
+        animation: pb-fade-up 0.65s 0.05s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      .hero-slide-active .hero-sub {
+        animation: pb-fade-up 0.65s 0.18s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      .hero-slide-active .hero-cta {
+        animation: pb-fade-up 0.65s 0.30s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      .hero-slide-active .rating-row,
+      .hero-slide-active .picks-mini-list {
+        animation: pb-fade-up 0.65s 0.40s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      .hero-slide-active .price-tag {
+        animation: pb-pop 0.55s 0.48s cubic-bezier(0.34,1.56,0.64,1) both;
+      }
+      .hero-slide-active .product-badges {
+        animation: pb-badge 0.50s 0.62s cubic-bezier(0.22,1,0.36,1) both;
+      }
+
+      /* Scroll reveal base state */
+      .pb-reveal {
+        opacity: 0;
+        transform: translateY(26px);
+      }
+      .pb-reveal.pb-visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition:
+          opacity 0.60s cubic-bezier(0.22,1,0.36,1),
+          transform 0.60s cubic-bezier(0.22,1,0.36,1);
+      }
     }
   </style>
 </head>
@@ -911,7 +1050,7 @@
             </div>
 
             <div class="hero-product">
-              <div class="product-ring">
+              <div class="product-ring" style="width:420px;height:420px;">
                 <div class="product-circle">
                   <img src="/musclecrisp.png" alt="Protein Bar" />
                 </div>
@@ -924,9 +1063,6 @@
               </div>
             </div>
 
-            <div class="hero-portrait">
-              <img src="https://placehold.co/68x68/27AE60/ffffff?text=💪" alt="Athlete" />
-            </div>
           </div>
 
           <!-- ─── Slide 2: Verde — Daily Fuel ───────────── -->
@@ -949,9 +1085,9 @@
             </div>
 
             <div class="hero-product">
-              <div class="product-ring" style="background:#0a3028;box-shadow:0 0 0 1px rgba(255,198,45,0.15),0 8px 24px rgba(0,0,0,0.35),0 24px 56px rgba(0,0,0,0.28);">
+              <div class="product-ring" style="width:420px;height:420px;background:#0a3028;box-shadow:0 0 0 1px rgba(255,198,45,0.15),0 8px 24px rgba(0,0,0,0.35),0 24px 56px rgba(0,0,0,0.28);">
                 <div class="product-circle" style="background:#0d3e2e;">
-                  <img src="/musclecrisp.png" alt="Daily Fuel Bar" />
+                  <img src="/circular_unwrapped.png" alt="Daily Fuel Bar" />
                 </div>
               </div>
               <div class="price-tag">$5.50</div>
@@ -962,9 +1098,6 @@
               </div>
             </div>
 
-            <div class="hero-portrait">
-              <img src="https://placehold.co/68x68/1a8c4e/ffffff?text=🏃" alt="Athlete" />
-            </div>
           </div>
 
           <!-- ─── Slide 3: Rojo — Top-5 Picks ──────────── -->
@@ -977,26 +1110,26 @@
               <div class="picks-mini-list">
                 <div class="pick-mini-row">
                   <span class="pick-mini-num">#1</span>
-                  <span class="pick-mini-name">Chocolate Crunch</span>
-                  <span class="pick-mini-price">$4.99</span>
+                  <span class="pick-mini-name">Grenade · Choc Chip Salted Caramel</span>
+                  <span class="pick-mini-price">★4.9</span>
                 </div>
                 <div class="pick-mini-row">
                   <span class="pick-mini-num">#2</span>
-                  <span class="pick-mini-name">Vanilla Dream</span>
-                  <span class="pick-mini-price">$5.50</span>
+                  <span class="pick-mini-name">Barebells · Salted Peanut Caramel</span>
+                  <span class="pick-mini-price">★4.8</span>
                 </div>
                 <div class="pick-mini-row">
                   <span class="pick-mini-num">#3</span>
-                  <span class="pick-mini-name">Peanut Butter Pro</span>
-                  <span class="pick-mini-price">$6.99</span>
+                  <span class="pick-mini-name">Quest · Cookies &amp; Cream</span>
+                  <span class="pick-mini-price">★4.8</span>
                 </div>
               </div>
             </div>
 
             <div class="hero-product">
-              <div class="product-ring" style="background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,0.04),0 8px 24px rgba(0,0,0,0.12),0 24px 56px rgba(0,0,0,0.10);">
-                <div class="product-circle" style="background:#fde8e5;display:flex;align-items:center;justify-content:center;">
-                  <span style="font-size:80px;line-height:1;">🏆</span>
+              <div class="product-ring" style="width:420px;height:420px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,0.04),0 8px 24px rgba(0,0,0,0.12),0 24px 56px rgba(0,0,0,0.10);">
+                <div class="product-circle" style="background:#fde8e5;">
+                  <img src="/circular_flavours.png" alt="Top Protein Bar Flavours" />
                 </div>
               </div>
               <div class="price-tag" style="background:#fff;color:#e54d3a;">Top Rated</div>
@@ -1006,15 +1139,11 @@
               </div>
             </div>
 
-            <div class="hero-portrait" style="border-color:rgba(255,255,255,0.55);">
-              <img src="https://placehold.co/68x68/ffc62d/0a4635?text=🏅" alt="Top Pick" />
-            </div>
           </div>
 
           <!-- ─── Slide 4: Azul — Value vs Content ─────── -->
           <div class="hero-slide hero-slide-navy">
             <div class="hero-text" style="max-width:44%;">
-              <div style="display:inline-block;background:rgba(255,198,45,0.18);border-radius:3px;padding:5px 14px;font-size:11px;font-weight:700;letter-spacing:0.08em;color:#ffc62d;margin-bottom:14px;font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;">📊 INTERACTIVE CHART</div>
               <h1 class="hero-headline">VALUE vs<br>CONTENT</h1>
               <p class="hero-sub" style="color:rgba(255,255,255,0.60);">Plot every bar on two dimensions: price per gram of protein vs. protein density. Find your sweet spot.</p>
               <a href="/value-vs-content.html" class="hero-cta">EXPLORE CHART →</a>
@@ -1025,25 +1154,29 @@
               </div>
             </div>
 
-            <div class="hero-product">
-              <div class="product-ring" style="background:#162040;box-shadow:0 0 0 1px rgba(255,198,45,0.18),0 8px 24px rgba(0,0,0,0.38),0 24px 56px rgba(0,0,0,0.28);">
-                <div class="product-circle" style="background:#1a2a5c;display:flex;align-items:center;justify-content:center;">
-                  <span style="font-size:80px;line-height:1;">📊</span>
-                </div>
+            <div class="hero-product" style="left:50%;transform:translate(-15%,-50%);">
+              <div style="width:460px;height:330px;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,198,45,0.22),0 10px 36px rgba(0,0,0,0.48),0 28px 64px rgba(0,0,0,0.35);position:relative;">
+                <iframe src="/chart-embed.html" style="width:100%;height:100%;border:none;display:block;" scrolling="no"></iframe>
+                <div style="position:absolute;inset:0;border-radius:10px;border:1px solid rgba(255,198,45,0.18);pointer-events:none;"></div>
               </div>
-              <div class="price-tag" style="background:#ffc62d;color:#28306c;">SG &amp; MY</div>
-              <div class="product-badges">
+              <div class="price-tag" style="background:#ffc62d;color:#28306c;top:14px;right:-8px;">SG &amp; MY</div>
+              <div class="product-badges" style="bottom:-14px;">
                 <span class="badge">→ $/g protein</span>
                 <span class="badge">↑ g/100 kcal</span>
               </div>
             </div>
 
-            <div class="hero-portrait" style="border-color:rgba(255,198,45,0.40);">
-              <img src="https://placehold.co/68x68/ffc62d/28306c?text=📊" alt="Chart" />
-            </div>
           </div>
 
         </div><!-- /hero-slides-track -->
+
+        <!-- Navigation arrows -->
+        <button class="carousel-arrow carousel-arrow-prev" onclick="prevSlide()" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="carousel-arrow carousel-arrow-next" onclick="nextSlide()" aria-label="Next slide">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
 
         <!-- Navigation dots -->
         <div class="carousel-dots" id="carouselDots">
@@ -1055,32 +1188,6 @@
 
       </div><!-- /hero-carousel -->
 
-      <!-- Right side cards -->
-      <div class="side-cards">
-        <!-- GAINS card -->
-        <div class="gains-card">
-          <div class="gains-card-inner">
-            <div class="gains-label">GAINS</div>
-            <div class="gains-sub">Learn to fuel smart for peak performance</div>
-            <button class="explore-btn">EXPLORE →</button>
-          </div>
-          <div class="gains-img">
-            <img src="https://placehold.co/88x88/1a8c4e/ffffff?text=🏅" alt="Athlete" />
-          </div>
-        </div>
-
-        <!-- EVERYDAY card -->
-        <div class="daily-card">
-          <div class="daily-img">
-            <img src="/musclecrisp.png" alt="Protein Bar" />
-          </div>
-          <div>
-            <div class="daily-label">EVERYDAY</div>
-            <div class="daily-sub">Fresh daily, packed<br>with protein goodness</div>
-          </div>
-          <div class="daily-price">$6</div>
-        </div>
-      </div>
     </div><!-- /hero-row -->
 
     <!-- TRACKERS & BRANDS SECTION -->
@@ -1106,98 +1213,240 @@
       <div class="trackers-brands-wrap">
         <h2 class="brands-title">Brands we cover</h2>
         <div class="brands-grid">
-          <div class="brand-card">
-            <div class="brand-avatar" style="background:#fde8e8;color:#e05c3a;">G</div>
+          <a href="http://localhost:3001/comparison?brand=grenade" class="brand-card">
+            <div class="brand-avatar" style="background:#0f0808;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <ellipse cx="30" cy="40" rx="13" ry="15" fill="#c0392b"/>
+                <ellipse cx="30" cy="40" rx="9" ry="11" fill="#a93226"/>
+                <line x1="19" y1="35" x2="41" y2="35" stroke="rgba(0,0,0,0.30)" stroke-width="1.8"/>
+                <line x1="18" y1="41" x2="42" y2="41" stroke="rgba(0,0,0,0.30)" stroke-width="1.8"/>
+                <rect x="25.5" y="22" width="9" height="10" rx="2.5" fill="#7b241c"/>
+                <rect x="25.5" y="22" width="9" height="5" rx="2.5" fill="#922b21"/>
+                <circle cx="30" cy="17" r="4.5" fill="none" stroke="#ffc62d" stroke-width="2.4"/>
+                <rect x="28.5" y="12" width="3" height="5" rx="1" fill="#ffc62d"/>
+                <ellipse cx="24" cy="35" rx="3" ry="7" fill="rgba(255,255,255,0.09)" transform="rotate(-12 24 35)"/>
+              </svg>
+            </div>
             <span class="brand-name">Grenade</span>
-          </div>
-          <div class="brand-card">
-            <div class="brand-avatar" style="background:#fde8d8;color:#d96b2a;">B</div>
+          </a>
+          <a href="http://localhost:3001/comparison?brand=barebells" class="brand-card">
+            <div class="brand-avatar" style="background:#1a0d04;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <rect x="4" y="26" width="52" height="8" rx="4" fill="#7a5514"/>
+                <rect x="3" y="20" width="13" height="20" rx="5" fill="#b8761e"/>
+                <rect x="5" y="23" width="9" height="14" rx="3.5" fill="#d4952c"/>
+                <rect x="44" y="20" width="13" height="20" rx="5" fill="#b8761e"/>
+                <rect x="46" y="23" width="9" height="14" rx="3.5" fill="#d4952c"/>
+                <rect x="22" y="24" width="16" height="12" rx="2" fill="#6b4c10"/>
+                <rect x="23" y="25" width="14" height="5" rx="1.5" fill="#8b6418"/>
+                <ellipse cx="21" cy="24" rx="3" ry="5" fill="rgba(255,255,255,0.12)" transform="rotate(-10 21 24)"/>
+                <ellipse cx="45" cy="24" rx="3" ry="5" fill="rgba(255,255,255,0.08)" transform="rotate(10 45 24)"/>
+              </svg>
+            </div>
             <span class="brand-name">Barebells</span>
-          </div>
-          <div class="brand-card">
-            <div class="brand-avatar" style="background:#ddeeff;color:#4480cc;">Q</div>
+          </a>
+          <a href="http://localhost:3001/comparison?brand=quest" class="brand-card">
+            <div class="brand-avatar" style="background:#061530;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <circle cx="30" cy="30" r="16" fill="none" stroke="#4480cc" stroke-width="2"/>
+                <circle cx="30" cy="30" r="10" fill="none" stroke="rgba(68,128,204,0.35)" stroke-width="1.2"/>
+                <polygon points="30,12 33,26 30,23 27,26" fill="#4480cc"/>
+                <polygon points="30,48 33,34 30,37 27,34" fill="rgba(68,128,204,0.4)"/>
+                <polygon points="12,30 26,27 23,30 26,33" fill="rgba(68,128,204,0.4)"/>
+                <polygon points="48,30 34,33 37,30 34,27" fill="#4480cc"/>
+                <circle cx="30" cy="30" r="5.5" fill="#4480cc"/>
+                <circle cx="30" cy="30" r="2.5" fill="#061530"/>
+              </svg>
+            </div>
             <span class="brand-name">Quest</span>
-          </div>
-          <div class="brand-card">
-            <div class="brand-avatar" style="background:#ede8f8;color:#8b5cf6;">P</div>
+          </a>
+          <a href="http://localhost:3001/comparison?brand=pure-protein" class="brand-card">
+            <div class="brand-avatar" style="background:#140822;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <polygon points="30,9 46,19 46,39 30,49 14,39 14,19" fill="#5b21b6"/>
+                <polygon points="30,14 42,21.5 42,37.5 30,45 18,37.5 18,21.5" fill="#7c3aed"/>
+                <polygon points="30,18 38,23 38,37 30,42 22,37 22,23" fill="#6d28d9"/>
+                <circle cx="30" cy="27" r="6" fill="#140822"/>
+                <rect x="27" y="24" width="3.5" height="10" rx="1.5" fill="#c4b5fd"/>
+                <rect x="27" y="24" width="7" height="3.5" rx="1.5" fill="#c4b5fd"/>
+                <rect x="27" y="28.5" width="5.5" height="2.5" rx="1" fill="#a78bfa"/>
+                <ellipse cx="22" cy="21" rx="4" ry="6" fill="rgba(255,255,255,0.08)" transform="rotate(-25 22 21)"/>
+              </svg>
+            </div>
             <span class="brand-name">Pure Protein</span>
-          </div>
-          <div class="brand-card">
-            <div class="brand-avatar" style="background:#d4ede5;color:#0a4635;">M</div>
+          </a>
+          <a href="http://localhost:3001/comparison?brand=myprotein" class="brand-card">
+            <div class="brand-avatar" style="background:#071a0d;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <rect x="7" y="27" width="46" height="7" rx="3.5" fill="#0a3a20"/>
+                <rect x="4" y="19" width="14" height="23" rx="5" fill="#0f5c45"/>
+                <rect x="6" y="22" width="10" height="17" rx="3.5" fill="#166849"/>
+                <rect x="42" y="19" width="14" height="23" rx="5" fill="#0f5c45"/>
+                <rect x="44" y="22" width="10" height="17" rx="3.5" fill="#166849"/>
+                <rect x="22" y="24" width="16" height="13" rx="2.5" fill="#0a3320"/>
+                <ellipse cx="14" cy="23" rx="2.5" ry="4.5" fill="rgba(255,255,255,0.10)"/>
+                <text x="30" y="34" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="9.5" fill="#ffc62d" letter-spacing="0.5">MP</text>
+              </svg>
+            </div>
             <span class="brand-name">MyProtein</span>
-          </div>
+          </a>
         </div>
       </div>
     </div><!-- /trackers-section -->
 
     <!-- TOP-5 PICKS -->
-    <div id="picks" class="picks-card">
+    <div id="picks" class="picks-card" style="display:flex;gap:44px;align-items:center;">
+      <div style="flex:0 0 auto;">
       <div class="picks-header">
         <div class="picks-icon-box">🏆</div>
         <h2 class="picks-title">TOP-5<br>PICKS</h2>
       </div>
       <div class="picks-list">
 
+        <!-- #1 Grenade Carb Killa — Chocolate Chip Salted Caramel ★ 4.9 -->
         <div class="pick-row">
           <div class="pick-thumb">
-            <img src="/musclecrisp.png" alt="Chocolate Crunch" />
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#111"/>
+              <rect width="54" height="17" rx="6" fill="#c0392b"/>
+              <rect y="11" width="54" height="6" fill="#c0392b"/>
+              <path d="M0 4 L54 4 L54 10 L0 10Z" fill="rgba(255,255,255,0.07)"/>
+              <text x="27" y="13" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-weight="900" font-size="7.5" fill="white" letter-spacing="1">GRENADE</text>
+              <rect x="6" y="21" width="42" height="22" rx="4" fill="#1e1e1e"/>
+              <rect x="6" y="21" width="42" height="8" rx="3" fill="#2d2d2d"/>
+              <rect x="8" y="23" width="16" height="2.5" rx="1" fill="rgba(255,255,255,0.10)"/>
+              <rect x="10" y="32" width="34" height="2" rx="1" fill="rgba(255,255,255,0.05)"/>
+              <rect x="10" y="36" width="28" height="2" rx="1" fill="rgba(255,255,255,0.04)"/>
+              <text x="27" y="49" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="5" fill="rgba(255,255,255,0.38)" letter-spacing="0.3">CARB KILLA</text>
+            </svg>
           </div>
           <div>
-            <div class="pick-name">Chocolate Crunch</div>
-            <div class="pick-desc">Rich dark chocolate with rice crispies · 25g protein</div>
+            <div><span class="pick-brand-tag" style="background:#fde8e8;color:#e05c3a;">Grenade</span></div>
+            <div class="pick-name">Carb Killa · Chocolate Chip Salted Caramel</div>
+            <div class="pick-desc">Buttery caramel laced with sea-salt crystals, intensely addictive. <span class="pick-rating">★ 4.9</span></div>
           </div>
           <div class="pick-price">$4.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
-          <button class="pick-add" aria-label="Add Chocolate Crunch">+</button>
+          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Grenade Carb Killa on comparison">→</a>
         </div>
 
+        <!-- #2 Barebells — Salted Peanut Caramel ★ 4.8 -->
         <div class="pick-row">
           <div class="pick-thumb">
-            <img src="/musclecrisp.png" alt="Vanilla Dream" />
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#f0e3cc"/>
+              <rect width="54" height="16" rx="6" fill="#5a3410"/>
+              <rect y="10" width="54" height="6" fill="#5a3410"/>
+              <path d="M0 4 L54 4 L54 9 L0 9Z" fill="rgba(255,255,255,0.06)"/>
+              <text x="27" y="12" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-weight="900" font-size="6.5" fill="white" letter-spacing="1.2">BAREBELLS</text>
+              <rect x="6" y="20" width="42" height="26" rx="5" fill="#c4873a"/>
+              <rect x="6" y="20" width="42" height="9" rx="4" fill="#d9952a"/>
+              <rect x="8" y="22" width="14" height="2.5" rx="1" fill="rgba(255,255,255,0.30)"/>
+              <circle cx="14" cy="34" r="2.2" fill="#8B5E3C" opacity="0.45"/>
+              <circle cx="22" cy="37" r="1.8" fill="#8B5E3C" opacity="0.38"/>
+              <circle cx="30" cy="33" r="2.2" fill="#8B5E3C" opacity="0.45"/>
+              <circle cx="39" cy="36" r="1.8" fill="#7a4f2c" opacity="0.40"/>
+              <circle cx="17" cy="38" r="1.4" fill="#6b4424" opacity="0.35"/>
+              <circle cx="35" cy="40" r="1.4" fill="#6b4424" opacity="0.32"/>
+            </svg>
           </div>
           <div>
-            <div class="pick-name">Vanilla Dream</div>
-            <div class="pick-desc">Smooth vanilla with almond crunch · 22g protein</div>
+            <div><span class="pick-brand-tag" style="background:#fde8d8;color:#d96b2a;">Barebells</span></div>
+            <div class="pick-name">Protein Bar · Salted Peanut Caramel</div>
+            <div class="pick-desc">Deep-roasted peanut wrapped in silky, salty caramel fudge. <span class="pick-rating">★ 4.8</span></div>
           </div>
           <div class="pick-price">$5.50 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
-          <button class="pick-add" aria-label="Add Vanilla Dream">+</button>
+          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Barebells Salted Peanut Caramel on comparison">→</a>
         </div>
 
+        <!-- #3 Quest — Cookies & Cream ★ 4.8 -->
         <div class="pick-row">
           <div class="pick-thumb">
-            <img src="/musclecrisp.png" alt="Peanut Butter Pro" />
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#0d2256"/>
+              <rect x="0" y="0" width="54" height="5" rx="3" fill="#4480cc"/>
+              <rect x="0" y="2" width="54" height="3" fill="#4480cc"/>
+              <text x="27" y="19" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-weight="900" font-size="16" fill="white" letter-spacing="0.5">QUEST</text>
+              <rect x="6" y="24" width="42" height="22" rx="4" fill="#1a3670"/>
+              <rect x="6" y="24" width="42" height="8" rx="3" fill="#2952a8"/>
+              <rect x="8" y="26" width="16" height="2.5" rx="1" fill="rgba(255,255,255,0.14)"/>
+              <circle cx="16" cy="38" r="3.5" fill="#0d2256" opacity="0.6"/>
+              <circle cx="27" cy="36" r="3.5" fill="#0d2256" opacity="0.55"/>
+              <circle cx="38" cy="38" r="3.5" fill="#0d2256" opacity="0.6"/>
+              <circle cx="16" cy="38" r="1.5" fill="rgba(255,255,255,0.06)"/>
+              <circle cx="27" cy="36" r="1.5" fill="rgba(255,255,255,0.06)"/>
+              <circle cx="38" cy="38" r="1.5" fill="rgba(255,255,255,0.06)"/>
+              <text x="27" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="4.5" fill="rgba(255,255,255,0.32)" letter-spacing="0.3">COOKIES &amp; CREAM</text>
+            </svg>
           </div>
           <div>
-            <div class="pick-name">Peanut Butter Pro</div>
-            <div class="pick-desc">Creamy peanut butter with oat crunch · 28g protein</div>
-          </div>
-          <div class="pick-price">$6.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
-          <button class="pick-add" aria-label="Add Peanut Butter Pro">+</button>
-        </div>
-
-        <div class="pick-row">
-          <div class="pick-thumb">
-            <img src="/musclecrisp.png" alt="Berry Blast" />
-          </div>
-          <div>
-            <div class="pick-name">Berry Blast</div>
-            <div class="pick-desc">Wild berries with coconut coating · 20g protein</div>
-          </div>
-          <div class="pick-price">$5.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
-          <button class="pick-add" aria-label="Add Berry Blast">+</button>
-        </div>
-
-        <div class="pick-row">
-          <div class="pick-thumb">
-            <img src="/musclecrisp.png" alt="Caramel Surge" />
-          </div>
-          <div>
-            <div class="pick-name">Caramel Surge</div>
-            <div class="pick-desc">Salted caramel with whey protein · 24g protein</div>
+            <div><span class="pick-brand-tag" style="background:#ddeeff;color:#4480cc;">Quest</span></div>
+            <div class="pick-name">Protein Bar · Cookies &amp; Cream</div>
+            <div class="pick-desc">Vanilla cream nostalgia folded into dark cookie crumble. <span class="pick-rating">★ 4.8</span></div>
           </div>
           <div class="pick-price">$4.49 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
-          <button class="pick-add" aria-label="Add Caramel Surge">+</button>
+          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Quest Cookies and Cream on comparison">→</a>
         </div>
 
+        <!-- #4 MyProtein — Crispy Layered Bar Chocolate Brownie ★ 4.7 -->
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#0a4635"/>
+              <path d="M0 0 L28 0 L0 28Z" fill="rgba(255,198,45,0.09)"/>
+              <text x="27" y="15" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="10.5" fill="#ffc62d" letter-spacing="0.8">MP</text>
+              <rect x="5" y="20" width="44" height="24" rx="5" fill="#071e14"/>
+              <rect x="5" y="20" width="44" height="8" rx="4" fill="#0f5c45"/>
+              <rect x="7" y="22" width="16" height="2.5" rx="1" fill="rgba(255,255,255,0.10)"/>
+              <rect x="9" y="33" width="10" height="6" rx="2" fill="#0a3320" opacity="0.9"/>
+              <rect x="22" y="33" width="10" height="6" rx="2" fill="#0a3320" opacity="0.9"/>
+              <rect x="35" y="33" width="10" height="6" rx="2" fill="#0a3320" opacity="0.9"/>
+              <rect x="10" y="34" width="8" height="1.5" rx="0.5" fill="rgba(255,198,45,0.08)"/>
+              <rect x="23" y="34" width="8" height="1.5" rx="0.5" fill="rgba(255,198,45,0.08)"/>
+              <rect x="36" y="34" width="8" height="1.5" rx="0.5" fill="rgba(255,198,45,0.08)"/>
+              <text x="27" y="50" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="4.5" fill="rgba(255,198,45,0.45)" letter-spacing="0.3">CRISPY LAYERED</text>
+            </svg>
+          </div>
+          <div>
+            <div><span class="pick-brand-tag" style="background:#d4ede5;color:#0a4635;">MyProtein</span></div>
+            <div class="pick-name">Crispy Layered Bar · Chocolate Brownie</div>
+            <div class="pick-desc">Fudgy brownie richness layered with airy chocolate wafer. <span class="pick-rating">★ 4.7</span></div>
+          </div>
+          <div class="pick-price">$3.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View MyProtein Crispy Layered Chocolate Brownie on comparison">→</a>
+        </div>
+
+        <!-- #5 Pure Protein — Chocolate Peanut Butter ★ 4.7 -->
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#1e0a38"/>
+              <rect width="54" height="15" rx="6" fill="#7c3aed"/>
+              <rect y="9" width="54" height="6" fill="#7c3aed"/>
+              <path d="M0 3 L54 3 L54 8 L0 8Z" fill="rgba(255,255,255,0.07)"/>
+              <text x="27" y="11.5" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-weight="900" font-size="6.5" fill="white" letter-spacing="0.8">PURE PROTEIN</text>
+              <rect x="6" y="19" width="42" height="26" rx="5" fill="#140828"/>
+              <rect x="6" y="19" width="42" height="9" rx="4" fill="#6d28d9"/>
+              <rect x="8" y="21" width="14" height="2.5" rx="1" fill="rgba(255,255,255,0.14)"/>
+              <path d="M9 33 Q18 29 27 33 Q36 37 45 33" stroke="#7c3aed" stroke-width="2" fill="none" opacity="0.55"/>
+              <path d="M9 37 Q18 33 27 37 Q36 41 45 37" stroke="#8b5cf6" stroke-width="1.5" fill="none" opacity="0.40"/>
+              <path d="M9 41 Q18 37 27 41 Q36 45 44 41" stroke="#6d28d9" stroke-width="1" fill="none" opacity="0.30"/>
+              <circle cx="20" cy="28" r="2.5" fill="rgba(139,92,246,0.30)"/>
+              <circle cx="35" cy="27" r="2" fill="rgba(139,92,246,0.25)"/>
+            </svg>
+          </div>
+          <div>
+            <div><span class="pick-brand-tag" style="background:#ede8f8;color:#8b5cf6;">Pure Protein</span></div>
+            <div class="pick-name">Protein Bar · Chocolate Peanut Butter</div>
+            <div class="pick-desc">Earthy nut butter swathed in bittersweet chocolate couverture. <span class="pick-rating">★ 4.7</span></div>
+          </div>
+          <div class="pick-price">$3.49 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Pure Protein Chocolate Peanut Butter on comparison">→</a>
+        </div>
+
+      </div>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+        <img src="/top5_bars.png" alt="Top 5 Protein Bars" style="width:100%;max-width:520px;border-radius:10px;object-fit:cover;box-shadow:0 4px 24px rgba(10,70,53,0.10),0 1px 4px rgba(10,70,53,0.06);" />
       </div>
     </div>
 
@@ -1216,14 +1465,25 @@
       document.querySelectorAll('.carousel-dot').forEach(function(dot, i) {
         dot.classList.toggle('active', i === index);
       });
+      // Restart entrance animations for the incoming slide
+      var slides = document.querySelectorAll('.hero-slide');
+      slides.forEach(function(s) { s.classList.remove('hero-slide-active'); });
+      void slides[index].offsetWidth; // force reflow to restart animation
+      slides[index].classList.add('hero-slide-active');
     }
 
     function nextSlide() {
       goToSlide((currentSlide + 1) % totalSlides);
+      stopAuto(); startAuto();
+    }
+
+    function prevSlide() {
+      goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
+      stopAuto(); startAuto();
     }
 
     function startAuto() {
-      autoInterval = setInterval(nextSlide, 5000);
+      autoInterval = setInterval(nextSlide, 6000);
     }
 
     function stopAuto() {
@@ -1235,6 +1495,63 @@
     carousel.addEventListener('mouseleave', startAuto);
 
     startAuto();
+
+    // ── MOTION EXTRAS ──────────────────────────────────────
+    (function () {
+      // Init first slide entrance
+      document.querySelectorAll('.hero-slide')[0].classList.add('hero-slide-active');
+
+      // Scroll reveal — only applied to elements below the fold at load time
+      var revealObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('pb-visible');
+          revealObs.unobserve(e.target);
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -24px 0px' });
+
+      function setupReveal(nodeList, delayStep) {
+        Array.from(nodeList).forEach(function (el, i) {
+          if (el.getBoundingClientRect().top >= window.innerHeight * 0.95) {
+            el.classList.add('pb-reveal');
+            el.style.transitionDelay = (i * delayStep) + 'ms';
+            revealObs.observe(el);
+          }
+        });
+      }
+
+      setupReveal(document.querySelectorAll('.trackers-stats .tracker-stat'), 70);
+      setupReveal(document.querySelectorAll('.brands-grid .brand-card'), 60);
+      setupReveal(document.querySelectorAll('.picks-list .pick-row'), 70);
+
+      var picksImgCol = document.querySelector('#picks > div:last-child');
+      if (picksImgCol) setupReveal([picksImgCol], 0);
+
+      // Count-up for numeric tracker stats
+      var counterObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          counterObs.unobserve(e.target);
+          var numEl = e.target.querySelector('.tracker-num');
+          if (!numEl) return;
+          var text = numEl.textContent.trim();
+          var num = parseInt(text, 10);
+          if (isNaN(num) || String(num) !== text) return; // skip non-pure-numeric
+          var duration = 1100, startTs = null;
+          requestAnimationFrame(function step(ts) {
+            if (!startTs) startTs = ts;
+            var t = Math.min((ts - startTs) / duration, 1);
+            numEl.textContent = String(Math.round(num * (1 - Math.pow(1 - t, 3))));
+            if (t < 1) requestAnimationFrame(step);
+            else numEl.textContent = text;
+          });
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('.tracker-stat').forEach(function (el) {
+        counterObs.observe(el);
+      });
+    }());
   </script>
 
 </body>

@@ -1,0 +1,36 @@
+/* ─── SINGLE SOURCE OF TRUTH: update prices here to reflect in all charts ─── */
+const BRANDS = {
+  'Grenade':      { color: '#e05c3a', bg: '#fde8e8' },
+  'Barebells':    { color: '#d96b2a', bg: '#fde8d8' },
+  'Quest':        { color: '#4480cc', bg: '#ddeeff' },
+  'Pure Protein': { color: '#8b5cf6', bg: '#ede8f8' },
+  'MyProtein':    { color: '#27ae60', bg: '#e0f5e8' },
+};
+
+const ALL_BARS = [
+  { id:1,  brand:'Grenade',      flavor:'Chocolate Chip Cookie Dough',  protein:20, calories:208, priceBar:3.90, rating:4.7 },
+  { id:2,  brand:'Grenade',      flavor:'Dark Chocolate Raspberry',     protein:20, calories:213, priceBar:3.80, rating:4.5 },
+  { id:3,  brand:'Grenade',      flavor:'Peanut Nutter',                protein:22, calories:238, priceBar:3.90, rating:4.6 },
+  { id:4,  brand:'Grenade',      flavor:'Caramel Chaos',                protein:21, calories:218, priceBar:3.70, rating:4.4 },
+  { id:5,  brand:'Grenade',      flavor:'White Chocolate Cookie',       protein:20, calories:210, priceBar:3.90, rating:4.5 },
+  { id:6,  brand:'Barebells',    flavor:'Cookies & Cream',              protein:20, calories:199, priceBar:4.40, rating:4.8 },
+  { id:7,  brand:'Barebells',    flavor:'Salty Peanut',                 protein:20, calories:212, priceBar:4.20, rating:4.7 },
+  { id:8,  brand:'Barebells',    flavor:'Caramel Cashew',               protein:20, calories:196, priceBar:4.50, rating:4.6 },
+  { id:9,  brand:'Barebells',    flavor:'Strawberry White Chocolate',   protein:20, calories:202, priceBar:4.30, rating:4.5 },
+  { id:10, brand:'Barebells',    flavor:'Hazelnut & Nougat',            protein:20, calories:207, priceBar:4.40, rating:4.6 },
+  { id:11, brand:'Quest',        flavor:'Chocolate Chip Cookie Dough',  protein:21, calories:190, priceBar:3.50, rating:4.6 },
+  { id:12, brand:'Quest',        flavor:'Cookies & Cream',              protein:21, calories:190, priceBar:3.40, rating:4.5 },
+  { id:13, brand:'Quest',        flavor:'Blueberry Muffin',             protein:21, calories:200, priceBar:3.20, rating:4.4 },
+  { id:14, brand:'Quest',        flavor:'Birthday Cake',                protein:21, calories:196, priceBar:3.50, rating:4.3 },
+  { id:15, brand:'Quest',        flavor:"S'mores",                      protein:21, calories:198, priceBar:3.30, rating:4.5 },
+  { id:16, brand:'Pure Protein', flavor:'Chocolate Peanut Butter',      protein:20, calories:180, priceBar:2.20, rating:4.2 },
+  { id:17, brand:'Pure Protein', flavor:'Vanilla Almond',               protein:20, calories:182, priceBar:2.00, rating:4.1 },
+  { id:18, brand:'Pure Protein', flavor:'Chocolate Deluxe',             protein:21, calories:188, priceBar:2.30, rating:4.0 },
+  { id:19, brand:'Pure Protein', flavor:'Strawberry Greek Yogurt',      protein:20, calories:185, priceBar:2.10, rating:4.1 },
+  { id:20, brand:'Pure Protein', flavor:'Lemon Cake',                   protein:20, calories:183, priceBar:2.40, rating:4.0 },
+  { id:21, brand:'MyProtein',    flavor:'Birthday Cake',                protein:20, calories:205, priceBar:2.90, rating:4.4 },
+  { id:22, brand:'MyProtein',    flavor:'Chocolate Brownie',            protein:20, calories:198, priceBar:2.80, rating:4.5 },
+  { id:23, brand:'MyProtein',    flavor:'White Chocolate',              protein:20, calories:195, priceBar:2.70, rating:4.3 },
+  { id:24, brand:'MyProtein',    flavor:'Salted Caramel',               protein:20, calories:200, priceBar:3.00, rating:4.4 },
+  { id:25, brand:'MyProtein',    flavor:'Chocolate Mint',               protein:20, calories:196, priceBar:2.80, rating:4.3 },
+];

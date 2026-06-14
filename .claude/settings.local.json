@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"c:/Users/Dominic/AppData/Local/Temp/\" 2>/dev/null | head -20; echo \"---\"; ls \"c:/Users/Dominic/.cache/\" 2>/dev/null | head -10)",
+      "Read(//c/Users/Dominic/AppData/Local/Temp/**)",
+      "Read(//c/Users/Dominic/**)",
+      "Bash(ls \"c:/Users/Dominic/.cache/\" 2>/dev/null; echo \"---\"; ls \"c:/Users/Dominic/AppData/Local/ms-playwright/\" 2>/dev/null | head -5; echo \"---\"; which google-chrome chromium-browser 2>/dev/null; echo \"---\"; ls \"/c/Program Files/Google/Chrome/Application/\" 2>/dev/null | head -5; echo \"---\"; ls \"c:/Users/nateh/\" 2>/dev/null | head -5)",
+      "Read(//c/Program Files/Google/Chrome/Application//**)",
+      "Read(//c/Users/**)",
+      "Bash(node serve.mjs)",
+      "Bash(npm list *)",
+      "Bash(node -e \"import\\('puppeteer'\\).then\\(\\(\\)=>console.log\\('puppeteer ok'\\)\\).catch\\(e=>console.log\\('no puppeteer:',e.message\\)\\)\")"
+    ]
+  }
+}
