@@ -1,8 +1,53 @@
 {
+  "version": 2,
   "crons": [
     {
       "path": "/api/refresh",
       "schedule": "0 * * * *"
+    }
+  ],
+  "builds": [
+    {
+      "src": "proteinbar/package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "value-vs-content.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "chart-embed.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "brand_assets/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "bars-data.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.{png,jpg}",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/_next/(.*)",
+      "dest": "/proteinbar/_next/$1"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/proteinbar/api/$1"
+    },
+    {
+      "src": "/comparison(.*)",
+      "dest": "/proteinbar/comparison$1"
     }
   ]
 }
