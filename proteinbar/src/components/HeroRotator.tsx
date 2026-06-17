@@ -1,204 +1,431 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Dumbbell, Zap, ShoppingCart, BarChart2, Package, Heart, Star } from "lucide-react";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import { FeatureHighlight } from "@/components/ui/feature-highlight";
 
-// Small inline icon helper — uses lucide or img
-const InlineIcon = ({ icon }: { icon: React.ReactNode }) => (
-  <span className="mx-1.5 inline-flex h-7 w-7 items-center justify-center align-middle">
-    {icon}
-  </span>
-);
-
-const features = [
-  <>
-    Fuel up with
-    <InlineIcon icon={<Zap className="h-6 w-6 text-yellow-500" />} />
-    25g of protein per bar.
-  </>,
-  <>
-    Shop
-    <InlineIcon icon={<ShoppingCart className="h-6 w-6 text-green-600" />} />
-    across SG &amp; MY retailers.
-  </>,
-  <>
-    Compare
-    <InlineIcon icon={<BarChart2 className="h-6 w-6 text-blue-500" />} />
-    prices in seconds.
-  </>,
-  <>
-    Order a
-    <InlineIcon icon={<Package className="h-6 w-6 text-orange-500" />} />
-    box — delivered to your door.
-  </>,
-  <>
-    Share
-    <InlineIcon icon={<Heart className="h-6 w-6 text-red-500" />} />
-    favorites with your gym crew.
-  </>,
-  <>
-    Rated
-    <InlineIcon icon={<Star className="h-6 w-6 fill-yellow-400 text-yellow-400" />} />
-    4.8 by thousands of athletes.
-  </>,
-];
-
-const footer = (
-  <p className="pt-2 text-xl" style={{ color: "#555467" }}>
-    Just head to{" "}
-    <Link
-      href="/comparison"
-      className="font-semibold underline underline-offset-2"
-      style={{ color: "#FF8C00" }}
-    >
-      our comparison tool
-    </Link>{" "}
-    to find your perfect bar.
-  </p>
-);
-
-// Rotation variants — 3-D Y-axis flip
-const flipIn = {
-  initial: { rotateY: 90, opacity: 0 },
-  animate: { rotateY: 0, opacity: 1, transition: { duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] } },
-  exit:    { rotateY: -90, opacity: 0, transition: { duration: 0.7, ease: [0.55, 0.06, 0.68, 0.19] as [number, number, number, number] } },
+const C = {
+  verde:    "#0a4635",
+  amarillo: "#ffc62d",
+  rojo:     "#e54d3a",
+  azul:     "#28306c",
 };
 
-export default function HeroRotator() {
-  const [panel, setPanel] = useState<0 | 1>(0);
+function Stars({ fill }: { fill: string }) {
+  return (
+    <div style={{ display: "flex", gap: "2px" }}>
+      {[0,1,2,3,4].map(i => (
+        <svg key={i} width="14" height="14" viewBox="0 0 20 20" style={{ fill }}>
+          <path d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
 
-  // Auto-rotate every 6 seconds
+function RatingRow({ starFill, numColor, labelColor }: { starFill: string; numColor: string; labelColor: string }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap", marginTop: "20px" }}>
+      <Stars fill={starFill} />
+      <span style={{ fontFamily: "var(--font-barlow)", fontWeight: 800, fontSize: "16px", color: numColor }}>4.8</span>
+      <span style={{ fontSize: "13px", color: labelColor }}>· Proteinbarsia</span>
+    </div>
+  );
+}
+
+function Headline({ children, color = C.verde, style }: { children: React.ReactNode; color?: string; style?: React.CSSProperties }) {
+  return (
+    <h1 style={{
+      fontFamily: "var(--font-barlow)",
+      fontWeight: 900,
+      fontSize: "clamp(64px, 7.4vw, 112px)",
+      lineHeight: 0.86,
+      letterSpacing: "0.02em",
+      color,
+      marginBottom: "22px",
+      textTransform: "uppercase",
+      ...style,
+    }}>
+      {children}
+    </h1>
+  );
+}
+
+function CtaLink({ href, bg, color, shadow, children }: { href: string; bg: string; color: string; shadow?: string; children: React.ReactNode }) {
+  return (
+    <Link href={href} style={{
+      display: "inline-flex",
+      alignItems: "center",
+      marginTop: "24px",
+      background: bg,
+      color,
+      textDecoration: "none",
+      borderRadius: "3px",
+      padding: "13px 28px",
+      fontFamily: "var(--font-barlow)",
+      fontSize: "15px",
+      fontWeight: 900,
+      letterSpacing: "0.08em",
+      textTransform: "uppercase",
+      boxShadow: shadow || "0 4px 20px rgba(10,70,53,0.22)",
+    }}>
+      {children}
+    </Link>
+  );
+}
+
+function Badge({ children }: { children: React.ReactNode }) {
+  return (
+    <span style={{
+      background: "#fff",
+      borderRadius: "3px",
+      padding: "5px 12px",
+      fontSize: "11.5px",
+      fontWeight: 600,
+      color: C.verde,
+      boxShadow: "0 2px 10px rgba(10,70,53,0.10)",
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "4px",
+    }}>
+      {children}
+    </span>
+  );
+}
+
+function ProductCircle({
+  src, alt, ringBg = "#fff", ringStyle, circleBg = "#e8d5b0", size = 420,
+  priceTag, priceTagStyle, badges,
+}: {
+  src: string; alt: string; ringBg?: string; ringStyle?: React.CSSProperties;
+  circleBg?: string; size?: number;
+  priceTag?: string; priceTagStyle?: React.CSSProperties;
+  badges?: React.ReactNode[];
+}) {
+  return (
+    <div style={{
+      position: "absolute",
+      left: "50%",
+      top: "50%",
+      transform: "translate(-44%, -50%)",
+      zIndex: 4,
+    }}>
+      <div style={{
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        padding: "9px",
+        background: ringBg,
+        boxShadow: "0 0 0 1px rgba(10,70,53,0.06), 0 8px 24px rgba(10,70,53,0.10), 0 24px 56px rgba(10,70,53,0.10)",
+        ...ringStyle,
+      }}>
+        <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: circleBg }}>
+          <img src={src} alt={alt} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        </div>
+      </div>
+      {priceTag && (
+        <div style={{
+          position: "absolute",
+          top: "22px",
+          right: "-4px",
+          borderRadius: "3px",
+          padding: "8px 18px",
+          fontSize: "18px",
+          fontFamily: "var(--font-barlow)",
+          fontWeight: 900,
+          letterSpacing: "0.05em",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.22)",
+          whiteSpace: "nowrap",
+          ...priceTagStyle,
+        }}>
+          {priceTag}
+        </div>
+      )}
+      {badges && badges.length > 0 && (
+        <div style={{
+          position: "absolute",
+          bottom: "-16px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          gap: "6px",
+          whiteSpace: "nowrap",
+        }}>
+          {badges.map((b, i) => <span key={i}>{b}</span>)}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ArrowButton({ side, onClick }: { side: "left" | "right"; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={side === "left" ? "Previous slide" : "Next slide"}
+      style={{
+        position: "absolute",
+        top: "50%",
+        [side]: "16px",
+        transform: "translateY(-50%)",
+        zIndex: 10,
+        width: "44px",
+        height: "44px",
+        borderRadius: "50%",
+        border: "2px solid rgba(255,255,255,0.40)",
+        background: "rgba(0,0,0,0.18)",
+        backdropFilter: "blur(8px)",
+        WebkitBackdropFilter: "blur(8px)",
+        color: "#fff",
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: 0,
+      }}
+    >
+      <svg viewBox="0 0 24 24" width="20" height="20" style={{ stroke: "#fff", fill: "none", strokeWidth: 2.5, strokeLinecap: "round", strokeLinejoin: "round" }}>
+        {side === "left"
+          ? <polyline points="15 18 9 12 15 6" />
+          : <polyline points="9 18 15 12 9 6" />}
+      </svg>
+    </button>
+  );
+}
+
+const DOT_COLORS: [string, string][] = [
+  [C.verde, "rgba(0,0,0,0.20)"],    // slide 0 yellow — active verde, rest dark
+  [C.amarillo, "rgba(255,255,255,0.35)"], // slide 1 dark — active amarillo, rest white-ish
+  ["#fff", "rgba(255,255,255,0.40)"],     // slide 2 red — active white
+  [C.amarillo, "rgba(255,255,255,0.35)"], // slide 3 navy — active amarillo
+];
+
+export default function HeroRotator() {
+  const [current, setCurrent] = useState(0);
+
   useEffect(() => {
-    const id = setInterval(() => setPanel(p => (p === 0 ? 1 : 0)), 6000);
+    const id = setInterval(() => setCurrent(c => (c + 1) % 4), 6000);
     return () => clearInterval(id);
   }, []);
 
   return (
-    <section className="relative overflow-hidden" style={{ perspective: "1400px" }}>
-      {/* Layered atmospheric gradient — warm amber bloom */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 100% 70% at 50% -15%, rgba(255,212,59,0.22) 0%, transparent 60%), " +
-            "radial-gradient(ellipse 70% 60% at 85% 65%, rgba(255,140,0,0.13) 0%, transparent 55%), " +
-            "radial-gradient(ellipse 55% 45% at 5% 85%, rgba(255,107,0,0.08) 0%, transparent 50%), " +
-            "radial-gradient(ellipse 35% 30% at 92% 8%, rgba(255,212,59,0.10) 0%, transparent 40%)",
-        }}
-      />
+    <>
+      <style>{`
+        .hero-carousel { position: relative; overflow: hidden; border-radius: 10px; min-height: 440px; margin: 20px 24px 0; }
+        .hero-track { display: flex; width: 400%; min-height: 440px; }
+        .hero-slide { width: calc(100% / 4); flex-shrink: 0; min-height: 440px; position: relative; padding: 50px 44px 72px 80px; display: flex; align-items: center; overflow: hidden; }
+        .hero-arrow:hover { background: rgba(0,0,0,0.40) !important; border-color: rgba(255,255,255,0.80) !important; }
+        @media (max-width: 767px) {
+          .hero-carousel { margin: 10px 10px 0; }
+          .hero-slide { flex-direction: column; align-items: flex-start; padding: 22px 18px 28px; min-height: 0; }
+          .hero-text-inner { max-width: 100% !important; }
+          .hero-headline-el { font-size: clamp(42px, 12vw, 68px) !important; }
+          .hero-product-el { position: static !important; transform: none !important; display: flex; justify-content: center; width: 100%; margin-top: 16px; }
+          .hero-product-el > div:first-child { width: 170px !important; height: 170px !important; padding: 5px !important; }
+          .hero-price-tag, .hero-badges { display: none !important; }
+          .hero-nav-slide4 .hero-product-el { display: none !important; }
+          .hero-dots { left: 18px !important; }
+        }
+        @media (max-width: 480px) {
+          .hero-slide { padding: 20px 14px 48px !important; }
+          .hero-headline-el { font-size: clamp(38px, 13.5vw, 56px) !important; }
+        }
+      `}</style>
 
-      <AnimatePresence mode="wait">
-        {panel === 0 ? (
-          <motion.div
-            key="hero-1"
-            {...flipIn}
-            style={{ transformStyle: "preserve-3d" }}
-            className="mx-auto max-w-5xl px-6 py-28 text-center"
-          >
-            {/* Panel 1 — brand hero */}
-            <span
-              className="inline-block rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-widest"
-              style={{ border: "1px solid rgba(255,140,0,0.30)", background: "rgba(255,140,0,0.10)", color: "#FF8C00" }}
-            >
-              Singapore &amp; Malaysia
-            </span>
-            <h1
-              className="mt-6 text-5xl font-black leading-[1.05] md:text-[4.5rem]"
-              style={{
-                fontFamily: "var(--font-fraunces), Georgia, serif",
-                letterSpacing: "-0.04em",
-                color: "#0d0c22",
-              }}
-            >
-              Find the best deal on
-              <br />
-              <span
-                style={{
-                  fontStyle: "italic",
-                  background: "linear-gradient(135deg, #FF6B00 0%, #FF8C00 45%, #FFD43B 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                protein bars
-              </span>{" "}
-              near you
-            </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed" style={{ color: "#555467" }}>
-              Compare prices, macros, and availability for Grenade, Barebells, Quest, Pure&nbsp;Protein &amp;
-              MyProtein across Shopee, Lazada, Amazon, iHerb, and direct-brand stores — all in one place.
-            </p>
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link
-                href="/comparison"
-                className="group relative inline-flex h-12 items-center gap-2 overflow-hidden rounded-xl px-8 text-sm font-semibold transition-[transform,box-shadow] duration-200 hover:scale-[1.03] active:scale-[0.97]"
-                style={{
-                  background: "#0d0c22",
-                  color: "#FFD43B",
-                  boxShadow: "0 4px 24px rgba(13,12,34,0.22), 0 1px 3px rgba(13,12,34,0.30)",
-                  fontFamily: "var(--font-nunito), Nunito, sans-serif",
-                  fontWeight: 900,
-                  letterSpacing: "0.04em",
-                }}
-              >
-                Compare now
-                <svg className="h-4 w-4 transition-transform duration-150 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
+      <div className="hero-carousel">
+        <motion.div
+          className="hero-track"
+          animate={{ x: `${-current * 25}%` }}
+          transition={{ duration: 1.65, ease: [0.25, 1, 0.5, 1] }}
+        >
+
+          {/* Slide 1 — Yellow */}
+          <div className="hero-slide" style={{ background: C.amarillo }}>
+            <div aria-hidden style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 70% 50%, rgba(255,255,255,0.22) 0%, transparent 65%), radial-gradient(circle at 15% 80%, rgba(255,200,0,0.3) 0%, transparent 50%)", pointerEvents: "none" }} />
+            <div className="hero-text-inner" style={{ position: "relative", zIndex: 2, maxWidth: "42%" }}>
+              <h1 className="hero-headline-el" style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "clamp(64px, 7.4vw, 112px)", lineHeight: 0.86, letterSpacing: "0.02em", color: C.verde, marginBottom: "22px", textTransform: "uppercase" }}>
+                PROOO<br />TEIN!
+              </h1>
+              <p style={{ fontSize: "13.5px", fontStyle: "italic", color: "rgba(10,70,53,0.55)", lineHeight: 1.55, maxWidth: "200px", marginBottom: "22px" }}>
+                Premium protein fuel,<br />made just for you.
+              </p>
+              <CtaLink href="/comparison" bg={C.verde} color={C.amarillo}>SHOP NOW ↓</CtaLink>
+              <RatingRow starFill={C.verde} numColor={C.verde} labelColor="rgba(10,70,53,0.48)" />
             </div>
 
-            {/* Dot indicator */}
-            <div className="mt-10 flex justify-center gap-2">
-              <span className="h-2 w-6 rounded-full" style={{ background: "#0d0c22" }} />
-              <span className="h-2 w-2 rounded-full" style={{ background: "rgba(0,0,0,0.18)" }} />
+            <div className="hero-product-el" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-44%, -50%)", zIndex: 4 }}>
+              <div style={{ width: "420px", height: "420px", borderRadius: "50%", padding: "9px", background: "#fff", boxShadow: "0 0 0 1px rgba(10,70,53,0.06), 0 8px 24px rgba(10,70,53,0.10), 0 24px 56px rgba(10,70,53,0.10)" }}>
+                <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: "#e8d5b0" }}>
+                  <img src="/musclecrisp.png" alt="Protein Bar" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                </div>
+              </div>
+              <div className="hero-price-tag" style={{ position: "absolute", top: "22px", right: "-4px", background: C.verde, color: C.amarillo, fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "18px", padding: "8px 18px", borderRadius: "3px", boxShadow: "0 4px 16px rgba(0,0,0,0.22)", whiteSpace: "nowrap", letterSpacing: "0.05em" }}>
+                Fuel on the Go
+              </div>
+              <div className="hero-badges" style={{ position: "absolute", bottom: "-16px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "6px", whiteSpace: "nowrap" }}>
+                <Badge>🏋️ 25g protein</Badge>
+                <Badge>🌿 vegan</Badge>
+                <Badge>⚡ keto</Badge>
+              </div>
             </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="hero-2"
-            {...flipIn}
-            style={{ transformStyle: "preserve-3d" }}
-            className="mx-auto flex max-w-5xl flex-col items-center px-6 py-20"
-          >
-            {/* Panel 2 — FeatureHighlight */}
-            <div
-              className="w-full max-w-2xl rounded-3xl"
-              style={{
-                background: "#fff",
-                boxShadow: "0 2px 4px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.08)",
-              }}
-            >
-              <FeatureHighlight
-                icon={
-                  <span
-                    className="flex h-11 w-11 items-center justify-center rounded-full"
-                    style={{ background: "#FFD43B" }}
-                  >
-                    <Dumbbell className="h-6 w-6" style={{ color: "#0d0c22" }} />
-                  </span>
-                }
-                title="Easy. Does it all."
-                features={features}
-                footer={footer}
-                className="max-w-full"
-                style={{ color: "#0d0c22" }}
+          </div>
+
+          {/* Slide 2 — Dark Green */}
+          <div className="hero-slide" style={{ background: C.verde }}>
+            <div aria-hidden style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 75% 40%, rgba(255,198,45,0.10) 0%, transparent 60%), radial-gradient(circle at 10% 90%, rgba(255,255,255,0.04) 0%, transparent 50%)", pointerEvents: "none" }} />
+            <div className="hero-text-inner" style={{ position: "relative", zIndex: 2, maxWidth: "42%" }}>
+              <h1 className="hero-headline-el" style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "clamp(64px, 7.4vw, 112px)", lineHeight: 0.86, letterSpacing: "0.02em", color: C.amarillo, marginBottom: "22px", textTransform: "uppercase" }}>
+                DAILY<br />FUEL
+              </h1>
+              <p style={{ fontSize: "13.5px", fontStyle: "italic", color: "rgba(255,255,255,0.58)", lineHeight: 1.55, maxWidth: "200px", marginBottom: "22px" }}>
+                Power through every day with bars built for real life.
+              </p>
+              <CtaLink href="/comparison" bg={C.amarillo} color={C.verde} shadow="0 4px 20px rgba(255,198,45,0.30)">SHOP ALL ↓</CtaLink>
+              <RatingRow starFill={C.amarillo} numColor="#fff" labelColor="rgba(255,255,255,0.42)" />
+            </div>
+
+            <div className="hero-product-el" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-44%, -50%)", zIndex: 4 }}>
+              <div style={{ width: "420px", height: "420px", borderRadius: "50%", padding: "9px", background: "#0a3028", boxShadow: "0 0 0 1px rgba(255,198,45,0.15), 0 8px 24px rgba(0,0,0,0.35), 0 24px 56px rgba(0,0,0,0.28)" }}>
+                <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: "#0d3e2e" }}>
+                  <img src="/circular_unwrapped.png" alt="Daily Fuel Bar" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                </div>
+              </div>
+              <div className="hero-price-tag" style={{ position: "absolute", top: "22px", right: "-4px", background: C.amarillo, color: C.verde, fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "18px", padding: "8px 18px", borderRadius: "3px", boxShadow: "0 4px 16px rgba(0,0,0,0.22)", whiteSpace: "nowrap", letterSpacing: "0.05em" }}>
+                Flavour Bombs
+              </div>
+              <div className="hero-badges" style={{ position: "absolute", bottom: "-16px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "6px", whiteSpace: "nowrap" }}>
+                <Badge>🔥 20g protein</Badge>
+                <Badge>☕ caffeine</Badge>
+                <Badge>⚡ energy</Badge>
+              </div>
+            </div>
+          </div>
+
+          {/* Slide 3 — Red */}
+          <div className="hero-slide" style={{ background: C.rojo }}>
+            <div aria-hidden style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 70% 50%, rgba(255,255,255,0.18) 0%, transparent 65%), radial-gradient(circle at 10% 90%, rgba(0,0,0,0.08) 0%, transparent 50%)", pointerEvents: "none" }} />
+            <div className="hero-text-inner" style={{ position: "relative", zIndex: 2, maxWidth: "46%" }}>
+              <h1 className="hero-headline-el" style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "clamp(64px, 7.4vw, 112px)", lineHeight: 0.86, letterSpacing: "0.02em", color: "#fff", marginBottom: "22px", textTransform: "uppercase" }}>
+                TOP-5<br />PICKS
+              </h1>
+              <p style={{ fontSize: "13.5px", fontStyle: "italic", color: "rgba(255,255,255,0.82)", lineHeight: 1.55, maxWidth: "200px", marginBottom: "22px" }}>
+                Our curated ranking of premium protein bars this month.
+              </p>
+              <CtaLink href="/comparison" bg="#fff" color={C.rojo} shadow="0 4px 20px rgba(0,0,0,0.15)">SEE RANKINGS ↓</CtaLink>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "7px", marginTop: "18px" }}>
+                {[
+                  ["#1", "Grenade · Choc Chip Salted Caramel", "★4.9"],
+                  ["#2", "Barebells · Salted Peanut Caramel",  "★4.8"],
+                  ["#3", "Quest · Cookies & Cream",            "★4.8"],
+                ].map(([num, name, rating]) => (
+                  <div key={num} style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(255,255,255,0.22)", borderRadius: "4px", padding: "8px 12px", backdropFilter: "blur(4px)" }}>
+                    <span style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "12px", color: "rgba(255,255,255,0.65)", width: "18px", flexShrink: 0 }}>{num}</span>
+                    <span style={{ fontSize: "12.5px", fontWeight: 600, color: "#fff", flex: 1 }}>{name}</span>
+                    <span style={{ fontFamily: "var(--font-barlow)", fontWeight: 800, fontSize: "12.5px", color: "rgba(255,255,255,0.85)" }}>{rating}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="hero-product-el" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-44%, -50%)", zIndex: 4 }}>
+              <div style={{ width: "420px", height: "420px", borderRadius: "50%", padding: "9px", background: "#fff", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.12), 0 24px 56px rgba(0,0,0,0.10)" }}>
+                <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: "#fde8e5" }}>
+                  <img src="/circular_flavours.png" alt="Top Protein Bar Flavours" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                </div>
+              </div>
+              <div className="hero-price-tag" style={{ position: "absolute", top: "22px", right: "-4px", background: "#fff", color: C.rojo, fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "18px", padding: "8px 18px", borderRadius: "3px", boxShadow: "0 4px 16px rgba(0,0,0,0.22)", whiteSpace: "nowrap", letterSpacing: "0.05em" }}>
+                Top Rated
+              </div>
+              <div className="hero-badges" style={{ position: "absolute", bottom: "-16px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "6px", whiteSpace: "nowrap" }}>
+                <Badge>🥇 #1 Rated</Badge>
+                <Badge>🔬 Lab Tested</Badge>
+              </div>
+            </div>
+          </div>
+
+          {/* Slide 4 — Navy */}
+          <div className="hero-slide hero-nav-slide4" style={{ background: C.azul }}>
+            <div aria-hidden style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 75% 40%, rgba(255,198,45,0.10) 0%, transparent 60%), radial-gradient(circle at 10% 90%, rgba(68,100,204,0.14) 0%, transparent 50%)", pointerEvents: "none" }} />
+            <div className="hero-text-inner" style={{ position: "relative", zIndex: 2, maxWidth: "44%" }}>
+              <h1 className="hero-headline-el" style={{ fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "clamp(48px, 5.6vw, 82px)", lineHeight: 0.86, letterSpacing: "0.02em", color: C.amarillo, marginBottom: "22px", textTransform: "uppercase" }}>
+                VALUE vs<br />CONTENT
+              </h1>
+              <p style={{ fontSize: "13.5px", fontStyle: "italic", color: "rgba(255,255,255,0.60)", lineHeight: 1.55, maxWidth: "200px", marginBottom: "22px" }}>
+                Plot every bar on two dimensions: price per gram of protein vs. protein density.
+              </p>
+              <CtaLink href="/comparison" bg={C.amarillo} color={C.azul} shadow="0 4px 20px rgba(255,198,45,0.30)">EXPLORE CHART →</CtaLink>
+              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "18px" }}>
+                {["25 bars tracked", "5 brands", "SGD pricing"].map(t => (
+                  <span key={t} style={{ background: "rgba(255,255,255,0.10)", borderRadius: "3px", padding: "5px 12px", fontSize: "11.5px", fontWeight: 600, color: "rgba(255,255,255,0.70)" }}>{t}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="hero-product-el" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-15%, -50%)", zIndex: 4 }}>
+              <div style={{ width: "460px", height: "330px", borderRadius: "10px", overflow: "hidden", boxShadow: "0 0 0 1px rgba(255,198,45,0.22), 0 10px 36px rgba(0,0,0,0.48), 0 28px 64px rgba(0,0,0,0.35)", position: "relative" }}>
+                <iframe src="/chart-embed.html" style={{ width: "100%", height: "100%", border: "none", display: "block" }} scrolling="no" />
+                <div style={{ position: "absolute", inset: 0, borderRadius: "10px", border: "1px solid rgba(255,198,45,0.18)", pointerEvents: "none" }} />
+              </div>
+              <div className="hero-price-tag" style={{ position: "absolute", top: "14px", right: "-8px", background: C.amarillo, color: C.azul, fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "18px", padding: "8px 18px", borderRadius: "3px", boxShadow: "0 4px 16px rgba(0,0,0,0.22)", whiteSpace: "nowrap", letterSpacing: "0.05em" }}>
+                SG &amp; MY
+              </div>
+              <div className="hero-badges" style={{ position: "absolute", bottom: "-14px", left: "50%", transform: "translateX(-50%)", display: "flex", gap: "6px", whiteSpace: "nowrap" }}>
+                <Badge>→ $/g protein</Badge>
+                <Badge>↑ g/100 kcal</Badge>
+              </div>
+            </div>
+          </div>
+
+        </motion.div>
+
+        {/* Arrows */}
+        <button
+          className="hero-arrow"
+          onClick={() => setCurrent(c => (c - 1 + 4) % 4)}
+          aria-label="Previous slide"
+          style={{ position: "absolute", top: "50%", left: "16px", transform: "translateY(-50%)", zIndex: 10, width: "44px", height: "44px", borderRadius: "50%", border: "2px solid rgba(255,255,255,0.40)", background: "rgba(0,0,0,0.18)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" style={{ stroke: "#fff", fill: "none", strokeWidth: 2.5, strokeLinecap: "round", strokeLinejoin: "round" }}>
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <button
+          className="hero-arrow"
+          onClick={() => setCurrent(c => (c + 1) % 4)}
+          aria-label="Next slide"
+          style={{ position: "absolute", top: "50%", right: "16px", transform: "translateY(-50%)", zIndex: 10, width: "44px", height: "44px", borderRadius: "50%", border: "2px solid rgba(255,255,255,0.40)", background: "rgba(0,0,0,0.18)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", padding: 0 }}
+        >
+          <svg viewBox="0 0 24 24" width="20" height="20" style={{ stroke: "#fff", fill: "none", strokeWidth: 2.5, strokeLinecap: "round", strokeLinejoin: "round" }}>
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+
+        {/* Dots */}
+        <div className="hero-dots" style={{ position: "absolute", bottom: "24px", left: "80px", display: "flex", gap: "7px", zIndex: 10 }}>
+          {[0,1,2,3].map(i => {
+            const [activeColor, restColor] = DOT_COLORS[current];
+            return (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                aria-label={`Slide ${i + 1}`}
+                style={{
+                  width: i === current ? "22px" : "8px",
+                  height: "8px",
+                  borderRadius: i === current ? "4px" : "50%",
+                  background: i === current ? activeColor : restColor,
+                  border: "none",
+                  padding: 0,
+                  cursor: "pointer",
+                  transition: "all 0.25s cubic-bezier(0.34,1.56,0.64,1)",
+                  transform: i === current ? "scale(1.2)" : "scale(1)",
+                }}
               />
-            </div>
-
-            {/* Dot indicator */}
-            <div className="mt-8 flex justify-center gap-2">
-              <span className="h-2 w-2 rounded-full" style={{ background: "rgba(0,0,0,0.18)" }} />
-              <span className="h-2 w-6 rounded-full" style={{ background: "#0d0c22" }} />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 }
