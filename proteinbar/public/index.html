@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proteinbarsia — Premium Protein Bars</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      --blanco: #f4f3e6;
+      --verde: #0a4635;
+      --rojo: #e54d3a;
+      --azul: #28306c;
+      --amarillo: #ffc62d;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *::-webkit-scrollbar { display: none; }
+
+    body {
+      font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+      background: var(--blanco);
+      color: var(--verde);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────── */
+    .nav {
+      height: 76px;
+      background: var(--verde);
+      border-bottom: none;
+    }
+
+    /* Inner wrapper aligns with .page content edges */
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      padding: 0 24px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .logo-wrap img {
+      height: 50px;
+      width: auto;
+      border-radius: 6px;
+    }
+
+    .logo-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: #fff;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.68);
+      text-decoration: none;
+      transition: color 0.18s ease;
+    }
+
+    .nav-links a:hover { color: #fff; }
+
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--amarillo);
+      outline-offset: 3px;
+      border-radius: 3px;
+    }
+
+
+    /* ── PAGE WRAPPER ────────────────────────────────────── */
+    .page {
+      padding: 20px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* ── HERO ROW ────────────────────────────────────────── */
+    .hero-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    /* ── HERO CAROUSEL ───────────────────────────────────── */
+    .hero-carousel {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      min-height: 440px;
+    }
+
+    .hero-slides-track {
+      display: flex;
+      width: 400%;
+      min-height: 440px;
+      height: 100%;
+      transition: transform 1.65s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: transform;
+    }
+
+    .hero-slide {
+      width: calc(100% / 4);
+      flex-shrink: 0;
+      min-height: 440px;
+      position: relative;
+      padding: 50px 44px 72px 80px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Slide 1 — amarillo */
+    .hero-slide-yellow { background: var(--amarillo); }
+    .hero-slide-yellow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 50%, rgba(255,255,255,0.22) 0%, transparent 65%),
+                  radial-gradient(circle at 15% 80%, rgba(255,200,0,0.3) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Slide 2 — verde */
+    .hero-slide-dark { background: var(--verde); }
+    .hero-slide-dark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 75% 40%, rgba(255,198,45,0.10) 0%, transparent 60%),
+                  radial-gradient(circle at 10% 90%, rgba(255,255,255,0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Slide 3 — rojo */
+    .hero-slide-green { background: var(--rojo); }
+    .hero-slide-green::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 50%, rgba(255,255,255,0.18) 0%, transparent 65%),
+                  radial-gradient(circle at 10% 90%, rgba(0,0,0,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Verde slide overrides */
+    .hero-slide-dark .hero-headline { color: var(--amarillo); }
+    .hero-slide-dark .hero-sub { color: rgba(255,255,255,0.58); }
+    .hero-slide-dark .hero-cta {
+      background: var(--amarillo);
+      color: var(--verde);
+      box-shadow: 0 4px 20px rgba(255,198,45,0.30);
+    }
+    .hero-slide-dark .hero-cta:hover { background: #e8b320; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,198,45,0.35); }
+    .hero-slide-dark .rating-num { color: #fff; }
+    .hero-slide-dark .rating-label { color: rgba(255,255,255,0.42); }
+
+    /* Rojo slide overrides */
+    .hero-slide-green .hero-headline { color: #fff; }
+    .hero-slide-green .hero-sub { color: rgba(255,255,255,0.82); }
+    .hero-slide-green .hero-cta {
+      background: #fff;
+      color: var(--rojo);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .hero-slide-green .hero-cta:hover { background: #f0ece0; transform: translateY(-2px); }
+
+    /* Carousel Arrow Buttons */
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.40);
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    .carousel-arrow-prev { left: 16px; }
+    .carousel-arrow-next { right: 16px; }
+
+    .carousel-arrow:hover {
+      background: rgba(0,0,0,0.40);
+      border-color: rgba(255,255,255,0.80);
+      transform: translateY(-50%) scale(1.09);
+    }
+
+    .carousel-arrow:active { transform: translateY(-50%) scale(0.93); }
+
+    .carousel-arrow:focus-visible {
+      outline: 2px solid var(--amarillo);
+      outline-offset: 3px;
+    }
+
+    .carousel-arrow svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Carousel nav dots */
+    .carousel-dots {
+      position: absolute;
+      bottom: 24px;
+      left: 80px;
+      display: flex;
+      gap: 7px;
+      z-index: 10;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.20);
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      transition: background 0.25s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    .carousel-dot.active { background: var(--verde); transform: scale(1.35); }
+    .carousel-dot:hover { opacity: 0.75; }
+    .carousel-dot:focus-visible { outline: 2px solid var(--amarillo); outline-offset: 2px; }
+
+    #heroCarousel[data-slide="1"] .carousel-dot { background: rgba(255,255,255,0.35); }
+    #heroCarousel[data-slide="1"] .carousel-dot.active { background: var(--amarillo); transform: scale(1.35); }
+
+    #heroCarousel[data-slide="2"] .carousel-dot { background: rgba(255,255,255,0.40); }
+    #heroCarousel[data-slide="2"] .carousel-dot.active { background: #fff; transform: scale(1.35); }
+
+    /* Slide 4 — azul */
+    .hero-slide-navy { background: var(--azul); }
+    .hero-slide-navy::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 75% 40%, rgba(255,198,45,0.10) 0%, transparent 60%),
+                  radial-gradient(circle at 10% 90%, rgba(68,100,204,0.14) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .hero-slide-navy .hero-headline { color: var(--amarillo); font-size: clamp(48px, 5.6vw, 82px); }
+    .hero-slide-navy .hero-sub { color: rgba(255,255,255,0.60); }
+    .hero-slide-navy .hero-cta {
+      background: var(--amarillo);
+      color: var(--azul);
+      box-shadow: 0 4px 20px rgba(255,198,45,0.30);
+    }
+    .hero-slide-navy .hero-cta:hover { background: #e8b320; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,198,45,0.35); }
+
+    #heroCarousel[data-slide="3"] .carousel-dot { background: rgba(255,255,255,0.35); }
+    #heroCarousel[data-slide="3"] .carousel-dot.active { background: var(--amarillo); transform: scale(1.35); }
+
+    /* ── SHARED HERO INNER ELEMENTS ──────────────────────── */
+    .hero-text {
+      position: relative;
+      z-index: 2;
+      max-width: 42%;
+    }
+
+    .hero-headline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(64px, 7.4vw, 112px);
+      line-height: 0.86;
+      letter-spacing: 0.02em;
+      color: var(--verde);
+      margin-bottom: 22px;
+      text-transform: uppercase;
+    }
+
+    .hero-sub {
+      font-size: 13.5px;
+      font-style: italic;
+      color: rgba(10,70,53,0.55);
+      line-height: 1.55;
+      max-width: 200px;
+      margin-bottom: 22px;
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .stars { display: flex; gap: 2px; }
+
+    .star {
+      width: 14px;
+      height: 14px;
+      fill: var(--verde);
+    }
+
+    .rating-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--verde);
+    }
+
+    .rating-label {
+      font-size: 13px;
+      color: rgba(10,70,53,0.48);
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      background: var(--verde);
+      color: var(--amarillo);
+      text-decoration: none;
+      border-radius: 3px;
+      padding: 13px 28px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 4px 20px rgba(10,70,53,0.22);
+      transition: background 0.18s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+    }
+
+    .hero-cta:hover {
+      background: #083828;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(10,70,53,0.28);
+    }
+
+    .hero-cta:active { transform: translateY(0) scale(0.97); }
+    .hero-cta:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 3px; }
+
+    /* ── CIRCULAR PRODUCT IMAGE ──────────────────────────── */
+    .hero-product {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-44%, -50%);
+      z-index: 4;
+    }
+
+    .product-ring {
+      width: 308px;
+      height: 308px;
+      border-radius: 50%;
+      padding: 9px;
+      background: #fff;
+      box-shadow:
+        0 0 0 1px rgba(10,70,53,0.06),
+        0 8px 24px rgba(10,70,53,0.10),
+        0 24px 56px rgba(10,70,53,0.10);
+    }
+
+    .product-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #e8d5b0;
+    }
+
+    .product-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .price-tag {
+      position: absolute;
+      top: 22px;
+      right: -4px;
+      background: var(--verde);
+      color: var(--amarillo);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      padding: 8px 18px;
+      border-radius: 3px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.22);
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+    }
+
+    .product-badges {
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .badge {
+      background: #fff;
+      border-radius: 3px;
+      padding: 5px 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--verde);
+      box-shadow: 0 2px 10px rgba(10,70,53,0.10);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Small portrait in hero top-right */
+    .hero-portrait {
+      position: absolute;
+      top: 28px;
+      right: 28px;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(255,255,255,0.55);
+      z-index: 3;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .hero-portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Mini picks list (slide 3) */
+    .picks-mini-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 18px;
+    }
+
+    .pick-mini-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.22);
+      border-radius: 4px;
+      padding: 8px 12px;
+      backdrop-filter: blur(4px);
+    }
+
+    .pick-mini-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 12px;
+      color: rgba(255,255,255,0.65);
+      width: 18px;
+      flex-shrink: 0;
+    }
+
+    .pick-mini-name {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #fff;
+      flex: 1;
+    }
+
+    .pick-mini-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.85);
+    }
+
+    /* ── RIGHT SIDE CARDS ────────────────────────────────── */
+    .side-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* GAINS card */
+    .gains-card {
+      background: var(--verde);
+      border-radius: 10px;
+      padding: 28px 24px 24px;
+      position: relative;
+      overflow: hidden;
+      flex: 1.3;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 200px;
+    }
+
+    .gains-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 30%, rgba(255,255,255,0.10) 0%, transparent 60%),
+                  radial-gradient(circle at 10% 100%, rgba(0,0,0,0.08) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .gains-card-inner { position: relative; z-index: 2; }
+
+    .gains-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 36px;
+      letter-spacing: 0.06em;
+      color: var(--amarillo);
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .gains-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.45;
+      margin-top: 8px;
+      max-width: 155px;
+    }
+
+    .gains-img {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid rgba(255,255,255,0.22);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      z-index: 3;
+    }
+
+    .gains-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .explore-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--amarillo);
+      color: var(--verde);
+      border: none;
+      border-radius: 3px;
+      padding: 9px 20px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      margin-top: 14px;
+      width: fit-content;
+      transition: background 0.18s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .explore-btn:hover { background: #e8b320; transform: translateY(-1px); }
+    .explore-btn:active { transform: translateY(0) scale(0.97); }
+    .explore-btn:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+    /* EVERYDAY / DAILY FUEL card */
+    .daily-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px 20px;
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      align-items: center;
+      gap: 14px;
+      box-shadow:
+        0 1px 2px rgba(10,70,53,0.04),
+        0 4px 16px rgba(10,70,53,0.07);
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease;
+    }
+
+    .daily-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(10,70,53,0.06), 0 12px 32px rgba(10,70,53,0.11);
+    }
+
+    .daily-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .daily-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .daily-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: var(--verde);
+      text-transform: uppercase;
+    }
+
+    .daily-sub {
+      font-size: 12px;
+      color: rgba(10,70,53,0.45);
+      line-height: 1.4;
+      margin-top: 3px;
+    }
+
+    .daily-price {
+      background: var(--amarillo);
+      color: var(--verde);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      padding: 9px 16px;
+      border-radius: 3px;
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── TRACKERS & BRANDS SECTION ───────────────────────── */
+    .trackers-section {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow:
+        0 1px 2px rgba(10,70,53,0.04),
+        0 4px 16px rgba(10,70,53,0.06);
+    }
+
+    .trackers-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .tracker-stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 20px;
+      border-right: 1px solid rgba(10,70,53,0.08);
+    }
+
+    .tracker-stat:last-child { border-right: none; }
+
+    .tracker-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 32px;
+      letter-spacing: 0.04em;
+      color: var(--verde);
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .tracker-label {
+      font-size: 12.5px;
+      color: rgba(10,70,53,0.42);
+      margin-top: 5px;
+    }
+
+    .trackers-brands-wrap {
+      padding: 40px 44px 48px;
+      background: var(--blanco);
+    }
+
+    .brands-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 30px;
+      letter-spacing: 0.06em;
+      color: var(--verde);
+      text-align: center;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+
+    .brands-grid {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 24px 28px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      box-shadow:
+        0 1px 2px rgba(10,70,53,0.04),
+        0 4px 16px rgba(10,70,53,0.07);
+      min-width: 140px;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.18s ease, border-color 0.18s ease;
+      text-decoration: none;
+      border: 1.5px solid rgba(10,70,53,0.06);
+    }
+
+    .brand-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(10,70,53,0.07), 0 12px 32px rgba(10,70,53,0.12);
+      border-color: var(--verde);
+    }
+
+    .brand-card:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 3px; border-radius: 8px; }
+
+    .brand-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 26px;
+    }
+
+    .brand-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--verde);
+    }
+
+    /* ── BOTTOM ROW: PICKS ───────────────────────────────── */
+    .bottom-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    /* ── TOP-5 PICKS ─────────────────────────────────────── */
+    .picks-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 44px 44px 40px;
+      box-shadow:
+        0 1px 2px rgba(10,70,53,0.04),
+        0 4px 16px rgba(10,70,53,0.06);
+    }
+
+    .picks-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .picks-icon-box {
+      width: 54px;
+      height: 54px;
+      background: var(--amarillo);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .picks-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 56px;
+      letter-spacing: 0.03em;
+      color: var(--verde);
+      line-height: 0.88;
+      text-transform: uppercase;
+    }
+
+    .picks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 640px;
+    }
+
+    .pick-row {
+      display: grid;
+      grid-template-columns: 54px 1fr auto auto;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 16px;
+      border-radius: 6px;
+      background: var(--blanco);
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .pick-row:hover {
+      transform: translateX(4px);
+      box-shadow: 0 2px 12px rgba(10,70,53,0.08);
+      border-color: rgba(10,70,53,0.12);
+    }
+
+    .pick-thumb {
+      width: 54px;
+      height: 54px;
+      border-radius: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .pick-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .pick-name {
+      font-weight: 700;
+      font-size: 14.5px;
+      color: var(--verde);
+    }
+
+    .pick-brand-tag {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 10.5px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      padding: 2px 7px;
+      margin-bottom: 3px;
+    }
+
+    .pick-desc {
+      font-size: 12px;
+      color: rgba(10,70,53,0.40);
+      margin-top: 1px;
+      font-style: italic;
+    }
+
+    .pick-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 12px;
+      color: var(--verde);
+      margin-left: 8px;
+      opacity: 0.6;
+    }
+
+    .pick-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800;
+      font-size: 16px;
+      color: var(--verde);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+
+    .pick-add {
+      width: 34px;
+      height: 34px;
+      background: var(--verde);
+      color: var(--amarillo);
+      border: none;
+      border-radius: 3px;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      text-decoration: none;
+      transition: background 0.18s ease, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .pick-add:hover { background: var(--rojo); transform: scale(1.12); }
+    .pick-add:active { transform: scale(0.94); }
+    .pick-add:focus-visible { outline: 3px solid var(--amarillo); outline-offset: 2px; }
+
+    /* ── SVG STAR helper ─────────────────────────────────── */
+    .star-svg {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ── MOTION ─────────────────────────────────────────── */
+    @media (prefers-reduced-motion: no-preference) {
+
+      /* Product ring gentle float */
+      @keyframes pb-float {
+        0%, 100% { transform: translateY(0); }
+        50%       { transform: translateY(-14px); }
+      }
+      .product-ring { animation: pb-float 4.2s ease-in-out infinite; }
+
+      /* Hero text staggered entrance */
+      @keyframes pb-fade-up {
+        from { opacity: 0; transform: translateY(22px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Price tag spring pop */
+      @keyframes pb-pop {
+        0%   { opacity: 0; transform: scale(0.60) rotate(-8deg); }
+        65%  { transform: scale(1.08) rotate(2deg); }
+        100% { opacity: 1; transform: scale(1) rotate(0deg); }
+      }
+
+      /* Badges soft slide up */
+      @keyframes pb-badge {
+        from { opacity: 0; transform: translateY(9px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Active-slide content animations — class managed by goToSlide() */
+      .hero-slide-active .hero-headline {
+        animation: pb-fade-up 0.65s 0.05s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      .hero-slide-active .hero-sub {
+        animation: pb-fade-up 0.65s 0.18s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      .hero-slide-active .hero-cta {
+        animation: pb-fade-up 0.65s 0.30s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      .hero-slide-active .rating-row,
+      .hero-slide-active .picks-mini-list {
+        animation: pb-fade-up 0.65s 0.40s cubic-bezier(0.22,1,0.36,1) both;
+      }
+      .hero-slide-active .price-tag {
+        animation: pb-pop 0.55s 0.48s cubic-bezier(0.34,1.56,0.64,1) both;
+      }
+      .hero-slide-active .product-badges {
+        animation: pb-badge 0.50s 0.62s cubic-bezier(0.22,1,0.36,1) both;
+      }
+
+      /* Scroll reveal base state */
+      .pb-reveal {
+        opacity: 0;
+        transform: translateY(26px);
+      }
+      .pb-reveal.pb-visible {
+        opacity: 1;
+        transform: translateY(0);
+        transition:
+          opacity 0.60s cubic-bezier(0.22,1,0.36,1),
+          transform 0.60s cubic-bezier(0.22,1,0.36,1);
+      }
+    }
+
+    /* ── MOBILE NAV HAMBURGER ─────────────────────────── */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 6px;
+      border-radius: 4px;
+      transition: background 0.18s ease;
+    }
+    .nav-toggle:hover { background: rgba(255,255,255,0.10); }
+    .nav-toggle:focus-visible { outline: 2px solid var(--amarillo); outline-offset: 3px; }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav dropdown */
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: var(--verde);
+      padding: 12px 24px 20px;
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.20);
+    }
+    .nav-links.open li { border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .nav-links.open li:last-child { border-bottom: none; }
+    .nav-links.open a { display: block; padding: 12px 0; font-size: 15px; }
+
+    /* ── MOBILE RESPONSIVE ────────────────────────────── */
+    @media (max-width: 767px) {
+      /* Nav */
+      .nav { height: 60px; }
+      .nav-inner { padding: 0 16px; }
+      .logo-name { font-size: 17px; }
+      .nav-toggle { display: flex; }
+      .nav-links { display: none; }
+
+      /* Page */
+      .page { padding: 10px 10px 28px; gap: 10px; }
+
+      /* Hero — stack text above image */
+      .hero-carousel,
+      .hero-slides-track { min-height: 0; }
+      .hero-slide {
+        min-height: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px 18px 28px 18px;
+      }
+
+      /* Override inline max-width on hero-text */
+      .hero-text,
+      .hero-slide .hero-text { max-width: 100% !important; }
+
+      .hero-headline { font-size: clamp(42px, 12vw, 68px); }
+
+      /* Un-hide product image, reposition as a static element below text */
+      .hero-product {
+        position: static !important;
+        transform: none !important;
+        display: flex !important;
+        justify-content: center;
+        width: 100%;
+        margin-top: 16px;
+      }
+
+      /* Slide 4 has an iframe chart — keep that hidden on mobile */
+      .hero-slide-navy .hero-product { display: none !important; }
+
+      /* Scale down product ring (overrides inline width/height) */
+      .hero-product .product-ring {
+        width: 170px !important;
+        height: 170px !important;
+        padding: 5px !important;
+        animation: none !important;
+      }
+
+      /* Declutter: hide price tag and badges on mobile */
+      .price-tag,
+      .product-badges { display: none !important; }
+
+      /* Carousel dots re-align */
+      .carousel-dots { left: 18px; }
+
+      /* Hero slide 4 badges row */
+      .hero-slide-navy .hero-text > div { flex-wrap: wrap; gap: 6px; }
+
+      /* Tracker stats: 2×2 */
+      .trackers-stats { grid-template-columns: repeat(2, 1fr); }
+      .tracker-stat:nth-child(2) { border-right: none; }
+      .tracker-stat:nth-child(1),
+      .tracker-stat:nth-child(2) { border-bottom: 1px solid rgba(10,70,53,0.08); }
+      .tracker-stat { padding: 20px 14px; }
+      .tracker-num { font-size: 26px; }
+
+      /* Brands wrap */
+      .trackers-brands-wrap { padding: 24px 16px 28px; }
+      .brand-card { min-width: 120px; padding: 18px 18px 14px; }
+
+      /* Picks card */
+      .picks-card {
+        padding: 24px 18px 24px !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+      }
+      /* Hide the top-5 image column on mobile */
+      .picks-card > div:last-child { display: none !important; }
+
+      .picks-list { max-width: 100%; }
+      .picks-title { font-size: 40px; }
+      .picks-header { gap: 12px; margin-bottom: 20px; }
+      .picks-icon-box { width: 44px; height: 44px; font-size: 22px; margin-top: 4px; }
+
+      /* Pick rows: drop the price column */
+      .pick-row {
+        grid-template-columns: 48px 1fr auto;
+        gap: 10px;
+        padding: 11px 12px;
+      }
+      .pick-price { display: none; }
+      .pick-add { width: 30px; height: 30px; font-size: 16px; }
+
+      /* Daily card */
+      .daily-card { grid-template-columns: 70px 1fr auto; gap: 10px; padding: 16px 14px; }
+      .daily-img { width: 70px; height: 70px; }
+
+      /* Gains card */
+      .gains-card { padding: 22px 18px 18px; }
+      .gains-img { right: 12px; width: 70px; height: 70px; }
+
+      /* Bottom row */
+      .bottom-row { gap: 10px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-slide { padding: 20px 14px 48px 14px; }
+      .hero-headline { font-size: clamp(38px, 13.5vw, 56px); }
+      .hero-sub { font-size: 12.5px; max-width: 100%; }
+      .picks-mini-list { gap: 5px; }
+      .pick-mini-row { padding: 7px 10px; }
+      .brand-card { min-width: 100px; padding: 14px 14px 12px; }
+      .brand-avatar { width: 48px; height: 48px; font-size: 22px; }
+      .brand-name { font-size: 12.5px; }
+      .pick-row { grid-template-columns: 42px 1fr auto; }
+      .pick-thumb { width: 42px; height: 42px; }
+      .pick-name { font-size: 13.5px; }
+      .pick-add { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="logo-wrap">
+        <img src="/brand_assets/proteinbarsia_logo.jpg" alt="Proteinbarsia logo" />
+        <span class="logo-name">Proteinbarsia</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/comparison">Comparison</a></li>
+        <li><a href="/value-vs-content.html">Value vs Content</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- PAGE -->
+  <div class="page">
+
+    <!-- HERO ROW -->
+    <div class="hero-row">
+
+      <!-- Hero Carousel (4 slides) -->
+      <div class="hero-carousel" id="heroCarousel" data-slide="0">
+        <div class="hero-slides-track" id="heroTrack">
+
+          <!-- ─── Slide 1: Amarillo ──────────────────────── -->
+          <div class="hero-slide hero-slide-yellow">
+            <div class="hero-text">
+              <h1 class="hero-headline">PROOO<br>TEIN!</h1>
+              <p class="hero-sub">Premium protein fuel,<br>made just for you.</p>
+              <a href="#picks" class="hero-cta">SHOP NOW ↓</a>
+              <div class="rating-row">
+                <div class="stars">
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#0a4635" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                </div>
+                <span class="rating-num">4.8</span>
+                <span class="rating-label">· Proteinbarsia</span>
+              </div>
+            </div>
+
+            <div class="hero-product">
+              <div class="product-ring" style="width:420px;height:420px;">
+                <div class="product-circle">
+                  <img src="/musclecrisp.png" alt="Protein Bar" />
+                </div>
+              </div>
+              <div class="price-tag">Fuel on the Go</div>
+              <div class="product-badges">
+                <span class="badge">🏋️ 25g protein</span>
+                <span class="badge">🌿 vegan</span>
+                <span class="badge">⚡ keto</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ─── Slide 2: Verde — Daily Fuel ───────────── -->
+          <div class="hero-slide hero-slide-dark">
+            <div class="hero-text">
+              <h1 class="hero-headline">DAILY<br>FUEL</h1>
+              <p class="hero-sub">Power through every day with bars built for real life.</p>
+              <a href="#picks" class="hero-cta">SHOP ALL ↓</a>
+              <div class="rating-row">
+                <div class="stars">
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                  <svg class="star-svg" viewBox="0 0 20 20"><path fill="#ffc62d" d="M10 1l2.39 6.26H19l-5.31 3.77 2.08 6.51L10 13.51l-5.77 4.03 2.08-6.51L1 7.26h6.61z"/></svg>
+                </div>
+                <span class="rating-num">4.8</span>
+                <span class="rating-label">· Proteinbarsia</span>
+              </div>
+            </div>
+
+            <div class="hero-product">
+              <div class="product-ring" style="width:420px;height:420px;background:#0a3028;box-shadow:0 0 0 1px rgba(255,198,45,0.15),0 8px 24px rgba(0,0,0,0.35),0 24px 56px rgba(0,0,0,0.28);">
+                <div class="product-circle" style="background:#0d3e2e;">
+                  <img src="/circular_unwrapped.png" alt="Daily Fuel Bar" />
+                </div>
+              </div>
+              <div class="price-tag">Flavour Bombs</div>
+              <div class="product-badges">
+                <span class="badge">🔥 20g protein</span>
+                <span class="badge">☕ caffeine</span>
+                <span class="badge">⚡ energy</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ─── Slide 3: Rojo — Top-5 Picks ──────────── -->
+          <div class="hero-slide hero-slide-green">
+            <div class="hero-text" style="max-width:46%;">
+              <h1 class="hero-headline">TOP-5<br>PICKS</h1>
+              <p class="hero-sub" style="color:rgba(255,255,255,0.82);">Our curated ranking of premium protein bars this month.</p>
+              <a href="#picks" class="hero-cta">SEE RANKINGS ↓</a>
+
+              <div class="picks-mini-list">
+                <div class="pick-mini-row">
+                  <span class="pick-mini-num">#1</span>
+                  <span class="pick-mini-name">Grenade · Choc Chip Salted Caramel</span>
+                  <span class="pick-mini-price">★4.9</span>
+                </div>
+                <div class="pick-mini-row">
+                  <span class="pick-mini-num">#2</span>
+                  <span class="pick-mini-name">Barebells · Salted Peanut Caramel</span>
+                  <span class="pick-mini-price">★4.8</span>
+                </div>
+                <div class="pick-mini-row">
+                  <span class="pick-mini-num">#3</span>
+                  <span class="pick-mini-name">Quest · Cookies &amp; Cream</span>
+                  <span class="pick-mini-price">★4.8</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-product">
+              <div class="product-ring" style="width:420px;height:420px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,0.04),0 8px 24px rgba(0,0,0,0.12),0 24px 56px rgba(0,0,0,0.10);">
+                <div class="product-circle" style="background:#fde8e5;">
+                  <img src="/circular_flavours.png" alt="Top Protein Bar Flavours" />
+                </div>
+              </div>
+              <div class="price-tag" style="background:#fff;color:#e54d3a;">Top Rated</div>
+              <div class="product-badges">
+                <span class="badge">🥇 #1 Rated</span>
+                <span class="badge">🔬 Lab Tested</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- ─── Slide 4: Azul — Value vs Content ─────── -->
+          <div class="hero-slide hero-slide-navy">
+            <div class="hero-text" style="max-width:44%;">
+              <h1 class="hero-headline">VALUE vs<br>CONTENT</h1>
+              <p class="hero-sub" style="color:rgba(255,255,255,0.60);">Plot every bar on two dimensions: price per gram of protein vs. protein density. Find your sweet spot.</p>
+              <a href="/value-vs-content.html" class="hero-cta">EXPLORE CHART →</a>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:18px;">
+                <span style="background:rgba(255,255,255,0.10);border-radius:3px;padding:5px 12px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.70);">25 bars tracked</span>
+                <span style="background:rgba(255,255,255,0.10);border-radius:3px;padding:5px 12px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.70);">5 brands</span>
+                <span style="background:rgba(255,255,255,0.10);border-radius:3px;padding:5px 12px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.70);">SGD pricing</span>
+              </div>
+            </div>
+
+            <div class="hero-product" style="left:50%;transform:translate(-15%,-50%);">
+              <div style="width:460px;height:330px;border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,198,45,0.22),0 10px 36px rgba(0,0,0,0.48),0 28px 64px rgba(0,0,0,0.35);position:relative;">
+                <iframe src="/chart-embed.html" style="width:100%;height:100%;border:none;display:block;" scrolling="no"></iframe>
+                <div style="position:absolute;inset:0;border-radius:10px;border:1px solid rgba(255,198,45,0.18);pointer-events:none;"></div>
+              </div>
+              <div class="price-tag" style="background:#ffc62d;color:#28306c;top:14px;right:-8px;">SG &amp; MY</div>
+              <div class="product-badges" style="bottom:-14px;">
+                <span class="badge">→ $/g protein</span>
+                <span class="badge">↑ g/100 kcal</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div><!-- /hero-slides-track -->
+
+        <!-- Navigation arrows -->
+        <button class="carousel-arrow carousel-arrow-prev" onclick="prevSlide()" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="carousel-arrow carousel-arrow-next" onclick="nextSlide()" aria-label="Next slide">
+          <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+
+        <!-- Navigation dots -->
+        <div class="carousel-dots" id="carouselDots">
+          <button class="carousel-dot active" onclick="selectSlide(0)" aria-label="Slide 1"></button>
+          <button class="carousel-dot" onclick="selectSlide(1)" aria-label="Slide 2"></button>
+          <button class="carousel-dot" onclick="selectSlide(2)" aria-label="Slide 3"></button>
+          <button class="carousel-dot" onclick="selectSlide(3)" aria-label="Slide 4"></button>
+        </div>
+
+      </div><!-- /hero-carousel -->
+
+    </div><!-- /hero-row -->
+
+    <!-- TRACKERS & BRANDS SECTION -->
+    <div class="trackers-section">
+      <div class="trackers-stats">
+        <div class="tracker-stat">
+          <div class="tracker-num">5</div>
+          <div class="tracker-label">Brands tracked</div>
+        </div>
+        <div class="tracker-stat">
+          <div class="tracker-num">51</div>
+          <div class="tracker-label">Listings indexed</div>
+        </div>
+        <div class="tracker-stat">
+          <div class="tracker-num">SG &amp; MY</div>
+          <div class="tracker-label">Markets covered</div>
+        </div>
+        <div class="tracker-stat">
+          <div class="tracker-num">1 hour</div>
+          <div class="tracker-label">Updated every</div>
+        </div>
+      </div>
+      <div class="trackers-brands-wrap">
+        <h2 class="brands-title">Brands we cover</h2>
+        <div class="brands-grid">
+          <a href="/comparison?brand=grenade" class="brand-card">
+            <div class="brand-avatar" style="background:#0f0808;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <ellipse cx="30" cy="40" rx="13" ry="15" fill="#c0392b"/>
+                <ellipse cx="30" cy="40" rx="9" ry="11" fill="#a93226"/>
+                <line x1="19" y1="35" x2="41" y2="35" stroke="rgba(0,0,0,0.30)" stroke-width="1.8"/>
+                <line x1="18" y1="41" x2="42" y2="41" stroke="rgba(0,0,0,0.30)" stroke-width="1.8"/>
+                <rect x="25.5" y="22" width="9" height="10" rx="2.5" fill="#7b241c"/>
+                <rect x="25.5" y="22" width="9" height="5" rx="2.5" fill="#922b21"/>
+                <circle cx="30" cy="17" r="4.5" fill="none" stroke="#ffc62d" stroke-width="2.4"/>
+                <rect x="28.5" y="12" width="3" height="5" rx="1" fill="#ffc62d"/>
+                <ellipse cx="24" cy="35" rx="3" ry="7" fill="rgba(255,255,255,0.09)" transform="rotate(-12 24 35)"/>
+              </svg>
+            </div>
+            <span class="brand-name">Grenade</span>
+          </a>
+          <a href="/comparison?brand=barebells" class="brand-card">
+            <div class="brand-avatar" style="background:#1a0d04;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <rect x="4" y="26" width="52" height="8" rx="4" fill="#7a5514"/>
+                <rect x="3" y="20" width="13" height="20" rx="5" fill="#b8761e"/>
+                <rect x="5" y="23" width="9" height="14" rx="3.5" fill="#d4952c"/>
+                <rect x="44" y="20" width="13" height="20" rx="5" fill="#b8761e"/>
+                <rect x="46" y="23" width="9" height="14" rx="3.5" fill="#d4952c"/>
+                <rect x="22" y="24" width="16" height="12" rx="2" fill="#6b4c10"/>
+                <rect x="23" y="25" width="14" height="5" rx="1.5" fill="#8b6418"/>
+                <ellipse cx="21" cy="24" rx="3" ry="5" fill="rgba(255,255,255,0.12)" transform="rotate(-10 21 24)"/>
+                <ellipse cx="45" cy="24" rx="3" ry="5" fill="rgba(255,255,255,0.08)" transform="rotate(10 45 24)"/>
+              </svg>
+            </div>
+            <span class="brand-name">Barebells</span>
+          </a>
+          <a href="/comparison?brand=quest" class="brand-card">
+            <div class="brand-avatar" style="background:#061530;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <circle cx="30" cy="30" r="16" fill="none" stroke="#4480cc" stroke-width="2"/>
+                <circle cx="30" cy="30" r="10" fill="none" stroke="rgba(68,128,204,0.35)" stroke-width="1.2"/>
+                <polygon points="30,12 33,26 30,23 27,26" fill="#4480cc"/>
+                <polygon points="30,48 33,34 30,37 27,34" fill="rgba(68,128,204,0.4)"/>
+                <polygon points="12,30 26,27 23,30 26,33" fill="rgba(68,128,204,0.4)"/>
+                <polygon points="48,30 34,33 37,30 34,27" fill="#4480cc"/>
+                <circle cx="30" cy="30" r="5.5" fill="#4480cc"/>
+                <circle cx="30" cy="30" r="2.5" fill="#061530"/>
+              </svg>
+            </div>
+            <span class="brand-name">Quest</span>
+          </a>
+          <a href="/comparison?brand=pure-protein" class="brand-card">
+            <div class="brand-avatar" style="background:#140822;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <polygon points="30,9 46,19 46,39 30,49 14,39 14,19" fill="#5b21b6"/>
+                <polygon points="30,14 42,21.5 42,37.5 30,45 18,37.5 18,21.5" fill="#7c3aed"/>
+                <polygon points="30,18 38,23 38,37 30,42 22,37 22,23" fill="#6d28d9"/>
+                <circle cx="30" cy="27" r="6" fill="#140822"/>
+                <rect x="27" y="24" width="3.5" height="10" rx="1.5" fill="#c4b5fd"/>
+                <rect x="27" y="24" width="7" height="3.5" rx="1.5" fill="#c4b5fd"/>
+                <rect x="27" y="28.5" width="5.5" height="2.5" rx="1" fill="#a78bfa"/>
+                <ellipse cx="22" cy="21" rx="4" ry="6" fill="rgba(255,255,255,0.08)" transform="rotate(-25 22 21)"/>
+              </svg>
+            </div>
+            <span class="brand-name">Pure Protein</span>
+          </a>
+          <a href="/comparison?brand=myprotein" class="brand-card">
+            <div class="brand-avatar" style="background:#071a0d;overflow:hidden;padding:0;">
+              <svg width="60" height="60" viewBox="0 0 60 60">
+                <rect x="7" y="27" width="46" height="7" rx="3.5" fill="#0a3a20"/>
+                <rect x="4" y="19" width="14" height="23" rx="5" fill="#0f5c45"/>
+                <rect x="6" y="22" width="10" height="17" rx="3.5" fill="#166849"/>
+                <rect x="42" y="19" width="14" height="23" rx="5" fill="#0f5c45"/>
+                <rect x="44" y="22" width="10" height="17" rx="3.5" fill="#166849"/>
+                <rect x="22" y="24" width="16" height="13" rx="2.5" fill="#0a3320"/>
+                <ellipse cx="14" cy="23" rx="2.5" ry="4.5" fill="rgba(255,255,255,0.10)"/>
+                <text x="30" y="34" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="9.5" fill="#ffc62d" letter-spacing="0.5">MP</text>
+              </svg>
+            </div>
+            <span class="brand-name">MyProtein</span>
+          </a>
+        </div>
+      </div>
+    </div><!-- /trackers-section -->
+
+    <!-- TOP-5 PICKS -->
+    <div id="picks" class="picks-card" style="display:flex;gap:44px;align-items:center;">
+      <div style="flex:0 0 auto;">
+      <div class="picks-header">
+        <div class="picks-icon-box">🏆</div>
+        <h2 class="picks-title">TOP-5<br>PICKS</h2>
+      </div>
+      <div class="picks-list">
+
+        <!-- #1 Grenade Carb Killa — Chocolate Chip Salted Caramel ★ 4.9 -->
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#111"/>
+              <rect width="54" height="17" rx="6" fill="#c0392b"/>
+              <rect y="11" width="54" height="6" fill="#c0392b"/>
+              <path d="M0 4 L54 4 L54 10 L0 10Z" fill="rgba(255,255,255,0.07)"/>
+              <text x="27" y="13" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-weight="900" font-size="7.5" fill="white" letter-spacing="1">GRENADE</text>
+              <rect x="6" y="21" width="42" height="22" rx="4" fill="#1e1e1e"/>
+              <rect x="6" y="21" width="42" height="8" rx="3" fill="#2d2d2d"/>
+              <rect x="8" y="23" width="16" height="2.5" rx="1" fill="rgba(255,255,255,0.10)"/>
+              <rect x="10" y="32" width="34" height="2" rx="1" fill="rgba(255,255,255,0.05)"/>
+              <rect x="10" y="36" width="28" height="2" rx="1" fill="rgba(255,255,255,0.04)"/>
+              <text x="27" y="49" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="5" fill="rgba(255,255,255,0.38)" letter-spacing="0.3">CARB KILLA</text>
+            </svg>
+          </div>
+          <div>
+            <div><span class="pick-brand-tag" style="background:#fde8e8;color:#e05c3a;">Grenade</span></div>
+            <div class="pick-name">Carb Killa · Chocolate Chip Salted Caramel</div>
+            <div class="pick-desc">Buttery caramel laced with sea-salt crystals, intensely addictive. <span class="pick-rating">★ 4.9</span></div>
+          </div>
+          <div class="pick-price">Fuel on the Go</div>
+          <a href="/comparison" class="pick-add" aria-label="View Grenade Carb Killa on comparison">→</a>
+        </div>
+
+        <!-- #2 Barebells — Salted Peanut Caramel ★ 4.8 -->
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#f0e3cc"/>
+              <rect width="54" height="16" rx="6" fill="#5a3410"/>
+              <rect y="10" width="54" height="6" fill="#5a3410"/>
+              <path d="M0 4 L54 4 L54 9 L0 9Z" fill="rgba(255,255,255,0.06)"/>
+              <text x="27" y="12" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-weight="900" font-size="6.5" fill="white" letter-spacing="1.2">BAREBELLS</text>
+              <rect x="6" y="20" width="42" height="26" rx="5" fill="#c4873a"/>
+              <rect x="6" y="20" width="42" height="9" rx="4" fill="#d9952a"/>
+              <rect x="8" y="22" width="14" height="2.5" rx="1" fill="rgba(255,255,255,0.30)"/>
+              <circle cx="14" cy="34" r="2.2" fill="#8B5E3C" opacity="0.45"/>
+              <circle cx="22" cy="37" r="1.8" fill="#8B5E3C" opacity="0.38"/>
+              <circle cx="30" cy="33" r="2.2" fill="#8B5E3C" opacity="0.45"/>
+              <circle cx="39" cy="36" r="1.8" fill="#7a4f2c" opacity="0.40"/>
+              <circle cx="17" cy="38" r="1.4" fill="#6b4424" opacity="0.35"/>
+              <circle cx="35" cy="40" r="1.4" fill="#6b4424" opacity="0.32"/>
+            </svg>
+          </div>
+          <div>
+            <div><span class="pick-brand-tag" style="background:#fde8d8;color:#d96b2a;">Barebells</span></div>
+            <div class="pick-name">Protein Bar · Salted Peanut Caramel</div>
+            <div class="pick-desc">Deep-roasted peanut wrapped in silky, salty caramel fudge. <span class="pick-rating">★ 4.8</span></div>
+          </div>
+          <div class="pick-price">Flavour Bombs</div>
+          <a href="/comparison" class="pick-add" aria-label="View Barebells Salted Peanut Caramel on comparison">→</a>
+        </div>
+
+        <!-- #3 Quest — Cookies & Cream ★ 4.8 -->
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#0d2256"/>
+              <rect x="0" y="0" width="54" height="5" rx="3" fill="#4480cc"/>
+              <rect x="0" y="2" width="54" height="3" fill="#4480cc"/>
+              <text x="27" y="19" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-weight="900" font-size="16" fill="white" letter-spacing="0.5">QUEST</text>
+              <rect x="6" y="24" width="42" height="22" rx="4" fill="#1a3670"/>
+              <rect x="6" y="24" width="42" height="8" rx="3" fill="#2952a8"/>
+              <rect x="8" y="26" width="16" height="2.5" rx="1" fill="rgba(255,255,255,0.14)"/>
+              <circle cx="16" cy="38" r="3.5" fill="#0d2256" opacity="0.6"/>
+              <circle cx="27" cy="36" r="3.5" fill="#0d2256" opacity="0.55"/>
+              <circle cx="38" cy="38" r="3.5" fill="#0d2256" opacity="0.6"/>
+              <circle cx="16" cy="38" r="1.5" fill="rgba(255,255,255,0.06)"/>
+              <circle cx="27" cy="36" r="1.5" fill="rgba(255,255,255,0.06)"/>
+              <circle cx="38" cy="38" r="1.5" fill="rgba(255,255,255,0.06)"/>
+              <text x="27" y="51" text-anchor="middle" font-family="Arial,sans-serif" font-weight="600" font-size="4.5" fill="rgba(255,255,255,0.32)" letter-spacing="0.3">COOKIES &amp; CREAM</text>
+            </svg>
+          </div>
+          <div>
+            <div><span class="pick-brand-tag" style="background:#ddeeff;color:#4480cc;">Quest</span></div>
+            <div class="pick-name">Protein Bar · Cookies &amp; Cream</div>
+            <div class="pick-desc">Vanilla cream nostalgia folded into dark cookie crumble. <span class="pick-rating">★ 4.8</span></div>
+          </div>
+          <div class="pick-price">$4.49 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <a href="/comparison" class="pick-add" aria-label="View Quest Cookies and Cream on comparison">→</a>
+        </div>
+
+        <!-- #4 MyProtein — Crispy Layered Bar Chocolate Brownie ★ 4.7 -->
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#0a4635"/>
+              <path d="M0 0 L28 0 L0 28Z" fill="rgba(255,198,45,0.09)"/>
+              <text x="27" y="15" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="10.5" fill="#ffc62d" letter-spacing="0.8">MP</text>
+              <rect x="5" y="20" width="44" height="24" rx="5" fill="#071e14"/>
+              <rect x="5" y="20" width="44" height="8" rx="4" fill="#0f5c45"/>
+              <rect x="7" y="22" width="16" height="2.5" rx="1" fill="rgba(255,255,255,0.10)"/>
+              <rect x="9" y="33" width="10" height="6" rx="2" fill="#0a3320" opacity="0.9"/>
+              <rect x="22" y="33" width="10" height="6" rx="2" fill="#0a3320" opacity="0.9"/>
+              <rect x="35" y="33" width="10" height="6" rx="2" fill="#0a3320" opacity="0.9"/>
+              <rect x="10" y="34" width="8" height="1.5" rx="0.5" fill="rgba(255,198,45,0.08)"/>
+              <rect x="23" y="34" width="8" height="1.5" rx="0.5" fill="rgba(255,198,45,0.08)"/>
+              <rect x="36" y="34" width="8" height="1.5" rx="0.5" fill="rgba(255,198,45,0.08)"/>
+              <text x="27" y="50" text-anchor="middle" font-family="Arial,sans-serif" font-weight="700" font-size="4.5" fill="rgba(255,198,45,0.45)" letter-spacing="0.3">CRISPY LAYERED</text>
+            </svg>
+          </div>
+          <div>
+            <div><span class="pick-brand-tag" style="background:#d4ede5;color:#0a4635;">MyProtein</span></div>
+            <div class="pick-name">Crispy Layered Bar · Chocolate Brownie</div>
+            <div class="pick-desc">Fudgy brownie richness layered with airy chocolate wafer. <span class="pick-rating">★ 4.7</span></div>
+          </div>
+          <div class="pick-price">$3.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <a href="/comparison" class="pick-add" aria-label="View MyProtein Crispy Layered Chocolate Brownie on comparison">→</a>
+        </div>
+
+        <!-- #5 Pure Protein — Chocolate Peanut Butter ★ 4.7 -->
+        <div class="pick-row">
+          <div class="pick-thumb">
+            <svg width="54" height="54" viewBox="0 0 54 54" fill="none">
+              <rect width="54" height="54" rx="6" fill="#1e0a38"/>
+              <rect width="54" height="15" rx="6" fill="#7c3aed"/>
+              <rect y="9" width="54" height="6" fill="#7c3aed"/>
+              <path d="M0 3 L54 3 L54 8 L0 8Z" fill="rgba(255,255,255,0.07)"/>
+              <text x="27" y="11.5" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-weight="900" font-size="6.5" fill="white" letter-spacing="0.8">PURE PROTEIN</text>
+              <rect x="6" y="19" width="42" height="26" rx="5" fill="#140828"/>
+              <rect x="6" y="19" width="42" height="9" rx="4" fill="#6d28d9"/>
+              <rect x="8" y="21" width="14" height="2.5" rx="1" fill="rgba(255,255,255,0.14)"/>
+              <path d="M9 33 Q18 29 27 33 Q36 37 45 33" stroke="#7c3aed" stroke-width="2" fill="none" opacity="0.55"/>
+              <path d="M9 37 Q18 33 27 37 Q36 41 45 37" stroke="#8b5cf6" stroke-width="1.5" fill="none" opacity="0.40"/>
+              <path d="M9 41 Q18 37 27 41 Q36 45 44 41" stroke="#6d28d9" stroke-width="1" fill="none" opacity="0.30"/>
+              <circle cx="20" cy="28" r="2.5" fill="rgba(139,92,246,0.30)"/>
+              <circle cx="35" cy="27" r="2" fill="rgba(139,92,246,0.25)"/>
+            </svg>
+          </div>
+          <div>
+            <div><span class="pick-brand-tag" style="background:#ede8f8;color:#8b5cf6;">Pure Protein</span></div>
+            <div class="pick-name">Protein Bar · Chocolate Peanut Butter</div>
+            <div class="pick-desc">Earthy nut butter swathed in bittersweet chocolate couverture. <span class="pick-rating">★ 4.7</span></div>
+          </div>
+          <div class="pick-price">$3.49 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
+          <a href="/comparison" class="pick-add" aria-label="View Pure Protein Chocolate Peanut Butter on comparison">→</a>
+        </div>
+
+      </div>
+      </div>
+      <div style="flex:1;display:flex;align-items:center;justify-content:center;">
+        <img src="/top5_bars.png" alt="Top 5 Protein Bars" style="width:100%;max-width:520px;border-radius:10px;object-fit:cover;box-shadow:0 4px 24px rgba(10,70,53,0.10),0 1px 4px rgba(10,70,53,0.06);" />
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 4;
+    let autoTimer;
+
+    function goToSlide(index, instant) {
+      var track = document.getElementById('heroTrack');
+      currentSlide = index;
+      var pct = (-index * 100 / totalSlides).toFixed(4);
+      if (instant) {
+        track.style.transition = 'none';
+        track.style.transform = 'translateX(' + pct + '%)';
+        void track.offsetWidth;
+        track.style.transition = '';
+      } else {
+        track.style.transform = 'translateX(' + pct + '%)';
+      }
+      document.getElementById('heroCarousel').setAttribute('data-slide', index);
+      document.querySelectorAll('.carousel-dot').forEach(function(dot, i) {
+        dot.classList.toggle('active', i === index);
+      });
+      var slides = document.querySelectorAll('.hero-slide');
+      slides.forEach(function(s) { s.classList.remove('hero-slide-active'); });
+      void slides[index].offsetWidth;
+      slides[index].classList.add('hero-slide-active');
+    }
+
+    function resetTimer() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(function() {
+        var next = (currentSlide + 1) % totalSlides;
+        goToSlide(next, next === 0);
+      }, 4000);
+    }
+
+    function nextSlide() {
+      var next = (currentSlide + 1) % totalSlides;
+      goToSlide(next, next === 0);
+      resetTimer();
+    }
+
+    function prevSlide() {
+      goToSlide((currentSlide - 1 + totalSlides) % totalSlides);
+      resetTimer();
+    }
+
+    function selectSlide(index) {
+      goToSlide(index);
+      resetTimer();
+    }
+
+    resetTimer();
+
+    // ── NAV HAMBURGER ──────────────────────────────────────
+    (function () {
+      var toggle = document.getElementById('navToggle');
+      var links  = document.getElementById('navLinks');
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', function () {
+        var open = links.classList.toggle('open');
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          links.classList.remove('open');
+          toggle.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }());
+
+    // ── MOTION EXTRAS ──────────────────────────────────────
+    (function () {
+      // Init first slide entrance
+      document.querySelectorAll('.hero-slide')[0].classList.add('hero-slide-active');
+
+      // Scroll reveal — only applied to elements below the fold at load time
+      var revealObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          e.target.classList.add('pb-visible');
+          revealObs.unobserve(e.target);
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -24px 0px' });
+
+      function setupReveal(nodeList, delayStep) {
+        Array.from(nodeList).forEach(function (el, i) {
+          if (el.getBoundingClientRect().top >= window.innerHeight * 0.95) {
+            el.classList.add('pb-reveal');
+            el.style.transitionDelay = (i * delayStep) + 'ms';
+            revealObs.observe(el);
+          }
+        });
+      }
+
+      setupReveal(document.querySelectorAll('.trackers-stats .tracker-stat'), 70);
+      setupReveal(document.querySelectorAll('.brands-grid .brand-card'), 60);
+      setupReveal(document.querySelectorAll('.picks-list .pick-row'), 70);
+
+      var picksImgCol = document.querySelector('#picks > div:last-child');
+      if (picksImgCol) setupReveal([picksImgCol], 0);
+
+      // Count-up for numeric tracker stats
+      var counterObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          counterObs.unobserve(e.target);
+          var numEl = e.target.querySelector('.tracker-num');
+          if (!numEl) return;
+          var text = numEl.textContent.trim();
+          var num = parseInt(text, 10);
+          if (isNaN(num) || String(num) !== text) return; // skip non-pure-numeric
+          var duration = 1100, startTs = null;
+          requestAnimationFrame(function step(ts) {
+            if (!startTs) startTs = ts;
+            var t = Math.min((ts - startTs) / duration, 1);
+            numEl.textContent = String(Math.round(num * (1 - Math.pow(1 - t, 3))));
+            if (t < 1) requestAnimationFrame(step);
+            else numEl.textContent = text;
+          });
+        });
+      }, { threshold: 0.5 });
+
+      document.querySelectorAll('.tracker-stat').forEach(function (el) {
+        counterObs.observe(el);
+      });
+    }());
+  </script>
+
+</body>
+</html>
