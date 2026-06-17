@@ -2,7 +2,9 @@ import * as React from "react";
 import { motion, Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface FeatureHighlightProps extends React.HTMLAttributes<HTMLDivElement> {
+interface FeatureHighlightProps {
+  className?: string;
+  style?: React.CSSProperties;
   icon?: React.ReactNode;
   title: string;
   features: React.ReactNode[];
@@ -33,7 +35,7 @@ const itemVariants: Variants = {
 };
 
 const FeatureHighlight = React.forwardRef<HTMLDivElement, FeatureHighlightProps>(
-  ({ className, icon, title, features, footer, ...props }, ref) => {
+  ({ className, style, icon, title, features, footer }, ref) => {
     return (
       <motion.div
         ref={ref}
@@ -41,10 +43,10 @@ const FeatureHighlight = React.forwardRef<HTMLDivElement, FeatureHighlightProps>
           "flex max-w-lg flex-col items-start space-y-4 p-8 text-left",
           className
         )}
+        style={style}
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        {...props}
       >
         {icon && <motion.div variants={itemVariants}>{icon}</motion.div>}
 

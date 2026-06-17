@@ -14,7 +14,7 @@ function Counter({ value }: { value: string }) {
     if (!inView || !isNumeric) return;
     const controls = animate(0, num, {
       duration: 1.2,
-      ease: [0.16, 1, 0.3, 1],
+      ease: [0.16, 1, 0.3, 1] as [number, number, number, number],
       onUpdate(v) { setDisplay(String(Math.round(v))); },
       onComplete() { setDisplay(value); },
     });
@@ -44,7 +44,7 @@ export function AnimatedStatBar({ stats }: { stats: Stat[] }) {
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-20px" }}
-            transition={{ duration: 0.55, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.55, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="px-8 py-7 text-center"
             style={{
               borderRight: i < stats.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none",
