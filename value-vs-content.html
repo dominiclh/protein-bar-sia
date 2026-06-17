@@ -50,6 +50,47 @@
     }
     .nav-links a:focus-visible { outline: 2px solid #ffc62d; outline-offset: 3px; border-radius: 4px; }
 
+    /* ── NAV HAMBURGER ───────────────────────────────────── */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 6px;
+      border-radius: 4px;
+      transition: background 0.18s ease;
+    }
+    .nav-toggle:hover { background: rgba(255,255,255,0.10); }
+    .nav-toggle:focus-visible { outline: 2px solid #ffc62d; outline-offset: 3px; }
+    .nav-toggle span {
+      display: block;
+      width: 22px; height: 2px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 60px; left: 0; right: 0;
+      background: #0a4635;
+      padding: 12px 20px 20px;
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.20);
+    }
+    .nav-links.open li { border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .nav-links.open li:last-child { border-bottom: none; }
+    .nav-links.open a { display: block; padding: 12px 0; font-size: 15px; }
+
     /* ── PAGE ────────────────────────────────────────────── */
     .page {
       padding: 20px 24px 48px;
@@ -326,6 +367,82 @@
     }
     .qk-text { font-size: 12px; color: #555; line-height: 1.4; }
     .qk-text strong { color: #0a4635; font-weight: 700; display: block; margin-bottom: 1px; }
+
+    /* ── MOBILE RESPONSIVE ───────────────────────────────── */
+    @media (max-width: 767px) {
+      /* Nav */
+      .nav {
+        padding: 0 16px;
+        height: 60px;
+        position: relative;
+      }
+      .logo-name { font-size: 17px; }
+      .nav-toggle { display: flex; }
+      .nav-links { display: none; }
+
+      /* Page */
+      .page { padding: 10px 10px 32px; gap: 10px; }
+
+      /* Hero */
+      .vvc-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px 20px 24px;
+        gap: 16px;
+        border-radius: 14px;
+      }
+      .vvc-axes { align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 8px; }
+      .vvc-title { font-size: clamp(36px, 10vw, 56px); }
+      .vvc-desc { font-size: 13px; }
+
+      /* Filters */
+      .filters-card { padding: 18px 16px 20px; border-radius: 14px; }
+      .filters-row2 { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+      /* Chart layout — chart takes full row, stats stack below */
+      .chart-layout {
+        grid-template-columns: 1fr;
+      }
+
+      /* Chart card — reduce horizontal padding so chart uses full width */
+      .chart-card {
+        padding: 16px 10px 14px;
+        border-radius: 14px;
+      }
+
+      .chart-top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+
+      .chart-legend { gap: 8px; }
+
+      .chart-canvas-wrap { height: 320px; }
+
+      /* Stats sidebar becomes a horizontal row of cards */
+      .stats-sidebar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      /* Quadrant key spans full width */
+      .quadrant-key {
+        grid-column: 1 / -1;
+        border-radius: 14px;
+      }
+
+      .stat-card { border-radius: 14px; padding: 16px; }
+      .stat-card-value { font-size: 22px; }
+    }
+
+    @media (max-width: 480px) {
+      .filters-row2 { grid-template-columns: 1fr; }
+      .stats-sidebar { grid-template-columns: 1fr; }
+      .chart-canvas-wrap { height: 280px; }
+    }
   </style>
 </head>
 <body>
@@ -336,7 +453,10 @@
       <img src="/brand_assets/proteinbarsia_logo.jpg" alt="Proteinbarsia logo" />
       <span class="logo-name">Proteinbarsia</span>
     </a>
-    <ul class="nav-links">
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="/comparison">Comparison</a></li>
       <li><a href="/value-vs-content.html" class="active">Value vs Content</a></li>
     </ul>
@@ -796,6 +916,26 @@
     /* ─── INIT ─────────────────────────────────────────────── */
     populateFlavorDropdown();
     applyFilters();
+  </script>
+
+  <script>
+    (function () {
+      var toggle = document.getElementById('navToggle');
+      var links  = document.getElementById('navLinks');
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', function () {
+        var open = links.classList.toggle('open');
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          links.classList.remove('open');
+          toggle.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }());
   </script>
 
 </body>

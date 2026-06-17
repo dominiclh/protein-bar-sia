@@ -1072,10 +1072,15 @@
       /* Page */
       .page { padding: 10px 10px 28px; gap: 10px; }
 
-      /* Hero */
+      /* Hero — stack text above image */
       .hero-carousel,
-      .hero-slides-track { min-height: 300px; }
-      .hero-slide { min-height: 300px; padding: 26px 18px 54px 18px; }
+      .hero-slides-track { min-height: 0; }
+      .hero-slide {
+        min-height: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 22px 18px 28px 18px;
+      }
 
       /* Override inline max-width on hero-text */
       .hero-text,
@@ -1083,8 +1088,30 @@
 
       .hero-headline { font-size: clamp(42px, 12vw, 68px); }
 
-      /* Hide the floating product image — too wide for mobile */
-      .hero-product { display: none !important; }
+      /* Un-hide product image, reposition as a static element below text */
+      .hero-product {
+        position: static !important;
+        transform: none !important;
+        display: flex !important;
+        justify-content: center;
+        width: 100%;
+        margin-top: 16px;
+      }
+
+      /* Slide 4 has an iframe chart — keep that hidden on mobile */
+      .hero-slide-navy .hero-product { display: none !important; }
+
+      /* Scale down product ring (overrides inline width/height) */
+      .hero-product .product-ring {
+        width: 170px !important;
+        height: 170px !important;
+        padding: 5px !important;
+        animation: none !important;
+      }
+
+      /* Declutter: hide price tag and badges on mobile */
+      .price-tag,
+      .product-badges { display: none !important; }
 
       /* Carousel dots re-align */
       .carousel-dots { left: 18px; }
