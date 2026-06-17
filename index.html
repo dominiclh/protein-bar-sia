@@ -1004,6 +1004,155 @@
           transform 0.60s cubic-bezier(0.22,1,0.36,1);
       }
     }
+
+    /* ── MOBILE NAV HAMBURGER ─────────────────────────── */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 6px;
+      border-radius: 4px;
+      transition: background 0.18s ease;
+    }
+    .nav-toggle:hover { background: rgba(255,255,255,0.10); }
+    .nav-toggle:focus-visible { outline: 2px solid var(--amarillo); outline-offset: 3px; }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: rgba(255,255,255,0.85);
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav dropdown */
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: var(--verde);
+      padding: 12px 20px 20px;
+      gap: 0;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      z-index: 100;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.20);
+    }
+    .nav-links.open li { border-bottom: 1px solid rgba(255,255,255,0.07); }
+    .nav-links.open li:last-child { border-bottom: none; }
+    .nav-links.open a { display: block; padding: 12px 0; font-size: 15px; }
+
+    /* ── TABLET / DESKTOP BREAKPOINTS ────────────────── */
+    @media (min-width: 960px) {
+      .hero-row { grid-template-columns: 1fr 280px; }
+    }
+
+    /* ── MOBILE RESPONSIVE ────────────────────────────── */
+    @media (max-width: 767px) {
+      /* Nav */
+      .nav {
+        padding: 0 16px;
+        height: 60px;
+        position: relative;
+      }
+      .logo-name { font-size: 17px; }
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: none;
+      }
+
+      /* Page */
+      .page { padding: 10px 10px 28px; gap: 10px; }
+
+      /* Hero */
+      .hero-carousel,
+      .hero-slides-track { min-height: 300px; }
+      .hero-slide { min-height: 300px; padding: 26px 18px 54px 18px; }
+
+      /* Override inline max-width on hero-text */
+      .hero-text,
+      .hero-slide .hero-text { max-width: 100% !important; }
+
+      .hero-headline { font-size: clamp(42px, 12vw, 68px); }
+
+      /* Hide the floating product image — too wide for mobile */
+      .hero-product { display: none !important; }
+
+      /* Carousel dots re-align */
+      .carousel-dots { left: 18px; }
+
+      /* Hero slide 4 badges row */
+      .hero-slide-navy .hero-text > div { flex-wrap: wrap; gap: 6px; }
+
+      /* Tracker stats: 2×2 */
+      .trackers-stats { grid-template-columns: repeat(2, 1fr); }
+      .tracker-stat:nth-child(2) { border-right: none; }
+      .tracker-stat:nth-child(1),
+      .tracker-stat:nth-child(2) { border-bottom: 1px solid rgba(10,70,53,0.08); }
+      .tracker-stat { padding: 20px 14px; }
+      .tracker-num { font-size: 26px; }
+
+      /* Brands wrap */
+      .trackers-brands-wrap { padding: 24px 16px 28px; }
+      .brand-card { min-width: 120px; padding: 18px 18px 14px; }
+
+      /* Picks card */
+      .picks-card {
+        padding: 24px 18px 24px !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+      }
+      /* Hide the top-5 image column on mobile */
+      .picks-card > div:last-child { display: none !important; }
+
+      .picks-list { max-width: 100%; }
+      .picks-title { font-size: 40px; }
+      .picks-header { gap: 12px; margin-bottom: 20px; }
+      .picks-icon-box { width: 44px; height: 44px; font-size: 22px; margin-top: 4px; }
+
+      /* Pick rows: drop the price column */
+      .pick-row {
+        grid-template-columns: 48px 1fr auto;
+        gap: 10px;
+        padding: 11px 12px;
+      }
+      .pick-price { display: none; }
+      .pick-add { width: 30px; height: 30px; font-size: 16px; }
+
+      /* Daily card */
+      .daily-card { grid-template-columns: 70px 1fr auto; gap: 10px; padding: 16px 14px; }
+      .daily-img { width: 70px; height: 70px; }
+
+      /* Gains card */
+      .gains-card { padding: 22px 18px 18px; }
+      .gains-img { right: 12px; width: 70px; height: 70px; }
+
+      /* Bottom row */
+      .bottom-row { gap: 10px; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-slide { padding: 20px 14px 48px 14px; }
+      .hero-headline { font-size: clamp(38px, 13.5vw, 56px); }
+      .hero-sub { font-size: 12.5px; max-width: 100%; }
+      .picks-mini-list { gap: 5px; }
+      .pick-mini-row { padding: 7px 10px; }
+      .brand-card { min-width: 100px; padding: 14px 14px 12px; }
+      .brand-avatar { width: 48px; height: 48px; font-size: 22px; }
+      .brand-name { font-size: 12.5px; }
+      .pick-row { grid-template-columns: 42px 1fr auto; }
+      .pick-thumb { width: 42px; height: 42px; }
+      .pick-name { font-size: 13.5px; }
+      .pick-add { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -1014,8 +1163,11 @@
       <img src="/brand_assets/proteinbarsia_logo.jpg" alt="Proteinbarsia logo" />
       <span class="logo-name">Proteinbarsia</span>
     </a>
-    <ul class="nav-links">
-      <li><a href="http://localhost:3001/comparison">Comparison</a></li>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/comparison">Comparison</a></li>
       <li><a href="/value-vs-content.html">Value vs Content</a></li>
     </ul>
   </nav>
@@ -1213,7 +1365,7 @@
       <div class="trackers-brands-wrap">
         <h2 class="brands-title">Brands we cover</h2>
         <div class="brands-grid">
-          <a href="http://localhost:3001/comparison?brand=grenade" class="brand-card">
+          <a href="/comparison?brand=grenade" class="brand-card">
             <div class="brand-avatar" style="background:#0f0808;overflow:hidden;padding:0;">
               <svg width="60" height="60" viewBox="0 0 60 60">
                 <ellipse cx="30" cy="40" rx="13" ry="15" fill="#c0392b"/>
@@ -1229,7 +1381,7 @@
             </div>
             <span class="brand-name">Grenade</span>
           </a>
-          <a href="http://localhost:3001/comparison?brand=barebells" class="brand-card">
+          <a href="/comparison?brand=barebells" class="brand-card">
             <div class="brand-avatar" style="background:#1a0d04;overflow:hidden;padding:0;">
               <svg width="60" height="60" viewBox="0 0 60 60">
                 <rect x="4" y="26" width="52" height="8" rx="4" fill="#7a5514"/>
@@ -1245,7 +1397,7 @@
             </div>
             <span class="brand-name">Barebells</span>
           </a>
-          <a href="http://localhost:3001/comparison?brand=quest" class="brand-card">
+          <a href="/comparison?brand=quest" class="brand-card">
             <div class="brand-avatar" style="background:#061530;overflow:hidden;padding:0;">
               <svg width="60" height="60" viewBox="0 0 60 60">
                 <circle cx="30" cy="30" r="16" fill="none" stroke="#4480cc" stroke-width="2"/>
@@ -1260,7 +1412,7 @@
             </div>
             <span class="brand-name">Quest</span>
           </a>
-          <a href="http://localhost:3001/comparison?brand=pure-protein" class="brand-card">
+          <a href="/comparison?brand=pure-protein" class="brand-card">
             <div class="brand-avatar" style="background:#140822;overflow:hidden;padding:0;">
               <svg width="60" height="60" viewBox="0 0 60 60">
                 <polygon points="30,9 46,19 46,39 30,49 14,39 14,19" fill="#5b21b6"/>
@@ -1275,7 +1427,7 @@
             </div>
             <span class="brand-name">Pure Protein</span>
           </a>
-          <a href="http://localhost:3001/comparison?brand=myprotein" class="brand-card">
+          <a href="/comparison?brand=myprotein" class="brand-card">
             <div class="brand-avatar" style="background:#071a0d;overflow:hidden;padding:0;">
               <svg width="60" height="60" viewBox="0 0 60 60">
                 <rect x="7" y="27" width="46" height="7" rx="3.5" fill="#0a3a20"/>
@@ -1326,7 +1478,7 @@
             <div class="pick-desc">Buttery caramel laced with sea-salt crystals, intensely addictive. <span class="pick-rating">★ 4.9</span></div>
           </div>
           <div class="pick-price">Fuel on the Go</div>
-          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Grenade Carb Killa on comparison">→</a>
+          <a href="/comparison" class="pick-add" aria-label="View Grenade Carb Killa on comparison">→</a>
         </div>
 
         <!-- #2 Barebells — Salted Peanut Caramel ★ 4.8 -->
@@ -1355,7 +1507,7 @@
             <div class="pick-desc">Deep-roasted peanut wrapped in silky, salty caramel fudge. <span class="pick-rating">★ 4.8</span></div>
           </div>
           <div class="pick-price">Flavour Bombs</div>
-          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Barebells Salted Peanut Caramel on comparison">→</a>
+          <a href="/comparison" class="pick-add" aria-label="View Barebells Salted Peanut Caramel on comparison">→</a>
         </div>
 
         <!-- #3 Quest — Cookies & Cream ★ 4.8 -->
@@ -1384,7 +1536,7 @@
             <div class="pick-desc">Vanilla cream nostalgia folded into dark cookie crumble. <span class="pick-rating">★ 4.8</span></div>
           </div>
           <div class="pick-price">$4.49 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
-          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Quest Cookies and Cream on comparison">→</a>
+          <a href="/comparison" class="pick-add" aria-label="View Quest Cookies and Cream on comparison">→</a>
         </div>
 
         <!-- #4 MyProtein — Crispy Layered Bar Chocolate Brownie ★ 4.7 -->
@@ -1412,7 +1564,7 @@
             <div class="pick-desc">Fudgy brownie richness layered with airy chocolate wafer. <span class="pick-rating">★ 4.7</span></div>
           </div>
           <div class="pick-price">$3.99 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
-          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View MyProtein Crispy Layered Chocolate Brownie on comparison">→</a>
+          <a href="/comparison" class="pick-add" aria-label="View MyProtein Crispy Layered Chocolate Brownie on comparison">→</a>
         </div>
 
         <!-- #5 Pure Protein — Chocolate Peanut Butter ★ 4.7 -->
@@ -1440,7 +1592,7 @@
             <div class="pick-desc">Earthy nut butter swathed in bittersweet chocolate couverture. <span class="pick-rating">★ 4.7</span></div>
           </div>
           <div class="pick-price">$3.49 <span style="font-size:11px;color:rgba(10,70,53,0.38);font-family:'DM Sans'">each</span></div>
-          <a href="http://localhost:3001/comparison" class="pick-add" aria-label="View Pure Protein Chocolate Peanut Butter on comparison">→</a>
+          <a href="/comparison" class="pick-add" aria-label="View Pure Protein Chocolate Peanut Butter on comparison">→</a>
         </div>
 
       </div>
@@ -1504,6 +1656,26 @@
     }
 
     resetTimer();
+
+    // ── NAV HAMBURGER ──────────────────────────────────────
+    (function () {
+      var toggle = document.getElementById('navToggle');
+      var links  = document.getElementById('navLinks');
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', function () {
+        var open = links.classList.toggle('open');
+        toggle.classList.toggle('open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', function () {
+          links.classList.remove('open');
+          toggle.classList.remove('open');
+          toggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }());
 
     // ── MOTION EXTRAS ──────────────────────────────────────
     (function () {
