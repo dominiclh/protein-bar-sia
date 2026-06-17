@@ -34,13 +34,20 @@
 
     /* ── NAV ─────────────────────────────────────────────── */
     .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 44px;
       height: 76px;
       background: var(--verde);
       border-bottom: none;
+    }
+
+    /* Inner wrapper aligns with .page content edges */
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      padding: 0 24px;
+      max-width: 1440px;
+      margin: 0 auto;
     }
 
     .logo-wrap {
@@ -1035,12 +1042,12 @@
     .nav-links.open {
       display: flex;
       flex-direction: column;
-      position: absolute;
+      position: fixed;
       top: 60px;
       left: 0;
       right: 0;
       background: var(--verde);
-      padding: 12px 20px 20px;
+      padding: 12px 24px 20px;
       gap: 0;
       border-top: 1px solid rgba(255,255,255,0.10);
       z-index: 100;
@@ -1050,24 +1057,14 @@
     .nav-links.open li:last-child { border-bottom: none; }
     .nav-links.open a { display: block; padding: 12px 0; font-size: 15px; }
 
-    /* ── TABLET / DESKTOP BREAKPOINTS ────────────────── */
-    @media (min-width: 960px) {
-      .hero-row { grid-template-columns: 1fr 280px; }
-    }
-
     /* ── MOBILE RESPONSIVE ────────────────────────────── */
     @media (max-width: 767px) {
       /* Nav */
-      .nav {
-        padding: 0 16px;
-        height: 60px;
-        position: relative;
-      }
+      .nav { height: 60px; }
+      .nav-inner { padding: 0 16px; }
       .logo-name { font-size: 17px; }
       .nav-toggle { display: flex; }
-      .nav-links {
-        display: none;
-      }
+      .nav-links { display: none; }
 
       /* Page */
       .page { padding: 10px 10px 28px; gap: 10px; }
@@ -1186,17 +1183,19 @@
 
   <!-- NAV -->
   <nav class="nav">
-    <a href="#" class="logo-wrap">
-      <img src="/brand_assets/proteinbarsia_logo.jpg" alt="Proteinbarsia logo" />
-      <span class="logo-name">Proteinbarsia</span>
-    </a>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-    <ul class="nav-links" id="navLinks">
-      <li><a href="/comparison">Comparison</a></li>
-      <li><a href="/value-vs-content.html">Value vs Content</a></li>
-    </ul>
+    <div class="nav-inner">
+      <a href="#" class="logo-wrap">
+        <img src="/brand_assets/proteinbarsia_logo.jpg" alt="Proteinbarsia logo" />
+        <span class="logo-name">Proteinbarsia</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/comparison">Comparison</a></li>
+        <li><a href="/value-vs-content.html">Value vs Content</a></li>
+      </ul>
+    </div>
   </nav>
 
   <!-- PAGE -->
