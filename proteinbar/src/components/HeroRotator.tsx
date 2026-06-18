@@ -215,13 +215,24 @@ export default function HeroRotator() {
         .hero-track { display: flex; width: 400%; min-height: 440px; }
         .hero-slide { width: calc(100% / 4); flex-shrink: 0; min-height: 440px; position: relative; padding: 50px 44px 72px 80px; display: flex; align-items: center; overflow: hidden; }
         .hero-arrow:hover { background: rgba(0,0,0,0.40) !important; border-color: rgba(255,255,255,0.80) !important; }
+        @keyframes heroFloat {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          40% { transform: translateY(-13px) rotate(0.4deg); }
+          70% { transform: translateY(-7px) rotate(-0.3deg); }
+        }
+        @keyframes heroImgZoom {
+          0% { transform: scale(1); }
+          100% { transform: scale(1.07); }
+        }
+        .hero-product-float { animation: heroFloat 5.5s ease-in-out infinite; }
+        .hero-product-float img { animation: heroImgZoom 9s ease-in-out infinite alternate; }
         @media (max-width: 767px) {
           .hero-carousel { margin: 10px 10px 0; }
           .hero-slide { flex-direction: column; align-items: flex-start; padding: 22px 18px 28px; min-height: 0; }
           .hero-text-inner { max-width: 100% !important; }
           .hero-headline-el { font-size: clamp(42px, 12vw, 68px) !important; }
           .hero-product-el { position: static !important; transform: none !important; display: flex; justify-content: center; width: 100%; margin-top: 16px; }
-          .hero-product-el > div:first-child { width: 170px !important; height: 170px !important; padding: 5px !important; }
+          .hero-product-el .hero-product-float > div:first-child { width: 170px !important; height: 170px !important; padding: 5px !important; }
           .hero-price-tag, .hero-badges { display: none !important; }
           .hero-nav-slide4 .hero-product-el { display: none !important; }
           .hero-dots { left: 18px !important; }
@@ -254,9 +265,11 @@ export default function HeroRotator() {
             </div>
 
             <div className="hero-product-el" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-44%, -50%)", zIndex: 4 }}>
-              <div style={{ width: "420px", height: "420px", borderRadius: "50%", padding: "9px", background: "#fff", boxShadow: "0 0 0 1px rgba(10,70,53,0.06), 0 8px 24px rgba(10,70,53,0.10), 0 24px 56px rgba(10,70,53,0.10)" }}>
-                <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: "#e8d5b0" }}>
-                  <img src="/musclecrisp.png" alt="Protein Bar" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <div className="hero-product-float" style={{ animationDelay: "0s" }}>
+                <div style={{ width: "420px", height: "420px", borderRadius: "50%", padding: "9px", background: "#fff", boxShadow: "0 0 0 1px rgba(10,70,53,0.06), 0 8px 24px rgba(10,70,53,0.10), 0 24px 56px rgba(10,70,53,0.10)" }}>
+                  <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: "#e8d5b0" }}>
+                    <img src="/musclecrisp.png" alt="Protein Bar" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  </div>
                 </div>
               </div>
               <div className="hero-price-tag" style={{ position: "absolute", top: "22px", right: "-4px", background: C.verde, color: C.amarillo, fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "18px", padding: "8px 18px", borderRadius: "3px", boxShadow: "0 4px 16px rgba(0,0,0,0.22)", whiteSpace: "nowrap", letterSpacing: "0.05em" }}>
@@ -285,9 +298,11 @@ export default function HeroRotator() {
             </div>
 
             <div className="hero-product-el" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-44%, -50%)", zIndex: 4 }}>
-              <div style={{ width: "420px", height: "420px", borderRadius: "50%", padding: "9px", background: "#0a3028", boxShadow: "0 0 0 1px rgba(255,198,45,0.15), 0 8px 24px rgba(0,0,0,0.35), 0 24px 56px rgba(0,0,0,0.28)" }}>
-                <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: "#0d3e2e" }}>
-                  <img src="/circular_unwrapped.png" alt="Daily Fuel Bar" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <div className="hero-product-float" style={{ animationDelay: "-1.8s" }}>
+                <div style={{ width: "420px", height: "420px", borderRadius: "50%", padding: "9px", background: "#0a3028", boxShadow: "0 0 0 1px rgba(255,198,45,0.15), 0 8px 24px rgba(0,0,0,0.35), 0 24px 56px rgba(0,0,0,0.28)" }}>
+                  <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: "#0d3e2e" }}>
+                    <img src="/circular_unwrapped.png" alt="Daily Fuel Bar" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  </div>
                 </div>
               </div>
               <div className="hero-price-tag" style={{ position: "absolute", top: "22px", right: "-4px", background: C.amarillo, color: C.verde, fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "18px", padding: "8px 18px", borderRadius: "3px", boxShadow: "0 4px 16px rgba(0,0,0,0.22)", whiteSpace: "nowrap", letterSpacing: "0.05em" }}>
@@ -329,9 +344,11 @@ export default function HeroRotator() {
             </div>
 
             <div className="hero-product-el" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-44%, -50%)", zIndex: 4 }}>
-              <div style={{ width: "420px", height: "420px", borderRadius: "50%", padding: "9px", background: "#fff", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.12), 0 24px 56px rgba(0,0,0,0.10)" }}>
-                <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: "#fde8e5" }}>
-                  <img src="/circular_flavours.png" alt="Top Protein Bar Flavours" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <div className="hero-product-float" style={{ animationDelay: "-3.5s" }}>
+                <div style={{ width: "420px", height: "420px", borderRadius: "50%", padding: "9px", background: "#fff", boxShadow: "0 0 0 1px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.12), 0 24px 56px rgba(0,0,0,0.10)" }}>
+                  <div style={{ width: "100%", height: "100%", borderRadius: "50%", overflow: "hidden", background: "#fde8e5" }}>
+                    <img src="/circular_flavours.png" alt="Top Protein Bar Flavours" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  </div>
                 </div>
               </div>
               <div className="hero-price-tag" style={{ position: "absolute", top: "22px", right: "-4px", background: "#fff", color: C.rojo, fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "18px", padding: "8px 18px", borderRadius: "3px", boxShadow: "0 4px 16px rgba(0,0,0,0.22)", whiteSpace: "nowrap", letterSpacing: "0.05em" }}>
@@ -363,9 +380,11 @@ export default function HeroRotator() {
             </div>
 
             <div className="hero-product-el" style={{ position: "absolute", left: "50%", top: "50%", transform: "translate(-15%, -50%)", zIndex: 4 }}>
-              <div style={{ width: "460px", height: "330px", borderRadius: "10px", overflow: "hidden", boxShadow: "0 0 0 1px rgba(255,198,45,0.22), 0 10px 36px rgba(0,0,0,0.48), 0 28px 64px rgba(0,0,0,0.35)", position: "relative" }}>
-                <iframe src="/chart-embed.html" style={{ width: "100%", height: "100%", border: "none", display: "block" }} scrolling="no" />
-                <div style={{ position: "absolute", inset: 0, borderRadius: "10px", border: "1px solid rgba(255,198,45,0.18)", pointerEvents: "none" }} />
+              <div className="hero-product-float" style={{ animationDelay: "-1s" }}>
+                <div style={{ width: "460px", height: "330px", borderRadius: "10px", overflow: "hidden", boxShadow: "0 0 0 1px rgba(255,198,45,0.22), 0 10px 36px rgba(0,0,0,0.48), 0 28px 64px rgba(0,0,0,0.35)", position: "relative" }}>
+                  <iframe src="/chart-embed.html" style={{ width: "100%", height: "100%", border: "none", display: "block" }} scrolling="no" />
+                  <div style={{ position: "absolute", inset: 0, borderRadius: "10px", border: "1px solid rgba(255,198,45,0.18)", pointerEvents: "none" }} />
+                </div>
               </div>
               <div className="hero-price-tag" style={{ position: "absolute", top: "14px", right: "-8px", background: C.amarillo, color: C.azul, fontFamily: "var(--font-barlow)", fontWeight: 900, fontSize: "18px", padding: "8px 18px", borderRadius: "3px", boxShadow: "0 4px 16px rgba(0,0,0,0.22)", whiteSpace: "nowrap", letterSpacing: "0.05em" }}>
                 SG &amp; MY

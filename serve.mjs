@@ -29,8 +29,14 @@ const server = createServer(async (req, res) => {
   const contentType = MIME[ext] || 'application/octet-stream';
 
   try {
-    const data = await readFile(filePath);
-    res.writeHead(200, { 'Content-Type': contentType });
+    let resolvedPath = filePath;
+    let resolvedExt = ext;
+    if (!ext) {
+      resolvedPath = filePath + '.html';
+      resolvedExt = '.html';
+    }
+    const data = await readFile(resolvedPath);
+    res.writeHead(200, { 'Content-Type': MIME[resolvedExt] || 'application/octet-stream' });
     res.end(data);
   } catch {
     res.writeHead(404, { 'Content-Type': 'text/plain' });
